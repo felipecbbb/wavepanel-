@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WavePanel — El software de gestión para escuelas de surf</title>
+  <meta name="description" content="Panel de gestión completo para escuelas de surf, kite y deportes acuáticos. Reservas, calendario, tienda, pagos online y web incluida.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #fffdf7;
+      --color-sand: #f3ecdd;
+      --color-yellow: #FFCC01;
+      --color-paper: #ffffff;
+      --color-navy: #0f2f39;
+      --color-navy-soft: #214a57;
+      --color-text: #2d3d45;
+      --color-muted: #64757d;
+      --color-line: #d7d0c2;
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+      --shadow-sm: 0 8px 24px rgba(15,47,57,.08);
+      --shadow-md: 0 16px 36px rgba(15,47,57,.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    h1,h2,h3,h4 { margin: 0; line-height: 1.08; }
+
+    .container { width: min(1220px, 92vw); margin: 0 auto; }
+    .section { padding: 96px 0; }
+    .section.alt { background: var(--color-sand); }
+    .section.dark { background: var(--color-navy); color: #fff; }
+
+    .kicker {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--color-yellow);
+    }
+
+    .section.dark .kicker { color: var(--color-yellow); }
+    .section.alt .kicker { color: var(--color-navy); }
+
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: .02em;
+      color: var(--color-navy);
+      font-size: clamp(2rem, 5.5vw, 3.6rem);
+    }
+
+    .section.dark .title { color: #fff; }
+
+    .lead {
+      font-size: clamp(1rem, 2vw, 1.22rem);
+      color: var(--color-muted);
+      max-width: 680px;
+    }
+
+    .section.dark .lead { color: rgba(255,255,255,.7); }
+
+    .section-header {
+      text-align: center;
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      margin-bottom: 56px;
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: var(--color-yellow);
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(15,47,57,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .nav-row {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: .04em;
+      color: #fff;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .logo span { color: var(--color-yellow); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 2.6vw, 36px);
+    }
+
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      font-weight: 600;
+      color: rgba(255,255,255,.85);
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: .06em;
+      font-size: .76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: .25s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn.yellow {
+      background: var(--color-yellow);
+      color: var(--color-navy);
+    }
+
+    .btn.yellow:hover { filter: brightness(1.06); }
+
+    .btn.outline {
+      border-color: var(--color-navy);
+      color: var(--color-navy);
+      background: transparent;
+    }
+
+    .btn.outline:hover {
+      background: var(--color-navy);
+      color: #fff;
+    }
+
+    .btn.outline-light {
+      border-color: rgba(255,255,255,.5);
+      color: #fff;
+      background: transparent;
+    }
+
+    .btn.outline-light:hover {
+      background: rgba(255,255,255,.1);
+    }
+
+    .btn.lg { padding: 16px 32px; font-size: .84rem; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      padding-top: 72px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--color-navy);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,204,1,.08), transparent),
+        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255,204,1,.04), transparent);
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 80px 0;
+    }
+
+    .hero-text { display: grid; gap: 20px; }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      letter-spacing: .02em;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--color-yellow);
+    }
+
+    .hero-lead {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: rgba(255,255,255,.7);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-mockup {
+      width: 100%;
+      max-width: 560px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 80px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: -16px;
+      left: -20px;
+      background: var(--color-yellow);
+      color: var(--color-navy);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .04em;
+      padding: 12px 20px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--color-paper);
+      border-bottom: 1px solid var(--color-line);
+      padding: 40px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--color-navy);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--color-muted);
+      margin-top: 4px;
+    }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: var(--color-paper);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-md);
+      padding: 36px 28px;
+      display: grid;
+      gap: 14px;
+      transition: .3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: var(--color-sand);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .feature-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+
+    .feature-card p {
+      font-size: .92rem;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      counter-reset: step;
+    }
+
+    .step {
+      text-align: center;
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+    }
+
+    .step-number {
+      width: 56px; height: 56px;
+      border-radius: 999px;
+      background: var(--color-yellow);
+      color: var(--color-navy);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+
+    .step p {
+      font-size: .92rem;
+      color: var(--color-muted);
+      max-width: 320px;
+    }
+
+    /* ── PLANS ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .plan-card {
+      background: var(--color-paper);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      display: grid;
+      gap: 24px;
+      position: relative;
+      transition: .3s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .plan-card.featured {
+      border: 2px solid var(--color-yellow);
+      box-shadow: var(--shadow-md);
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-yellow);
+      color: var(--color-navy);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 999px;
+    }
+
+    .plan-header {
+      display: grid;
+      gap: 8px;
+    }
+
+    .plan-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .plan-desc {
+      font-size: .88rem;
+      color: var(--color-muted);
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .plan-price .amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.2rem;
+      color: var(--color-navy);
+      line-height: 1;
+    }
+
+    .plan-price .period {
+      font-size: .88rem;
+      color: var(--color-muted);
+    }
+
+    .plan-features {
+      display: grid;
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .9rem;
+      color: var(--color-text);
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--color-yellow);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .plan-features li.disabled {
+      color: var(--color-muted);
+      opacity: .5;
+    }
+
+    .plan-features li.disabled::before {
+      content: '—';
+      color: var(--color-muted);
+    }
+
+    /* ── COMPARISON TABLE ── */
+    .comparison-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+
+    .comparison-table thead th {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: .76rem;
+      letter-spacing: .08em;
+      font-weight: 700;
+      padding: 16px 20px;
+      text-align: center;
+      color: var(--color-navy);
+      border-bottom: 2px solid var(--color-navy);
+    }
+
+    .comparison-table thead th:first-child {
+      text-align: left;
+    }
+
+    .comparison-table thead th.highlight {
+      background: rgba(255,204,1,.1);
+      border-radius: 14px 14px 0 0;
+    }
+
+    .comparison-table tbody td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--color-line);
+      text-align: center;
+      color: var(--color-text);
+    }
+
+    .comparison-table tbody td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: var(--color-navy);
+    }
+
+    .comparison-table tbody td.highlight {
+      background: rgba(255,204,1,.05);
+    }
+
+    .comparison-table tbody tr:last-child td { border-bottom: none; }
+
+    .comparison-table .check { color: var(--color-yellow); font-weight: 800; font-size: 1.1rem; }
+    .comparison-table .cross { color: var(--color-muted); opacity: .4; }
+    .comparison-table .category-row td {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--color-navy);
+      background: var(--color-sand);
+      padding: 12px 20px;
+    }
+
+    /* ── VS SECTION ── */
+    .vs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .vs-table thead th {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .06em;
+      font-weight: 700;
+      padding: 16px 20px;
+      text-align: center;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,.15);
+    }
+
+    .vs-table thead th:first-child { text-align: left; }
+
+    .vs-table thead th.ours {
+      background: rgba(255,204,1,.15);
+      border-radius: 14px 14px 0 0;
+      color: var(--color-yellow);
+    }
+
+    .vs-table tbody td {
+      padding: 13px 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      color: rgba(255,255,255,.8);
+      font-size: .9rem;
+    }
+
+    .vs-table tbody td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: rgba(255,255,255,.95);
+    }
+
+    .vs-table tbody td.ours {
+      background: rgba(255,204,1,.08);
+    }
+
+    .vs-table tbody tr:last-child td { border-bottom: none; }
+
+    .vs-table .check { color: var(--color-yellow); font-weight: 800; }
+    .vs-table .cross { color: rgba(255,255,255,.25); }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: var(--color-yellow);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-section .container {
+      display: grid;
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .cta-section .title { color: var(--color-navy); }
+
+    .cta-section .lead {
+      color: var(--color-navy-soft);
+      max-width: 560px;
+    }
+
+    .btn.dark {
+      background: var(--color-navy);
+      color: #fff;
+    }
+
+    .btn.dark:hover { background: var(--color-navy-soft); }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--color-navy);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .site-footer p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .8rem;
+      color: rgba(255,255,255,.4);
+      letter-spacing: .04em;
+    }
+
+    /* ── MOBILE NAV ── */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255,255,255,.4);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .features-grid,
+      .plans-grid,
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 60px 0;
+      }
+
+      .hero-lead { margin: 0 auto; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { margin-top: 20px; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      .section-header { margin-bottom: 36px; }
+
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+
+      .features-grid,
+      .steps-grid { grid-template-columns: 1fr; }
+
+      .plans-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 72px;
+        left: 0; right: 0;
+        background: rgba(15,47,57,.97);
+        backdrop-filter: blur(12px);
+        padding: 24px;
+        gap: 16px;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+      }
+      .menu-toggle { display: block; }
+
+      .comparison-table { font-size: .8rem; }
+      .comparison-table thead th,
+      .comparison-table tbody td { padding: 10px 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.4rem; }
+      .hero .container { padding: 40px 0; }
+      .btn.lg { padding: 14px 24px; font-size: .78rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── NAV ── -->
+<header class="site-nav">
+  <div class="container nav-row">
+    <a class="logo" href="#">wave<span>panel</span></a>
+    <button class="menu-toggle" id="menuToggle">Menu</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Funcionalidades</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#planes">Planes</a>
+      <a href="#comparativa">Comparativa</a>
+      <a href="#vs">vs BukyApp</a>
+      <a href="#contacto" class="btn yellow">Solicitar demo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <p class="kicker">Software para escuelas de surf</p>
+      <h1 class="hero-title">Tu escuela.<br><em>Digitalizada.</em></h1>
+      <p class="hero-lead">Panel de gestión completo, web pública, reservas online, tienda, pagos y mucho más. Todo lo que necesitas para gestionar tu escuela de surf, kite o deportes acuáticos.</p>
+      <div class="hero-actions">
+        <a href="#planes" class="btn yellow lg">Ver planes</a>
+        <a href="#contacto" class="btn outline-light lg">Solicitar demo</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div style="width:100%;max-width:540px;aspect-ratio:16/10;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);border-radius:22px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-size:.9rem;letter-spacing:.04em;">PANEL DEMO SCREENSHOT</div>
+      <div class="hero-badge">Usado por Entre Olas Surf</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Personalizable</div>
+      </div>
+      <div>
+        <div class="stat-number">0%</div>
+        <div class="stat-label">Comisión por reserva</div>
+      </div>
+      <div>
+        <div class="stat-number">24h</div>
+        <div class="stat-label">Setup del plan básico</div>
+      </div>
+      <div>
+        <div class="stat-number">3</div>
+        <div class="stat-label">Pasarelas de pago</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Funcionalidades</p>
+      <h2 class="title">Todo lo que tu escuela necesita</h2>
+      <p class="lead">Un ecosistema completo: desde la web pública que ven tus clientes hasta el panel donde gestionas todo tu negocio.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Reservas y calendario</h3>
+        <p>Calendario visual con sesiones, instructores, disponibilidad en tiempo real y asignación automática o manual.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Web pública incluida</h3>
+        <p>Tu escuela online con subdominio propio o dominio custom. Landing, actividades, camps, reservas directas.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🏕️</div>
+        <h3>Surf camps completos</h3>
+        <p>Gestión de ediciones con fotos, testimonios, FAQs, depósitos, precios early bird y control de plazas.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🏨</div>
+        <h3>Alojamiento y rooms</h3>
+        <p>Calendario de habitaciones privadas y compartidas. Paquetes que combinan actividades + alojamiento.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎟️</div>
+        <h3>Bonos y packs</h3>
+        <p>Vende packs de 1 a 7 sesiones con descuentos progresivos, caducidad configurable y seguimiento de uso.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <h3>Pagos online</h3>
+        <p>Stripe, PayPal y Redsys integrados. Depósitos, pagos parciales o completos. Links de pago por móvil.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛒</div>
+        <h3>Tienda e-commerce</h3>
+        <p>Vende productos físicos con gestión de stock, carrito, checkout completo y seguimiento de pedidos.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Check-in digital</h3>
+        <p>Formularios personalizables con firma digital desde móvil, tablet o PC. Adiós al papel.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <h3>Emails transaccionales</h3>
+        <p>Confirmaciones de reserva, pagos, envíos y más. 10+ plantillas automáticas con tu marca.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🏄</div>
+        <h3>Alquiler de material</h3>
+        <p>Gestiona tablas, neoprenos y equipamiento. Disponibilidad por fechas, reservas y control de inventario.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Dashboard y estadísticas</h3>
+        <p>Revenue, reservas, clientes, productos más vendidos. Filtros por fecha, métricas de rendimiento por instructor.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎫</div>
+        <h3>Cupones y descuentos</h3>
+        <p>Crea códigos de descuento con límites de uso, fechas de validez y porcentaje o importe fijo.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Gestión de clientes</h3>
+        <p>Base de datos completa con historial de reservas, bonos, pedidos, pagos y datos de contacto.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <h3>Legal y RGPD</h3>
+        <p>Páginas legales pre-configuradas, política de cookies, banner de consentimiento. Todo cumpliendo la normativa.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Widget embebible</h3>
+        <p>¿Ya tienes web? Incrusta el sistema de reservas con un widget personalizable en colores de tu marca.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section alt" id="como-funciona">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Cómo funciona</p>
+      <h2 class="title">Activo en menos de 24 horas</h2>
+      <p class="lead">Sin complicaciones técnicas. Nos encargamos de todo para que tú te centres en lo que mejor sabes hacer: enseñar surf.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Elige tu plan</h3>
+        <p>Selecciona el plan que mejor se adapte al tamaño y necesidades de tu escuela. Puedes cambiar en cualquier momento.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Configura tu escuela</h3>
+        <p>Sube tu logo, elige colores, añade actividades, precios e instructores. Todo desde el panel, sin tocar código.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Empieza a recibir reservas</h3>
+        <p>Tu web y sistema de reservas están online. Comparte el link, recibe pagos y gestiona todo desde un solo lugar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="section" id="planes">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Planes</p>
+      <h2 class="title">Precios transparentes, sin sorpresas</h2>
+      <p class="lead">Sin comisiones por reserva. Sin contratos de permanencia. Cancela cuando quieras.</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <!-- BÁSICO -->
+      <div class="plan-card">
+        <div class="plan-header">
+          <p class="plan-name">Básico</p>
+          <p class="plan-desc">Para escuelas que empiezan o con pocos clientes</p>
+        </div>
+        <div class="plan-price">
+          <span class="amount">29€</span>
+          <span class="period">/mes</span>
+        </div>
+        <ul class="plan-features">
+          <li>Web con subdominio (tuescuela.wavepanel.com)</li>
+          <li>Panel de administración</li>
+          <li>Reservas y calendario</li>
+          <li>Hasta 200 clientes</li>
+          <li>Gestión de actividades</li>
+          <li>Alquiler de material</li>
+          <li>Check-in digital con firma</li>
+          <li>Emails con plantilla genérica</li>
+          <li>Estadísticas básicas</li>
+          <li>Soporte por email</li>
+          <li class="disabled">Tienda e-commerce</li>
+          <li class="disabled">Pagos online (Stripe/PayPal/Redsys)</li>
+          <li class="disabled">Bonos y packs de clases</li>
+          <li class="disabled">Cupones y descuentos</li>
+          <li class="disabled">Dominio propio</li>
+          <li class="disabled">Surf camps con alojamiento</li>
+        </ul>
+        <a href="#contacto" class="btn outline" style="width:100%;">Empezar gratis 14 días</a>
+      </div>
+
+      <!-- PROFESIONAL -->
+      <div class="plan-card featured">
+        <div class="plan-badge">Más popular</div>
+        <div class="plan-header">
+          <p class="plan-name">Profesional</p>
+          <p class="plan-desc">Todas las herramientas para escuelas consolidadas</p>
+        </div>
+        <div class="plan-price">
+          <span class="amount">79€</span>
+          <span class="period">/mes</span>
+        </div>
+        <ul class="plan-features">
+          <li>Todo lo del plan Básico</li>
+          <li>Clientes ilimitados</li>
+          <li>Dominio propio</li>
+          <li>Pagos online (Stripe, PayPal, Redsys)</li>
+          <li>Tienda e-commerce completa</li>
+          <li>Bonos y packs de clases</li>
+          <li>Surf camps con alojamiento</li>
+          <li>Cupones y descuentos</li>
+          <li>Emails con tu marca</li>
+          <li>Estadísticas avanzadas</li>
+          <li>Widget embebible</li>
+          <li>Páginas legales (RGPD)</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a href="#contacto" class="btn yellow" style="width:100%;">Empezar gratis 14 días</a>
+      </div>
+
+      <!-- PERSONALIZADO -->
+      <div class="plan-card">
+        <div class="plan-header">
+          <p class="plan-name">Personalizado</p>
+          <p class="plan-desc">Web y sistema a medida, como Entre Olas Surf</p>
+        </div>
+        <div class="plan-price">
+          <span class="amount">A medida</span>
+        </div>
+        <ul class="plan-features">
+          <li>Todo lo del plan Profesional</li>
+          <li>Diseño web 100% personalizado</li>
+          <li>Desarrollo a medida</li>
+          <li>Funcionalidades exclusivas</li>
+          <li>Integraciones custom</li>
+          <li>Migración de datos</li>
+          <li>Formación del equipo</li>
+          <li>Soporte dedicado</li>
+          <li>Pago único (sin mensualidad)</li>
+        </ul>
+        <a href="#contacto" class="btn outline" style="width:100%;">Contactar</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE COMPARISON ── -->
+<section class="section alt" id="comparativa">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Comparativa de planes</p>
+      <h2 class="title">¿Qué incluye cada plan?</h2>
+    </div>
+
+    <div class="comparison-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th style="width:40%;">Funcionalidad</th>
+            <th>Básico</th>
+            <th class="highlight">Profesional</th>
+            <th>Personalizado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="category-row"><td colspan="4">Presencia online</td></tr>
+          <tr>
+            <td>Web pública</td>
+            <td><span class="check">✓</span> Subdominio</td>
+            <td class="highlight"><span class="check">✓</span> Dominio propio</td>
+            <td><span class="check">✓</span> Custom</td>
+          </tr>
+          <tr>
+            <td>Personalización visual</td>
+            <td>Logo + colores</td>
+            <td class="highlight">Completa</td>
+            <td>100% a medida</td>
+          </tr>
+          <tr>
+            <td>Widget embebible</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Páginas legales (RGPD)</td>
+            <td>Básicas</td>
+            <td class="highlight"><span class="check">✓</span> Completas</td>
+            <td><span class="check">✓</span> Custom</td>
+          </tr>
+
+          <tr class="category-row"><td colspan="4">Gestión de actividades</td></tr>
+          <tr>
+            <td>Reservas y calendario</td>
+            <td><span class="check">✓</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Gestión de instructores</td>
+            <td><span class="check">✓</span></td>
+            <td class="highlight"><span class="check">✓</span> + auto-asignación</td>
+            <td><span class="check">✓</span> + auto-asignación</td>
+          </tr>
+          <tr>
+            <td>Bonos y packs de clases</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Surf camps</td>
+            <td>Básico (sin alojamiento)</td>
+            <td class="highlight"><span class="check">✓</span> Completo</td>
+            <td><span class="check">✓</span> Completo</td>
+          </tr>
+          <tr>
+            <td>Alojamiento / rooms</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Alquiler de material</td>
+            <td><span class="check">✓</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Check-in digital + firma</td>
+            <td><span class="check">✓</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+
+          <tr class="category-row"><td colspan="4">Pagos y comercio</td></tr>
+          <tr>
+            <td>Pagos online (Stripe/PayPal/Redsys)</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Tienda e-commerce</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Cupones y descuentos</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Links de pago por móvil</td>
+            <td><span class="cross">—</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+
+          <tr class="category-row"><td colspan="4">Comunicación</td></tr>
+          <tr>
+            <td>Emails transaccionales</td>
+            <td>Plantilla genérica</td>
+            <td class="highlight"><span class="check">✓</span> Con tu marca</td>
+            <td><span class="check">✓</span> Custom</td>
+          </tr>
+          <tr>
+            <td>Notificaciones admin</td>
+            <td><span class="check">✓</span></td>
+            <td class="highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+
+          <tr class="category-row"><td colspan="4">Analítica y soporte</td></tr>
+          <tr>
+            <td>Dashboard y estadísticas</td>
+            <td>Básicas</td>
+            <td class="highlight">Avanzadas</td>
+            <td>Avanzadas + custom</td>
+          </tr>
+          <tr>
+            <td>Gestión de clientes</td>
+            <td>Hasta 200</td>
+            <td class="highlight">Ilimitados</td>
+            <td>Ilimitados</td>
+          </tr>
+          <tr>
+            <td>Soporte</td>
+            <td>Email</td>
+            <td class="highlight">Prioritario</td>
+            <td>Dedicado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── VS BUKYAPP ── -->
+<section class="section dark" id="vs">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">WavePanel vs BukyApp</p>
+      <h2 class="title">¿Por qué elegir WavePanel?</h2>
+      <p class="lead">BukyApp ofrece un widget de reservas. Nosotros te damos un ecosistema completo para tu escuela.</p>
+    </div>
+
+    <div class="comparison-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th style="width:40%;">Funcionalidad</th>
+            <th class="ours">WavePanel</th>
+            <th>BukyApp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Web pública para tu escuela</td>
+            <td class="ours"><span class="check">✓</span> Incluida</td>
+            <td><span class="cross">✗</span> No incluida</td>
+          </tr>
+          <tr>
+            <td>Panel de administración</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Reservas y calendario</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Tienda e-commerce</td>
+            <td class="ours"><span class="check">✓</span> Completa</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Bonos y packs con caducidad</td>
+            <td class="ours"><span class="check">✓</span> Avanzado</td>
+            <td>Parcial</td>
+          </tr>
+          <tr>
+            <td>Alojamiento / habitaciones</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Check-in digital + firma</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Emails transaccionales con marca</td>
+            <td class="ours"><span class="check">✓</span> 10+ plantillas</td>
+            <td><span class="cross">✗</span> No visible</td>
+          </tr>
+          <tr>
+            <td>Cupones y descuentos</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Páginas legales RGPD</td>
+            <td class="ours"><span class="check">✓</span> Incluidas</td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Widget embebible</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Pasarelas de pago</td>
+            <td class="ours">Stripe + PayPal + Redsys</td>
+            <td>Stripe + PayPal + Redsys</td>
+          </tr>
+          <tr>
+            <td>Gestión de pedidos</td>
+            <td class="ours"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Precios</td>
+            <td class="ours"><span class="check">✓</span> Transparentes</td>
+            <td>Ocultos (pide demo)</td>
+          </tr>
+          <tr>
+            <td>Comisión por reserva</td>
+            <td class="ours">0%</td>
+            <td>No especificado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="contacto">
+  <div class="container">
+    <h2 class="title">¿Listo para digitalizar tu escuela?</h2>
+    <p class="lead">Empieza con 14 días gratis. Sin tarjeta de crédito. Sin compromiso.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <a href="#" class="btn dark lg">Empezar gratis</a>
+      <a href="#" class="btn outline lg">Solicitar demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 WavePanel. Software de gestión para escuelas de surf.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>
