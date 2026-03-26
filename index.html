@@ -944,19 +944,20 @@
           <li>Web con subdominio (tuescuela.wavepanel.com)</li>
           <li>Panel de administración</li>
           <li>Reservas y calendario</li>
-          <li>Hasta 200 clientes</li>
+          <li>Hasta 50 reservas/mes</li>
           <li>Gestión de actividades</li>
           <li>Alquiler de material</li>
           <li>Check-in digital con firma</li>
-          <li>Emails con plantilla genérica</li>
-          <li>Estadísticas básicas</li>
           <li>Soporte por email</li>
+          <li class="disabled">Personalización visual (marca WavePanel visible)</li>
+          <li class="disabled">Estadísticas y dashboard</li>
           <li class="disabled">Tienda e-commerce</li>
           <li class="disabled">Pagos online (Stripe/PayPal/Redsys)</li>
           <li class="disabled">Bonos y packs de clases</li>
           <li class="disabled">Cupones y descuentos</li>
           <li class="disabled">Dominio propio</li>
           <li class="disabled">Surf camps con alojamiento</li>
+          <li class="disabled">Emails transaccionales</li>
         </ul>
         <a href="#contacto" class="btn outline" style="width:100%;">Empezar gratis 14 días</a>
       </div>
@@ -994,10 +995,24 @@
       <div class="plan-card">
         <div class="plan-header">
           <p class="plan-name">Personalizado</p>
-          <p class="plan-desc">Web y sistema a medida, como Entre Olas Surf</p>
+          <p class="plan-desc">Web y sistema 100% a medida, como Entre Olas Surf</p>
         </div>
-        <div class="plan-price">
-          <span class="amount">A medida</span>
+        <div style="display:grid;gap:16px;">
+          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
+            <div class="plan-price" style="margin-bottom:6px;">
+              <span class="amount">2.900€</span>
+              <span class="period">pago único</span>
+            </div>
+            <p style="font-size:.84rem;color:var(--color-muted);">Hosting incluido para siempre. Sin cuotas mensuales ni anuales.</p>
+          </div>
+          <div style="text-align:center;font-family:'Space Grotesk',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);font-weight:600;">o bien</div>
+          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
+            <div class="plan-price" style="margin-bottom:6px;">
+              <span class="amount">2.500€</span>
+              <span class="period">+ 100€/año hosting</span>
+            </div>
+            <p style="font-size:.84rem;color:var(--color-muted);">Menor inversión inicial. Hosting y mantenimiento por solo 100€ al año.</p>
+          </div>
         </div>
         <ul class="plan-features">
           <li>Todo lo del plan Profesional</li>
@@ -1005,12 +1020,13 @@
           <li>Desarrollo a medida</li>
           <li>Funcionalidades exclusivas</li>
           <li>Integraciones custom</li>
-          <li>Migración de datos</li>
+          <li>Migración de datos existentes</li>
           <li>Formación del equipo</li>
           <li>Soporte dedicado</li>
-          <li>Pago único (sin mensualidad)</li>
+          <li>Sin mensualidades</li>
+          <li>Dominio propio incluido</li>
         </ul>
-        <a href="#contacto" class="btn outline" style="width:100%;">Contactar</a>
+        <a href="#contacto" class="btn outline" style="width:100%;">Solicitar presupuesto</a>
       </div>
 
     </div>
@@ -1030,9 +1046,9 @@
         <thead>
           <tr>
             <th style="width:40%;">Funcionalidad</th>
-            <th>Básico</th>
-            <th class="highlight">Profesional</th>
-            <th>Personalizado</th>
+            <th>Básico · 29€/mes</th>
+            <th class="highlight">Profesional · 79€/mes</th>
+            <th>Personalizado · desde 2.500€</th>
           </tr>
         </thead>
         <tbody>
@@ -1045,7 +1061,7 @@
           </tr>
           <tr>
             <td>Personalización visual</td>
-            <td>Logo + colores</td>
+            <td>Marca WavePanel visible</td>
             <td class="highlight">Completa</td>
             <td>100% a medida</td>
           </tr>
@@ -1065,9 +1081,9 @@
           <tr class="category-row"><td colspan="4">Gestión de actividades</td></tr>
           <tr>
             <td>Reservas y calendario</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span> Hasta 50/mes</td>
+            <td class="highlight"><span class="check">✓</span> Ilimitadas</td>
+            <td><span class="check">✓</span> Ilimitadas</td>
           </tr>
           <tr>
             <td>Gestión de instructores</td>
@@ -1135,7 +1151,7 @@
           <tr class="category-row"><td colspan="4">Comunicación</td></tr>
           <tr>
             <td>Emails transaccionales</td>
-            <td>Plantilla genérica</td>
+            <td><span class="cross">—</span></td>
             <td class="highlight"><span class="check">✓</span> Con tu marca</td>
             <td><span class="check">✓</span> Custom</td>
           </tr>
@@ -1149,13 +1165,13 @@
           <tr class="category-row"><td colspan="4">Analítica y soporte</td></tr>
           <tr>
             <td>Dashboard y estadísticas</td>
-            <td>Básicas</td>
+            <td><span class="cross">—</span></td>
             <td class="highlight">Avanzadas</td>
             <td>Avanzadas + custom</td>
           </tr>
           <tr>
             <td>Gestión de clientes</td>
-            <td>Hasta 200</td>
+            <td>Hasta 50 reservas/mes</td>
             <td class="highlight">Ilimitados</td>
             <td>Ilimitados</td>
           </tr>
