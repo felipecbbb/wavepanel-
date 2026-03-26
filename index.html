@@ -669,10 +669,192 @@
     }
 
     /* ── RESPONSIVE ── */
+    /* ── MODULES ── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .module-card {
+      background: var(--color-paper);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      display: grid;
+      gap: 18px;
+      transition: .3s ease;
+      position: relative;
+    }
+
+    .module-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .module-card.core {
+      grid-column: 1 / -1;
+      border: 2px solid var(--color-yellow);
+      background: linear-gradient(135deg, #fffdf7, #fdf8e8);
+    }
+
+    .module-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 6px 14px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .module-tag.included {
+      background: var(--color-yellow);
+      color: var(--color-navy);
+    }
+
+    .module-tag.addon {
+      background: var(--color-sand);
+      color: var(--color-navy);
+    }
+
+    .module-header h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--color-navy);
+      letter-spacing: .02em;
+      line-height: 1.1;
+    }
+
+    .module-header p {
+      font-size: .95rem;
+      color: var(--color-muted);
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .module-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .module-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .88rem;
+      color: var(--color-text);
+    }
+
+    .module-features li::before {
+      content: '✓';
+      color: var(--color-yellow);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .module-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      padding-top: 12px;
+      border-top: 1px solid var(--color-line);
+    }
+
+    .module-price span {
+      color: var(--color-muted);
+      font-weight: 400;
+    }
+
+    .module-pricing-table {
+      margin-top: 56px;
+      background: var(--color-paper);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+    }
+
+    .module-pricing-table h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--color-navy);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .pricing-matrix {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .pricing-matrix thead th {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      font-size: .74rem;
+      letter-spacing: .08em;
+      font-weight: 700;
+      padding: 14px 16px;
+      text-align: center;
+      color: var(--color-navy);
+      border-bottom: 2px solid var(--color-navy);
+    }
+
+    .pricing-matrix thead th:first-child { text-align: left; }
+
+    .pricing-matrix thead th.highlight {
+      background: rgba(255,204,1,.1);
+      border-radius: 14px 14px 0 0;
+    }
+
+    .pricing-matrix tbody td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--color-line);
+      text-align: center;
+      font-size: .9rem;
+      color: var(--color-text);
+    }
+
+    .pricing-matrix tbody td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: var(--color-navy);
+    }
+
+    .pricing-matrix tbody td.highlight {
+      background: rgba(255,204,1,.05);
+    }
+
+    .pricing-matrix tbody tr:last-child td { border-bottom: none; }
+
+    .pricing-matrix .included-label {
+      color: var(--color-yellow);
+      font-weight: 800;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .pricing-matrix .addon-price {
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+
     @media (max-width: 1024px) {
       .features-grid,
       .plans-grid,
       .steps-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .modules-grid { grid-template-columns: 1fr; }
+      .module-card.core { grid-column: auto; }
 
       .hero .container {
         grid-template-columns: 1fr;
@@ -693,6 +875,8 @@
 
       .features-grid,
       .steps-grid { grid-template-columns: 1fr; }
+
+      .module-features { grid-template-columns: 1fr; }
 
       .plans-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
 
@@ -734,6 +918,7 @@
     <nav class="nav-links" id="navLinks">
       <a href="#features">Funcionalidades</a>
       <a href="#como-funciona">Cómo funciona</a>
+      <a href="#modulos">Módulos</a>
       <a href="#planes">Planes</a>
       <a href="#comparativa">Comparativa</a>
       <a href="#vs">vs Otros</a>
@@ -916,6 +1101,160 @@
         <p>Tu web y sistema de reservas están online. Comparte el link, recibe pagos y gestiona todo desde un solo lugar.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── MÓDULOS ── -->
+<section class="section alt" id="modulos">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Arquitectura modular</p>
+      <h2 class="title">Paga solo por lo que necesitas</h2>
+      <p class="lead">WavePanel se organiza en módulos independientes. Todos los planes incluyen el módulo Core. Añade los que necesites o elige el plan Profesional que los incluye todos.</p>
+    </div>
+
+    <div class="modules-grid">
+
+      <!-- CORE -->
+      <div class="module-card core">
+        <div>
+          <span class="module-tag included">Incluido en todos los planes</span>
+        </div>
+        <div class="module-header">
+          <h3>Core — Gestión esencial</h3>
+          <p>Todo lo que una escuela necesita para empezar a gestionar reservas y clientes desde el primer día. El corazón de WavePanel.</p>
+        </div>
+        <ul class="module-features">
+          <li>Panel de administración completo</li>
+          <li>Calendario visual de sesiones</li>
+          <li>Sistema de reservas online</li>
+          <li>Gestión de instructores</li>
+          <li>Base de datos de clientes</li>
+          <li>Gestión de actividades (surf, kite, yoga, paddle...)</li>
+          <li>Alquiler de material e inventario</li>
+          <li>Web pública con subdominio</li>
+          <li>Notificaciones al admin</li>
+          <li>Soporte por email</li>
+        </ul>
+        <div class="module-price">Incluido en el plan Básico (29€/mes) <span>— sin coste adicional</span></div>
+      </div>
+
+      <!-- TIENDA -->
+      <div class="module-card">
+        <div>
+          <span class="module-tag addon">Módulo adicional</span>
+        </div>
+        <div class="module-header">
+          <h3>Tienda e-commerce</h3>
+          <p>Vende productos físicos directamente desde tu web. Camisetas, neoprenos, accesorios, wax... lo que quieras. Con gestión de stock, carrito de compra y seguimiento de pedidos.</p>
+        </div>
+        <ul class="module-features">
+          <li>Catálogo de productos con fotos</li>
+          <li>Control de stock en tiempo real</li>
+          <li>Carrito de compra y checkout</li>
+          <li>Gestión de pedidos y estados</li>
+          <li>Cupones y códigos de descuento</li>
+          <li>Emails de confirmación de compra</li>
+          <li>Bonos y packs de clases con caducidad</li>
+          <li>Links de pago por móvil</li>
+        </ul>
+        <div class="module-price">+19€/mes <span>en plan Básico · Incluido en Pro y Custom</span></div>
+      </div>
+
+      <!-- SURF CAMPS & ALOJAMIENTO -->
+      <div class="module-card">
+        <div>
+          <span class="module-tag addon">Módulo adicional</span>
+        </div>
+        <div class="module-header">
+          <h3>Surf Camps & Alojamiento</h3>
+          <p>Gestión integral de camps y alojamiento. Desde la edición del camp con sus fotos y testimonios hasta el control de habitaciones, check-in digital y accesos.</p>
+        </div>
+        <ul class="module-features">
+          <li>Ediciones de surf camp con plazas limitadas</li>
+          <li>Galería de fotos, FAQs y testimonios</li>
+          <li>Sistema de depósitos y pagos parciales</li>
+          <li>Precios early bird y ofertas</li>
+          <li>Calendario de habitaciones (privadas/compartidas)</li>
+          <li>Paquetes combinados (actividad + alojamiento)</li>
+          <li>Check-in digital con firma desde móvil</li>
+          <li>Control de accesos y registro de huéspedes</li>
+        </ul>
+        <div class="module-price">+19€/mes <span>en plan Básico · Incluido en Pro y Custom</span></div>
+      </div>
+
+      <!-- WHATSAPP BUSINESS -->
+      <div class="module-card">
+        <div>
+          <span class="module-tag addon">Módulo premium</span>
+        </div>
+        <div class="module-header">
+          <h3>WhatsApp Business</h3>
+          <p>Automatiza la comunicación con tus clientes por WhatsApp. Reservas, confirmaciones, recordatorios y resolución de incidencias — todo desde el canal donde ya están tus clientes.</p>
+        </div>
+        <ul class="module-features">
+          <li>Bot de reservas por WhatsApp</li>
+          <li>Confirmaciones automáticas de reserva</li>
+          <li>Recordatorios de sesión programados</li>
+          <li>Resolución de incidencias automatizada</li>
+          <li>Notificaciones de pago y facturación</li>
+          <li>Mensajes personalizados con marca</li>
+          <li>Historial de conversaciones por cliente</li>
+          <li>Panel de gestión de mensajes</li>
+        </ul>
+        <div class="module-price">+29€/mes <span>en todos los planes · Incluido en Custom</span></div>
+      </div>
+
+    </div>
+
+    <!-- TABLA RESUMEN MÓDULOS x PLANES -->
+    <div class="module-pricing-table">
+      <h3>Módulos incluidos en cada plan</h3>
+      <table class="pricing-matrix">
+        <thead>
+          <tr>
+            <th style="width:35%;">Módulo</th>
+            <th>Básico · 29€/mes</th>
+            <th class="highlight">Profesional · 79€/mes</th>
+            <th>Custom · desde 2.500€</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Core — Gestión esencial</td>
+            <td><span class="included-label">Incluido</span></td>
+            <td class="highlight"><span class="included-label">Incluido</span></td>
+            <td><span class="included-label">Incluido</span></td>
+          </tr>
+          <tr>
+            <td>Tienda e-commerce</td>
+            <td><span class="addon-price">+19€/mes</span></td>
+            <td class="highlight"><span class="included-label">Incluido</span></td>
+            <td><span class="included-label">Incluido</span></td>
+          </tr>
+          <tr>
+            <td>Surf Camps & Alojamiento</td>
+            <td><span class="addon-price">+19€/mes</span></td>
+            <td class="highlight"><span class="included-label">Incluido</span></td>
+            <td><span class="included-label">Incluido</span></td>
+          </tr>
+          <tr>
+            <td>WhatsApp Business</td>
+            <td><span class="addon-price">+29€/mes</span></td>
+            <td class="highlight"><span class="addon-price">+29€/mes</span></td>
+            <td><span class="included-label">Incluido</span></td>
+          </tr>
+          <tr style="background:var(--color-sand);border-radius:0 0 14px 14px;">
+            <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">Coste con todos los módulos</td>
+            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">96€/mes</td>
+            <td class="highlight" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">108€/mes</td>
+            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">Desde 2.500€</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="text-align:center;margin-top:20px;font-size:.88rem;color:var(--color-muted);">El plan Profesional incluye todos los módulos excepto WhatsApp. Si solo necesitas Core + 2 módulos, el Básico + add-ons sale más económico. Si los necesitas todos, el Pro es la mejor opción.</p>
+    </div>
+
   </div>
 </section>
 
