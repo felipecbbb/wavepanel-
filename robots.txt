@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /legal/
+
+Sitemap: https://wavepanel.com/sitemap.xml

@@ -4,930 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>WavePanel — El software de gestión para escuelas de surf</title>
-  <meta name="description" content="Panel de gestión completo para escuelas de surf, kite y deportes acuáticos. Reservas, calendario, tienda, pagos online y web incluida.">
+  <meta name="description" content="Panel de gestión completo para escuelas de surf, kite y deportes acuáticos. Reservas, calendario, tienda, pagos online y web incluida. Desde 29€/mes.">
+  <meta property="og:title" content="WavePanel — Software para escuelas de surf">
+  <meta property="og:description" content="Panel de gestión, web pública, reservas, tienda y pagos online. Todo lo que necesita tu escuela.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wavepanel.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f2f39%22/><text y=%2272%22 x=%2250%22 text-anchor=%22middle%22 fill=%22%23FFCC01%22 font-family=%22sans-serif%22 font-weight=%22bold%22 font-size=%2264%22>W</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --color-bg: #fffdf7;
-      --color-sand: #f3ecdd;
-      --color-yellow: #FFCC01;
-      --color-paper: #ffffff;
-      --color-navy: #0f2f39;
-      --color-navy-soft: #214a57;
-      --color-text: #2d3d45;
-      --color-muted: #64757d;
-      --color-line: #d7d0c2;
-      --radius-sm: 10px;
-      --radius-md: 18px;
-      --radius-lg: 26px;
-      --shadow-sm: 0 8px 24px rgba(15,47,57,.08);
-      --shadow-md: 0 16px 36px rgba(15,47,57,.14);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Manrope', sans-serif;
-      color: var(--color-text);
-      background: var(--color-bg);
-      line-height: 1.6;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    h1,h2,h3,h4 { margin: 0; line-height: 1.08; }
-
-    .container { width: min(1220px, 92vw); margin: 0 auto; }
-    .section { padding: 96px 0; }
-    .section.alt { background: var(--color-sand); }
-    .section.dark { background: var(--color-navy); color: #fff; }
-
-    .kicker {
-      font-family: 'Space Grotesk', sans-serif;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      font-size: .78rem;
-      font-weight: 600;
-      color: var(--color-yellow);
-    }
-
-    .section.dark .kicker { color: var(--color-yellow); }
-    .section.alt .kicker { color: var(--color-navy); }
-
-    .title {
-      font-family: 'Bebas Neue', sans-serif;
-      letter-spacing: .02em;
-      color: var(--color-navy);
-      font-size: clamp(2rem, 5.5vw, 3.6rem);
-    }
-
-    .section.dark .title { color: #fff; }
-
-    .lead {
-      font-size: clamp(1rem, 2vw, 1.22rem);
-      color: var(--color-muted);
-      max-width: 680px;
-    }
-
-    .section.dark .lead { color: rgba(255,255,255,.7); }
-
-    .section-header {
-      text-align: center;
-      display: grid;
-      gap: 14px;
-      justify-items: center;
-      margin-bottom: 56px;
-    }
-
-    .dot {
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      background: var(--color-yellow);
-    }
-
-    /* ── NAV ── */
-    .site-nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(15,47,57,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,.1);
-    }
-
-    .nav-row {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: .04em;
-      color: #fff;
-      display: flex;
-      align-items: baseline;
-    }
-
-    .logo span { color: var(--color-yellow); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(18px, 2.6vw, 36px);
-    }
-
-    .nav-links a {
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-      font-size: .8rem;
-      letter-spacing: .08em;
-      font-weight: 600;
-      color: rgba(255,255,255,.85);
-      transition: color .2s;
-    }
-
-    .nav-links a:hover { color: #fff; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      padding: 12px 22px;
-      font-family: 'Space Grotesk', sans-serif;
-      letter-spacing: .06em;
-      font-size: .76rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      transition: .25s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn.yellow {
-      background: var(--color-yellow);
-      color: var(--color-navy);
-    }
-
-    .btn.yellow:hover { filter: brightness(1.06); }
-
-    .btn.outline {
-      border-color: var(--color-navy);
-      color: var(--color-navy);
-      background: transparent;
-    }
-
-    .btn.outline:hover {
-      background: var(--color-navy);
-      color: #fff;
-    }
-
-    .btn.outline-light {
-      border-color: rgba(255,255,255,.5);
-      color: #fff;
-      background: transparent;
-    }
-
-    .btn.outline-light:hover {
-      background: rgba(255,255,255,.1);
-    }
-
-    .btn.lg { padding: 16px 32px; font-size: .84rem; }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      padding-top: 72px;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: var(--color-navy);
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,204,1,.08), transparent),
-        radial-gradient(ellipse 60% 50% at 20% 80%, rgba(255,204,1,.04), transparent);
-    }
-
-    .hero .container {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      padding: 80px 0;
-    }
-
-    .hero-text { display: grid; gap: 20px; }
-
-    .hero-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 7vw, 5.2rem);
-      letter-spacing: .02em;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--color-yellow);
-    }
-
-    .hero-lead {
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
-      color: rgba(255,255,255,.7);
-      max-width: 520px;
-      line-height: 1.7;
-    }
-
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-
-    .hero-visual {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-mockup {
-      width: 100%;
-      max-width: 560px;
-      border-radius: var(--radius-lg);
-      box-shadow: 0 40px 80px rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.1);
-    }
-
-    .hero-badge {
-      position: absolute;
-      bottom: -16px;
-      left: -20px;
-      background: var(--color-yellow);
-      color: var(--color-navy);
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: .82rem;
-      letter-spacing: .04em;
-      padding: 12px 20px;
-      border-radius: 14px;
-      box-shadow: var(--shadow-md);
-    }
-
-    /* ── STATS BAR ── */
-    .stats-bar {
-      background: var(--color-paper);
-      border-bottom: 1px solid var(--color-line);
-      padding: 40px 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--color-navy);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .78rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--color-muted);
-      margin-top: 4px;
-    }
-
-    /* ── FEATURES GRID ── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-
-    .feature-card {
-      background: var(--color-paper);
-      border: 1px solid var(--color-line);
-      border-radius: var(--radius-md);
-      padding: 36px 28px;
-      display: grid;
-      gap: 14px;
-      transition: .3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .feature-icon {
-      width: 52px; height: 52px;
-      background: var(--color-sand);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
-
-    .feature-card h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--color-navy);
-    }
-
-    .feature-card p {
-      font-size: .92rem;
-      color: var(--color-muted);
-      line-height: 1.6;
-    }
-
-    /* ── HOW IT WORKS ── */
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      counter-reset: step;
-    }
-
-    .step {
-      text-align: center;
-      display: grid;
-      gap: 16px;
-      justify-items: center;
-    }
-
-    .step-number {
-      width: 56px; height: 56px;
-      border-radius: 999px;
-      background: var(--color-yellow);
-      color: var(--color-navy);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .step h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: var(--color-navy);
-    }
-
-    .step p {
-      font-size: .92rem;
-      color: var(--color-muted);
-      max-width: 320px;
-    }
-
-    /* ── PLANS ── */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    .plan-card {
-      background: var(--color-paper);
-      border: 1px solid var(--color-line);
-      border-radius: var(--radius-lg);
-      padding: 40px 32px;
-      display: grid;
-      gap: 24px;
-      position: relative;
-      transition: .3s ease;
-    }
-
-    .plan-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .plan-card.featured {
-      border: 2px solid var(--color-yellow);
-      box-shadow: var(--shadow-md);
-    }
-
-    .plan-badge {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--color-yellow);
-      color: var(--color-navy);
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: .7rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      padding: 6px 18px;
-      border-radius: 999px;
-    }
-
-    .plan-header {
-      display: grid;
-      gap: 8px;
-    }
-
-    .plan-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--color-navy);
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .plan-desc {
-      font-size: .88rem;
-      color: var(--color-muted);
-    }
-
-    .plan-price {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-    }
-
-    .plan-price .amount {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.2rem;
-      color: var(--color-navy);
-      line-height: 1;
-    }
-
-    .plan-price .period {
-      font-size: .88rem;
-      color: var(--color-muted);
-    }
-
-    .plan-features {
-      display: grid;
-      gap: 10px;
-      list-style: none;
-      padding: 0;
-    }
-
-    .plan-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: .9rem;
-      color: var(--color-text);
-    }
-
-    .plan-features li::before {
-      content: '✓';
-      color: var(--color-yellow);
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .plan-features li.disabled {
-      color: var(--color-muted);
-      opacity: .5;
-    }
-
-    .plan-features li.disabled::before {
-      content: '—';
-      color: var(--color-muted);
-    }
-
-    /* ── COMPARISON TABLE ── */
-    .comparison-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .9rem;
-    }
-
-    .comparison-table thead th {
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-      font-size: .76rem;
-      letter-spacing: .08em;
-      font-weight: 700;
-      padding: 16px 20px;
-      text-align: center;
-      color: var(--color-navy);
-      border-bottom: 2px solid var(--color-navy);
-    }
-
-    .comparison-table thead th:first-child {
-      text-align: left;
-    }
-
-    .comparison-table thead th.highlight {
-      background: rgba(255,204,1,.1);
-      border-radius: 14px 14px 0 0;
-    }
-
-    .comparison-table tbody td {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--color-line);
-      text-align: center;
-      color: var(--color-text);
-    }
-
-    .comparison-table tbody td:first-child {
-      text-align: left;
-      font-weight: 500;
-      color: var(--color-navy);
-    }
-
-    .comparison-table tbody td.highlight {
-      background: rgba(255,204,1,.05);
-    }
-
-    .comparison-table tbody tr:last-child td { border-bottom: none; }
-
-    .comparison-table .check { color: var(--color-yellow); font-weight: 800; font-size: 1.1rem; }
-    .comparison-table .cross { color: var(--color-muted); opacity: .4; }
-    .comparison-table .category-row td {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: .78rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--color-navy);
-      background: var(--color-sand);
-      padding: 12px 20px;
-    }
-
-    /* ── VS SECTION ── */
-    .vs-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .vs-table thead th {
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-      font-size: .78rem;
-      letter-spacing: .06em;
-      font-weight: 700;
-      padding: 16px 20px;
-      text-align: center;
-      color: #fff;
-      border-bottom: 1px solid rgba(255,255,255,.15);
-    }
-
-    .vs-table thead th:first-child { text-align: left; }
-
-    .vs-table thead th.ours {
-      background: rgba(255,204,1,.15);
-      border-radius: 14px 14px 0 0;
-      color: var(--color-yellow);
-    }
-
-    .vs-table tbody td {
-      padding: 13px 20px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      text-align: center;
-      color: rgba(255,255,255,.8);
-      font-size: .9rem;
-    }
-
-    .vs-table tbody td:first-child {
-      text-align: left;
-      font-weight: 500;
-      color: rgba(255,255,255,.95);
-    }
-
-    .vs-table tbody td.ours {
-      background: rgba(255,204,1,.08);
-    }
-
-    .vs-table tbody tr:last-child td { border-bottom: none; }
-
-    .vs-table .check { color: var(--color-yellow); font-weight: 800; }
-    .vs-table .cross { color: rgba(255,255,255,.25); }
-
-    /* ── CTA SECTION ── */
-    .cta-section {
-      background: var(--color-yellow);
-      padding: 80px 0;
-      text-align: center;
-    }
-
-    .cta-section .container {
-      display: grid;
-      gap: 20px;
-      justify-items: center;
-    }
-
-    .cta-section .title { color: var(--color-navy); }
-
-    .cta-section .lead {
-      color: var(--color-navy-soft);
-      max-width: 560px;
-    }
-
-    .btn.dark {
-      background: var(--color-navy);
-      color: #fff;
-    }
-
-    .btn.dark:hover { background: var(--color-navy-soft); }
-
-    /* ── FOOTER ── */
-    .site-footer {
-      background: var(--color-navy);
-      padding: 48px 0;
-      text-align: center;
-    }
-
-    .site-footer p {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .8rem;
-      color: rgba(255,255,255,.4);
-      letter-spacing: .04em;
-    }
-
-    /* ── MOBILE NAV ── */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: 1px solid rgba(255,255,255,.4);
-      color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .78rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      padding: 8px 16px;
-      border-radius: 999px;
-      cursor: pointer;
-    }
-
-    /* ── RESPONSIVE ── */
-    /* ── MODULES ── */
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-    }
-
-    .module-card {
-      background: var(--color-paper);
-      border: 1px solid var(--color-line);
-      border-radius: var(--radius-lg);
-      padding: 40px 32px;
-      display: grid;
-      gap: 18px;
-      transition: .3s ease;
-      position: relative;
-    }
-
-    .module-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .module-card.core {
-      grid-column: 1 / -1;
-      border: 2px solid var(--color-yellow);
-      background: linear-gradient(135deg, #fffdf7, #fdf8e8);
-    }
-
-    .module-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: 6px 14px;
-      border-radius: 999px;
-      width: fit-content;
-    }
-
-    .module-tag.included {
-      background: var(--color-yellow);
-      color: var(--color-navy);
-    }
-
-    .module-tag.addon {
-      background: var(--color-sand);
-      color: var(--color-navy);
-    }
-
-    .module-header h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      color: var(--color-navy);
-      letter-spacing: .02em;
-      line-height: 1.1;
-    }
-
-    .module-header p {
-      font-size: .95rem;
-      color: var(--color-muted);
-      margin-top: 6px;
-      line-height: 1.6;
-    }
-
-    .module-features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 20px;
-      list-style: none;
-      padding: 0;
-    }
-
-    .module-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: .88rem;
-      color: var(--color-text);
-    }
-
-    .module-features li::before {
-      content: '✓';
-      color: var(--color-yellow);
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .module-price {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .92rem;
-      font-weight: 700;
-      color: var(--color-navy);
-      padding-top: 12px;
-      border-top: 1px solid var(--color-line);
-    }
-
-    .module-price span {
-      color: var(--color-muted);
-      font-weight: 400;
-    }
-
-    .module-pricing-table {
-      margin-top: 56px;
-      background: var(--color-paper);
-      border: 1px solid var(--color-line);
-      border-radius: var(--radius-lg);
-      padding: 40px 36px;
-    }
-
-    .module-pricing-table h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      color: var(--color-navy);
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .pricing-matrix {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .pricing-matrix thead th {
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-      font-size: .74rem;
-      letter-spacing: .08em;
-      font-weight: 700;
-      padding: 14px 16px;
-      text-align: center;
-      color: var(--color-navy);
-      border-bottom: 2px solid var(--color-navy);
-    }
-
-    .pricing-matrix thead th:first-child { text-align: left; }
-
-    .pricing-matrix thead th.highlight {
-      background: rgba(255,204,1,.1);
-      border-radius: 14px 14px 0 0;
-    }
-
-    .pricing-matrix tbody td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--color-line);
-      text-align: center;
-      font-size: .9rem;
-      color: var(--color-text);
-    }
-
-    .pricing-matrix tbody td:first-child {
-      text-align: left;
-      font-weight: 600;
-      color: var(--color-navy);
-    }
-
-    .pricing-matrix tbody td.highlight {
-      background: rgba(255,204,1,.05);
-    }
-
-    .pricing-matrix tbody tr:last-child td { border-bottom: none; }
-
-    .pricing-matrix .included-label {
-      color: var(--color-yellow);
-      font-weight: 800;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: .78rem;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .pricing-matrix .addon-price {
-      font-weight: 700;
-      color: var(--color-navy);
-    }
-
-    @media (max-width: 1024px) {
-      .features-grid,
-      .plans-grid,
-      .steps-grid { grid-template-columns: repeat(2, 1fr); }
-
-      .modules-grid { grid-template-columns: 1fr; }
-      .module-card.core { grid-column: auto; }
-
-      .hero .container {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding: 60px 0;
-      }
-
-      .hero-lead { margin: 0 auto; }
-      .hero-actions { justify-content: center; }
-      .hero-visual { margin-top: 20px; }
-    }
-
-    @media (max-width: 768px) {
-      .section { padding: 64px 0; }
-      .section-header { margin-bottom: 36px; }
-
-      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
-
-      .features-grid,
-      .steps-grid { grid-template-columns: 1fr; }
-
-      .module-features { grid-template-columns: 1fr; }
-
-      .plans-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
-
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 72px;
-        left: 0; right: 0;
-        background: rgba(15,47,57,.97);
-        backdrop-filter: blur(12px);
-        padding: 24px;
-        gap: 16px;
-        border-bottom: 1px solid rgba(255,255,255,.1);
-      }
-      .menu-toggle { display: block; }
-
-      .comparison-table { font-size: .8rem; }
-      .comparison-table thead th,
-      .comparison-table tbody td { padding: 10px 12px; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-title { font-size: 2.4rem; }
-      .hero .container { padding: 40px 0; }
-      .btn.lg { padding: 14px 24px; font-size: .78rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="/assets/styles.css">
 </head>
-
 <body>
 
-<!-- ── NAV ── -->
 <header class="site-nav">
   <div class="container nav-row">
-    <a class="logo" href="#">wave<span>panel</span></a>
+    <a class="logo" href="/">wave<span>panel</span></a>
     <button class="menu-toggle" id="menuToggle">Menu</button>
     <nav class="nav-links" id="navLinks">
-      <a href="#features">Funcionalidades</a>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#modulos">Módulos</a>
-      <a href="#planes">Planes</a>
-      <a href="#comparativa">Comparativa</a>
-      <a href="#vs">vs Otros</a>
-      <a href="#contacto" class="btn yellow">Solicitar demo</a>
+      <a href="/funcionalidades.html">Funcionalidades</a>
+      <a href="/modulos.html">Módulos</a>
+      <a href="/como-funciona.html">Cómo funciona</a>
+      <a href="/planes.html">Planes</a>
+      <a href="/comparativa.html">Comparativa</a>
+      <a href="/demo.html">Demo</a>
+      <a href="/contacto.html" class="btn yellow">Solicitar demo</a>
     </nav>
   </div>
 </header>
 
-<!-- ── HERO ── -->
 <section class="hero">
   <div class="container">
     <div class="hero-text">
@@ -935,43 +41,29 @@
       <h1 class="hero-title">Tu escuela.<br><em>Digitalizada.</em></h1>
       <p class="hero-lead">Panel de gestión completo, web pública, reservas online, tienda, pagos y mucho más. Todo lo que necesitas para gestionar tu escuela de surf, kite o deportes acuáticos.</p>
       <div class="hero-actions">
-        <a href="#planes" class="btn yellow lg">Ver planes</a>
-        <a href="#contacto" class="btn outline-light lg">Solicitar demo</a>
+        <a href="/planes.html" class="btn yellow lg">Ver planes</a>
+        <a href="/contacto.html" class="btn outline-light lg">Solicitar demo</a>
       </div>
     </div>
     <div class="hero-visual">
-      <div style="width:100%;max-width:540px;aspect-ratio:16/10;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);border-radius:22px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-family:'Space Grotesk',sans-serif;font-size:.9rem;letter-spacing:.04em;">PANEL DEMO SCREENSHOT</div>
+      <div class="placeholder-visual">PANEL DEMO SCREENSHOT</div>
       <div class="hero-badge">Usado por Entre Olas Surf</div>
     </div>
   </div>
 </section>
 
-<!-- ── STATS BAR ── -->
 <div class="stats-bar">
   <div class="container">
     <div class="stats-grid">
-      <div>
-        <div class="stat-number">100%</div>
-        <div class="stat-label">Personalizable</div>
-      </div>
-      <div>
-        <div class="stat-number">0%</div>
-        <div class="stat-label">Comisión por reserva</div>
-      </div>
-      <div>
-        <div class="stat-number">24h</div>
-        <div class="stat-label">Setup del plan básico</div>
-      </div>
-      <div>
-        <div class="stat-number">3</div>
-        <div class="stat-label">Pasarelas de pago</div>
-      </div>
+      <div><div class="stat-number">100%</div><div class="stat-label">Personalizable</div></div>
+      <div><div class="stat-number">0%</div><div class="stat-label">Comisión por reserva</div></div>
+      <div><div class="stat-number">24h</div><div class="stat-label">Setup del plan básico</div></div>
+      <div><div class="stat-number">3</div><div class="stat-label">Pasarelas de pago</div></div>
     </div>
   </div>
 </div>
 
-<!-- ── FEATURES ── -->
-<section class="section" id="features">
+<section class="section">
   <div class="container">
     <div class="section-header">
       <p class="kicker">Funcionalidades</p>
@@ -980,315 +72,72 @@
     </div>
 
     <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">📅</div><h3>Reservas y calendario</h3><p>Calendario visual con sesiones, instructores, disponibilidad en tiempo real y asignación automática o manual.</p></div>
+      <div class="feature-card"><div class="feature-icon">🌐</div><h3>Web pública incluida</h3><p>Tu escuela online con subdominio propio o dominio custom. Landing, actividades, camps, reservas directas.</p></div>
+      <div class="feature-card"><div class="feature-icon">🏕️</div><h3>Surf camps completos</h3><p>Gestión de ediciones con fotos, testimonios, FAQs, depósitos, precios early bird y control de plazas.</p></div>
+      <div class="feature-card"><div class="feature-icon">🏨</div><h3>Alojamiento y rooms</h3><p>Calendario de habitaciones privadas y compartidas. Paquetes que combinan actividades + alojamiento.</p></div>
+      <div class="feature-card"><div class="feature-icon">🎟️</div><h3>Bonos y packs</h3><p>Vende packs de 1 a 7 sesiones con descuentos progresivos, caducidad configurable y seguimiento de uso.</p></div>
+      <div class="feature-card"><div class="feature-icon">💳</div><h3>Pagos online</h3><p>Stripe, PayPal y Redsys integrados. Depósitos, pagos parciales o completos. Links de pago por móvil.</p></div>
+    </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">📅</div>
-        <h3>Reservas y calendario</h3>
-        <p>Calendario visual con sesiones, instructores, disponibilidad en tiempo real y asignación automática o manual.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🌐</div>
-        <h3>Web pública incluida</h3>
-        <p>Tu escuela online con subdominio propio o dominio custom. Landing, actividades, camps, reservas directas.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🏕️</div>
-        <h3>Surf camps completos</h3>
-        <p>Gestión de ediciones con fotos, testimonios, FAQs, depósitos, precios early bird y control de plazas.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🏨</div>
-        <h3>Alojamiento y rooms</h3>
-        <p>Calendario de habitaciones privadas y compartidas. Paquetes que combinan actividades + alojamiento.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🎟️</div>
-        <h3>Bonos y packs</h3>
-        <p>Vende packs de 1 a 7 sesiones con descuentos progresivos, caducidad configurable y seguimiento de uso.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">💳</div>
-        <h3>Pagos online</h3>
-        <p>Stripe, PayPal y Redsys integrados. Depósitos, pagos parciales o completos. Links de pago por móvil.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🛒</div>
-        <h3>Tienda e-commerce</h3>
-        <p>Vende productos físicos con gestión de stock, carrito, checkout completo y seguimiento de pedidos.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📝</div>
-        <h3>Check-in digital</h3>
-        <p>Formularios personalizables con firma digital desde móvil, tablet o PC. Adiós al papel.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📧</div>
-        <h3>Emails transaccionales</h3>
-        <p>Confirmaciones de reserva, pagos, envíos y más. 10+ plantillas automáticas con tu marca.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🏄</div>
-        <h3>Alquiler de material</h3>
-        <p>Gestiona tablas, neoprenos y equipamiento. Disponibilidad por fechas, reservas y control de inventario.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Dashboard y estadísticas</h3>
-        <p>Revenue, reservas, clientes, productos más vendidos. Filtros por fecha, métricas de rendimiento por instructor.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🎫</div>
-        <h3>Cupones y descuentos</h3>
-        <p>Crea códigos de descuento con límites de uso, fechas de validez y porcentaje o importe fijo.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">👥</div>
-        <h3>Gestión de clientes</h3>
-        <p>Base de datos completa con historial de reservas, bonos, pedidos, pagos y datos de contacto.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">⚖️</div>
-        <h3>Legal y RGPD</h3>
-        <p>Páginas legales pre-configuradas, política de cookies, banner de consentimiento. Todo cumpliendo la normativa.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔗</div>
-        <h3>Widget embebible</h3>
-        <p>¿Ya tienes web? Incrusta el sistema de reservas con un widget personalizable en colores de tu marca.</p>
-      </div>
-
+    <div style="text-align:center;margin-top:40px;">
+      <a href="/funcionalidades.html" class="btn outline">Ver todas las funcionalidades</a>
     </div>
   </div>
 </section>
 
-<!-- ── HOW IT WORKS ── -->
-<section class="section alt" id="como-funciona">
-  <div class="container">
-    <div class="section-header">
-      <p class="kicker">Cómo funciona</p>
-      <h2 class="title">Activo en menos de 24 horas</h2>
-      <p class="lead">Sin complicaciones técnicas. Nos encargamos de todo para que tú te centres en lo que mejor sabes hacer: enseñar surf.</p>
-    </div>
-
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Elige tu plan</h3>
-        <p>Selecciona el plan que mejor se adapte al tamaño y necesidades de tu escuela. Puedes cambiar en cualquier momento.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Configura tu escuela</h3>
-        <p>Sube tu logo, elige colores, añade actividades, precios e instructores. Todo desde el panel, sin tocar código.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Empieza a recibir reservas</h3>
-        <p>Tu web y sistema de reservas están online. Comparte el link, recibe pagos y gestiona todo desde un solo lugar.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── MÓDULOS ── -->
-<section class="section alt" id="modulos">
+<section class="section alt">
   <div class="container">
     <div class="section-header">
       <p class="kicker">Arquitectura modular</p>
       <h2 class="title">Paga solo por lo que necesitas</h2>
-      <p class="lead">WavePanel se organiza en módulos independientes. Todos los planes incluyen el módulo Core. Añade los que necesites o elige el plan Profesional que los incluye todos.</p>
+      <p class="lead">WavePanel se organiza en 4 módulos. Todos los planes incluyen Core. Añade los que necesites.</p>
     </div>
 
     <div class="modules-grid">
-
-      <!-- CORE -->
-      <div class="module-card core">
-        <div>
-          <span class="module-tag included">Incluido en todos los planes</span>
-        </div>
-        <div class="module-header">
-          <h3>Core — Gestión esencial</h3>
-          <p>Todo lo que una escuela necesita para empezar a gestionar reservas y clientes desde el primer día. El corazón de WavePanel.</p>
-        </div>
-        <ul class="module-features">
-          <li>Panel de administración completo</li>
-          <li>Calendario visual de sesiones</li>
-          <li>Sistema de reservas online</li>
-          <li>Gestión de instructores</li>
-          <li>Base de datos de clientes</li>
-          <li>Gestión de actividades (surf, kite, yoga, paddle...)</li>
-          <li>Alquiler de material e inventario</li>
-          <li>Web pública con subdominio</li>
-          <li>Notificaciones al admin</li>
-          <li>Soporte por email</li>
-        </ul>
-        <div class="module-price">Incluido en el plan Básico (29€/mes) <span>— sin coste adicional</span></div>
-      </div>
-
-      <!-- TIENDA -->
-      <div class="module-card">
-        <div>
-          <span class="module-tag addon">Módulo adicional</span>
-        </div>
-        <div class="module-header">
-          <h3>Tienda e-commerce</h3>
-          <p>Vende productos físicos directamente desde tu web. Camisetas, neoprenos, accesorios, wax... lo que quieras. Con gestión de stock, carrito de compra y seguimiento de pedidos.</p>
-        </div>
-        <ul class="module-features">
-          <li>Catálogo de productos con fotos</li>
-          <li>Control de stock en tiempo real</li>
-          <li>Carrito de compra y checkout</li>
-          <li>Gestión de pedidos y estados</li>
-          <li>Cupones y códigos de descuento</li>
-          <li>Emails de confirmación de compra</li>
-          <li>Bonos y packs de clases con caducidad</li>
-          <li>Links de pago por móvil</li>
-        </ul>
-        <div class="module-price">+19€/mes <span>en plan Básico · Incluido en Pro y Custom</span></div>
-      </div>
-
-      <!-- SURF CAMPS & ALOJAMIENTO -->
-      <div class="module-card">
-        <div>
-          <span class="module-tag addon">Módulo adicional</span>
-        </div>
-        <div class="module-header">
-          <h3>Surf Camps & Alojamiento</h3>
-          <p>Gestión integral de camps y alojamiento. Desde la edición del camp con sus fotos y testimonios hasta el control de habitaciones, check-in digital y accesos.</p>
-        </div>
-        <ul class="module-features">
-          <li>Ediciones de surf camp con plazas limitadas</li>
-          <li>Galería de fotos, FAQs y testimonios</li>
-          <li>Sistema de depósitos y pagos parciales</li>
-          <li>Precios early bird y ofertas</li>
-          <li>Calendario de habitaciones (privadas/compartidas)</li>
-          <li>Paquetes combinados (actividad + alojamiento)</li>
-          <li>Check-in digital con firma desde móvil</li>
-          <li>Control de accesos y registro de huéspedes</li>
-        </ul>
-        <div class="module-price">+19€/mes <span>en plan Básico · Incluido en Pro y Custom</span></div>
-      </div>
-
-      <!-- WHATSAPP BUSINESS -->
-      <div class="module-card">
-        <div>
-          <span class="module-tag addon">Módulo premium</span>
-        </div>
-        <div class="module-header">
-          <h3>WhatsApp Business</h3>
-          <p>Automatiza la comunicación con tus clientes por WhatsApp. Reservas, confirmaciones, recordatorios y resolución de incidencias — todo desde el canal donde ya están tus clientes.</p>
-        </div>
-        <ul class="module-features">
-          <li>Bot de reservas por WhatsApp</li>
-          <li>Confirmaciones automáticas de reserva</li>
-          <li>Recordatorios de sesión programados</li>
-          <li>Resolución de incidencias automatizada</li>
-          <li>Notificaciones de pago y facturación</li>
-          <li>Mensajes personalizados con marca</li>
-          <li>Historial de conversaciones por cliente</li>
-          <li>Panel de gestión de mensajes</li>
-        </ul>
-        <div class="module-price">+29€/mes <span>en todos los planes · Incluido en Custom</span></div>
-      </div>
-
+      <a href="/modulos/core.html" class="module-card core">
+        <div><span class="module-tag included">Incluido en todos los planes</span></div>
+        <div class="module-header"><h3>Core — Gestión esencial</h3><p>Panel, calendario, reservas, clientes, actividades y web pública con subdominio. El corazón de WavePanel.</p></div>
+        <span class="module-link">Ver módulo →</span>
+      </a>
+      <a href="/modulos/tienda.html" class="module-card">
+        <div><span class="module-tag addon">Módulo adicional</span></div>
+        <div class="module-header"><h3>Tienda e-commerce</h3><p>Productos físicos, stock, carrito, pedidos, cupones y bonos/packs de clases con caducidad.</p></div>
+        <span class="module-link">Ver módulo →</span>
+      </a>
+      <a href="/modulos/surf-camps.html" class="module-card">
+        <div><span class="module-tag addon">Módulo adicional</span></div>
+        <div class="module-header"><h3>Surf Camps & Alojamiento</h3><p>Ediciones, fotos, FAQs, testimonios, depósitos, rooms, check-in digital y control de accesos.</p></div>
+        <span class="module-link">Ver módulo →</span>
+      </a>
+      <a href="/modulos/whatsapp.html" class="module-card">
+        <div><span class="module-tag addon">Módulo premium</span></div>
+        <div class="module-header"><h3>WhatsApp Business</h3><p>Bot de reservas, confirmaciones automáticas, incidencias y notificaciones desde WhatsApp.</p></div>
+        <span class="module-link">Ver módulo →</span>
+      </a>
     </div>
-
-    <!-- TABLA RESUMEN MÓDULOS x PLANES -->
-    <div class="module-pricing-table">
-      <h3>Módulos incluidos en cada plan</h3>
-      <table class="pricing-matrix">
-        <thead>
-          <tr>
-            <th style="width:35%;">Módulo</th>
-            <th>Básico · 29€/mes</th>
-            <th class="highlight">Profesional · 79€/mes</th>
-            <th>Custom · desde 2.500€</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Core — Gestión esencial</td>
-            <td><span class="included-label">Incluido</span></td>
-            <td class="highlight"><span class="included-label">Incluido</span></td>
-            <td><span class="included-label">Incluido</span></td>
-          </tr>
-          <tr>
-            <td>Tienda e-commerce</td>
-            <td><span class="addon-price">+19€/mes</span></td>
-            <td class="highlight"><span class="included-label">Incluido</span></td>
-            <td><span class="included-label">Incluido</span></td>
-          </tr>
-          <tr>
-            <td>Surf Camps & Alojamiento</td>
-            <td><span class="addon-price">+19€/mes</span></td>
-            <td class="highlight"><span class="included-label">Incluido</span></td>
-            <td><span class="included-label">Incluido</span></td>
-          </tr>
-          <tr>
-            <td>WhatsApp Business</td>
-            <td><span class="addon-price">+29€/mes</span></td>
-            <td class="highlight"><span class="addon-price">+29€/mes</span></td>
-            <td><span class="included-label">Incluido</span></td>
-          </tr>
-          <tr style="background:var(--color-sand);border-radius:0 0 14px 14px;">
-            <td style="font-family:'Space Grotesk',sans-serif;font-weight:700;">Coste con todos los módulos</td>
-            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">96€/mes</td>
-            <td class="highlight" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">108€/mes</td>
-            <td style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--color-navy);">Desde 2.500€</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="text-align:center;margin-top:20px;font-size:.88rem;color:var(--color-muted);">El plan Profesional incluye todos los módulos excepto WhatsApp. Si solo necesitas Core + 2 módulos, el Básico + add-ons sale más económico. Si los necesitas todos, el Pro es la mejor opción.</p>
-    </div>
-
   </div>
 </section>
 
-<!-- ── COMUNIDAD ── -->
-<section class="section dark" id="comunidad">
+<section class="section">
   <div class="container">
     <div class="section-header">
-      <p class="kicker">Comunidad WavePanel</p>
-      <h2 class="title">Tú decides hacia dónde evoluciona la plataforma</h2>
-      <p class="lead">Todos los clientes con un plan activo acceden a la comunidad privada donde pueden proponer mejoras, votar funcionalidades y participar en el desarrollo del producto.</p>
+      <p class="kicker">Cómo funciona</p>
+      <h2 class="title">Activo en menos de 24 horas</h2>
+      <p class="lead">Sin complicaciones técnicas. Nos encargamos de todo para que tú te centres en enseñar surf.</p>
     </div>
-
     <div class="steps-grid">
-      <div class="step">
-        <div class="step-number" style="background:transparent;border:2px solid var(--color-yellow);color:var(--color-yellow);">1</div>
-        <h3 style="color:#fff;">Propón mejoras</h3>
-        <p style="color:rgba(255,255,255,.6);">¿Necesitas una funcionalidad que no existe? Proponla en la comunidad. Si tiene sentido para el producto, la desarrollamos.</p>
-      </div>
-      <div class="step">
-        <div class="step-number" style="background:transparent;border:2px solid var(--color-yellow);color:var(--color-yellow);">2</div>
-        <h3 style="color:#fff;">Vota prioridades</h3>
-        <p style="color:rgba(255,255,255,.6);">Las propuestas más votadas por la comunidad se priorizan en el roadmap. Tu voto decide qué se desarrolla primero.</p>
-      </div>
-      <div class="step">
-        <div class="step-number" style="background:transparent;border:2px solid var(--color-yellow);color:var(--color-yellow);">3</div>
-        <h3 style="color:#fff;">Recibe actualizaciones</h3>
-        <p style="color:rgba(255,255,255,.6);">Cada mejora se despliega automáticamente en tu panel. La plataforma crece contigo, adaptándose a las necesidades reales del sector.</p>
-      </div>
+      <div class="step"><div class="step-number">1</div><h3>Elige tu plan</h3><p>Selecciona el plan que mejor se adapte a tu escuela. Puedes cambiar en cualquier momento.</p></div>
+      <div class="step"><div class="step-number">2</div><h3>Configura tu escuela</h3><p>Sube tu logo, elige colores, añade actividades, precios e instructores. Todo desde el panel.</p></div>
+      <div class="step"><div class="step-number">3</div><h3>Empieza a recibir reservas</h3><p>Tu web y sistema de reservas están online. Comparte el link, recibe pagos y gestiona todo.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="/como-funciona.html" class="btn outline">Ver proceso completo</a>
     </div>
   </div>
 </section>
 
-<!-- ── PRICING ── -->
-<section class="section" id="planes">
+<section class="section alt">
   <div class="container">
     <div class="section-header">
       <p class="kicker">Planes</p>
@@ -1297,405 +146,125 @@
     </div>
 
     <div class="plans-grid">
-
-      <!-- BÁSICO -->
       <div class="plan-card">
-        <div class="plan-header">
-          <p class="plan-name">Básico</p>
-          <p class="plan-desc">Para escuelas que empiezan o con pocos clientes</p>
-        </div>
-        <div class="plan-price">
-          <span class="amount">29€</span>
-          <span class="period">/mes</span>
-        </div>
+        <div class="plan-header"><p class="plan-name">Básico</p><p class="plan-desc">Para escuelas que empiezan o con pocos clientes</p></div>
+        <div class="plan-price"><span class="amount">29€</span><span class="period">/mes</span></div>
         <ul class="plan-features">
-          <li>Web con subdominio (tuescuela.wavepanel.com)</li>
-          <li>Panel de administración</li>
-          <li>Reservas y calendario</li>
+          <li>Web con subdominio</li>
+          <li>Panel admin + calendario</li>
           <li>Hasta 50 reservas/mes</li>
-          <li>Gestión de actividades</li>
           <li>Alquiler de material</li>
           <li>Check-in digital con firma</li>
-          <li>Acceso a la comunidad WavePanel</li>
-          <li>Soporte por email</li>
-          <li class="disabled">Personalización visual (marca WavePanel visible)</li>
-          <li class="disabled">Estadísticas y dashboard</li>
-          <li class="disabled">Tienda e-commerce</li>
-          <li class="disabled">Pagos online (Stripe/PayPal/Redsys)</li>
-          <li class="disabled">Bonos y packs de clases</li>
-          <li class="disabled">Cupones y descuentos</li>
-          <li class="disabled">Dominio propio</li>
-          <li class="disabled">Surf camps con alojamiento</li>
-          <li class="disabled">Emails transaccionales</li>
+          <li>Comunidad WavePanel</li>
         </ul>
-        <a href="#contacto" class="btn outline" style="width:100%;">Empezar gratis 14 días</a>
+        <a href="/contacto.html" class="btn outline full">Empezar gratis 14 días</a>
       </div>
 
-      <!-- PROFESIONAL -->
       <div class="plan-card featured">
         <div class="plan-badge">Más popular</div>
-        <div class="plan-header">
-          <p class="plan-name">Profesional</p>
-          <p class="plan-desc">Todas las herramientas para escuelas consolidadas</p>
-        </div>
-        <div class="plan-price">
-          <span class="amount">79€</span>
-          <span class="period">/mes</span>
-        </div>
+        <div class="plan-header"><p class="plan-name">Profesional</p><p class="plan-desc">Todas las herramientas para escuelas consolidadas</p></div>
+        <div class="plan-price"><span class="amount">79€</span><span class="period">/mes</span></div>
         <ul class="plan-features">
-          <li>Todo lo del plan Básico</li>
+          <li>Todo lo del Básico</li>
           <li>Clientes ilimitados</li>
           <li>Dominio propio</li>
-          <li>Pagos online (Stripe, PayPal, Redsys)</li>
-          <li>Tienda e-commerce completa</li>
-          <li>Bonos y packs de clases</li>
-          <li>Surf camps con alojamiento</li>
-          <li>Cupones y descuentos</li>
+          <li>Tienda + Surf Camps incluidos</li>
+          <li>Pagos online (3 pasarelas)</li>
           <li>Emails con tu marca</li>
-          <li>Acceso a la comunidad WavePanel</li>
-          <li>Estadísticas avanzadas</li>
-          <li>Widget embebible</li>
-          <li>Páginas legales (RGPD)</li>
-          <li>Soporte prioritario</li>
+          <li>Voto prioritario en comunidad</li>
         </ul>
-        <a href="#contacto" class="btn yellow" style="width:100%;">Empezar gratis 14 días</a>
+        <a href="/contacto.html" class="btn yellow full">Empezar gratis 14 días</a>
       </div>
 
-      <!-- PERSONALIZADO -->
       <div class="plan-card">
-        <div class="plan-header">
-          <p class="plan-name">Personalizado</p>
-          <p class="plan-desc">Web y sistema 100% a medida, como Entre Olas Surf</p>
-        </div>
-        <div style="display:grid;gap:16px;">
-          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
-            <div class="plan-price" style="margin-bottom:6px;">
-              <span class="amount">2.900€</span>
-              <span class="period">pago único</span>
-            </div>
-            <p style="font-size:.84rem;color:var(--color-muted);">Hosting incluido para siempre. Sin cuotas mensuales ni anuales.</p>
-          </div>
-          <div style="text-align:center;font-family:'Space Grotesk',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);font-weight:600;">o bien</div>
-          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
-            <div class="plan-price" style="margin-bottom:6px;">
-              <span class="amount">2.500€</span>
-              <span class="period">+ 100€/año hosting</span>
-            </div>
-            <p style="font-size:.84rem;color:var(--color-muted);">Menor inversión inicial. Hosting y mantenimiento por solo 100€ al año.</p>
-          </div>
-        </div>
+        <div class="plan-header"><p class="plan-name">Personalizado</p><p class="plan-desc">Web y sistema 100% a medida, como Entre Olas</p></div>
+        <div class="plan-price"><span class="amount">2.900€</span><span class="period">pago único</span></div>
         <ul class="plan-features">
-          <li>Todo lo del plan Profesional</li>
-          <li>Diseño web 100% personalizado</li>
+          <li>Todo lo del Profesional</li>
+          <li>Diseño 100% personalizado</li>
           <li>Desarrollo a medida</li>
-          <li>Funcionalidades exclusivas</li>
           <li>Integraciones custom</li>
-          <li>Migración de datos existentes</li>
-          <li>Formación del equipo</li>
-          <li>Acceso a la comunidad WavePanel</li>
+          <li>Migración de datos</li>
           <li>Soporte dedicado</li>
           <li>Sin mensualidades</li>
-          <li>Dominio propio incluido</li>
         </ul>
-        <a href="#contacto" class="btn outline" style="width:100%;">Solicitar presupuesto</a>
+        <a href="/contacto.html" class="btn outline full">Solicitar presupuesto</a>
       </div>
+    </div>
 
+    <div style="text-align:center;margin-top:40px;">
+      <a href="/planes.html" class="btn outline">Ver comparativa detallada</a>
     </div>
   </div>
 </section>
 
-<!-- ── FEATURE COMPARISON ── -->
-<section class="section alt" id="comparativa">
+<section class="section dark">
   <div class="container">
     <div class="section-header">
-      <p class="kicker">Comparativa de planes</p>
-      <h2 class="title">¿Qué incluye cada plan?</h2>
+      <p class="kicker">Comunidad WavePanel</p>
+      <h2 class="title">Tú decides hacia dónde evoluciona la plataforma</h2>
+      <p class="lead">Todos los clientes con plan activo acceden a la comunidad privada donde proponen mejoras, votan funcionalidades y participan en el desarrollo.</p>
     </div>
-
-    <div class="comparison-wrap">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th style="width:40%;">Funcionalidad</th>
-            <th>Básico · 29€/mes</th>
-            <th class="highlight">Profesional · 79€/mes</th>
-            <th>Personalizado · desde 2.500€</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="category-row"><td colspan="4">Presencia online</td></tr>
-          <tr>
-            <td>Web pública</td>
-            <td><span class="check">✓</span> Subdominio</td>
-            <td class="highlight"><span class="check">✓</span> Dominio propio</td>
-            <td><span class="check">✓</span> Custom</td>
-          </tr>
-          <tr>
-            <td>Personalización visual</td>
-            <td>Marca WavePanel visible</td>
-            <td class="highlight">Completa</td>
-            <td>100% a medida</td>
-          </tr>
-          <tr>
-            <td>Widget embebible</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Páginas legales (RGPD)</td>
-            <td>Básicas</td>
-            <td class="highlight"><span class="check">✓</span> Completas</td>
-            <td><span class="check">✓</span> Custom</td>
-          </tr>
-
-          <tr class="category-row"><td colspan="4">Gestión de actividades</td></tr>
-          <tr>
-            <td>Reservas y calendario</td>
-            <td><span class="check">✓</span> Hasta 50/mes</td>
-            <td class="highlight"><span class="check">✓</span> Ilimitadas</td>
-            <td><span class="check">✓</span> Ilimitadas</td>
-          </tr>
-          <tr>
-            <td>Gestión de instructores</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span> + auto-asignación</td>
-            <td><span class="check">✓</span> + auto-asignación</td>
-          </tr>
-          <tr>
-            <td>Bonos y packs de clases</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Surf camps</td>
-            <td>Básico (sin alojamiento)</td>
-            <td class="highlight"><span class="check">✓</span> Completo</td>
-            <td><span class="check">✓</span> Completo</td>
-          </tr>
-          <tr>
-            <td>Alojamiento / rooms</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Alquiler de material</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Check-in digital + firma</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-
-          <tr class="category-row"><td colspan="4">Pagos y comercio</td></tr>
-          <tr>
-            <td>Pagos online (Stripe/PayPal/Redsys)</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Tienda e-commerce</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Cupones y descuentos</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Links de pago por móvil</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-
-          <tr class="category-row"><td colspan="4">Comunicación</td></tr>
-          <tr>
-            <td>Emails transaccionales</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight"><span class="check">✓</span> Con tu marca</td>
-            <td><span class="check">✓</span> Custom</td>
-          </tr>
-          <tr>
-            <td>Notificaciones admin</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-
-          <tr class="category-row"><td colspan="4">Comunidad y soporte</td></tr>
-          <tr>
-            <td>Comunidad WavePanel</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Proponer y votar mejoras</td>
-            <td><span class="check">✓</span></td>
-            <td class="highlight"><span class="check">✓</span> Voto prioritario</td>
-            <td><span class="check">✓</span> Voto prioritario</td>
-          </tr>
-
-          <tr class="category-row"><td colspan="4">Analítica y soporte</td></tr>
-          <tr>
-            <td>Dashboard y estadísticas</td>
-            <td><span class="cross">—</span></td>
-            <td class="highlight">Avanzadas</td>
-            <td>Avanzadas + custom</td>
-          </tr>
-          <tr>
-            <td>Gestión de clientes</td>
-            <td>Hasta 50 reservas/mes</td>
-            <td class="highlight">Ilimitados</td>
-            <td>Ilimitados</td>
-          </tr>
-          <tr>
-            <td>Soporte</td>
-            <td>Email</td>
-            <td class="highlight">Prioritario</td>
-            <td>Dedicado</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="steps-grid">
+      <div class="step"><div class="step-number">1</div><h3>Propón mejoras</h3><p>¿Necesitas una funcionalidad que no existe? Proponla. Si tiene sentido, la desarrollamos.</p></div>
+      <div class="step"><div class="step-number">2</div><h3>Vota prioridades</h3><p>Las más votadas se priorizan en el roadmap. Tu voto decide qué se desarrolla primero.</p></div>
+      <div class="step"><div class="step-number">3</div><h3>Recibe updates</h3><p>Cada mejora se despliega automáticamente. La plataforma crece contigo.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ── VS BUKYAPP ── -->
-<section class="section dark" id="vs">
-  <div class="container">
-    <div class="section-header">
-      <p class="kicker">WavePanel vs otras plataformas</p>
-      <h2 class="title">¿Por qué elegir WavePanel?</h2>
-      <p class="lead">Otras plataformas te ofrecen un widget de reservas. Nosotros te damos un ecosistema completo para tu escuela.</p>
-    </div>
-
-    <div class="comparison-wrap">
-      <table class="vs-table">
-        <thead>
-          <tr>
-            <th style="width:40%;">Funcionalidad</th>
-            <th class="ours">WavePanel</th>
-            <th>Otras plataformas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Web pública para tu escuela</td>
-            <td class="ours"><span class="check">✓</span> Incluida</td>
-            <td><span class="cross">✗</span> No incluida</td>
-          </tr>
-          <tr>
-            <td>Panel de administración</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Reservas y calendario</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Tienda e-commerce</td>
-            <td class="ours"><span class="check">✓</span> Completa</td>
-            <td><span class="cross">✗</span></td>
-          </tr>
-          <tr>
-            <td>Bonos y packs con caducidad</td>
-            <td class="ours"><span class="check">✓</span> Avanzado</td>
-            <td>Parcial</td>
-          </tr>
-          <tr>
-            <td>Alojamiento / habitaciones</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Check-in digital + firma</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Emails transaccionales con marca</td>
-            <td class="ours"><span class="check">✓</span> 10+ plantillas</td>
-            <td><span class="cross">✗</span> No visible</td>
-          </tr>
-          <tr>
-            <td>Cupones y descuentos</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="cross">✗</span></td>
-          </tr>
-          <tr>
-            <td>Páginas legales RGPD</td>
-            <td class="ours"><span class="check">✓</span> Incluidas</td>
-            <td><span class="cross">✗</span></td>
-          </tr>
-          <tr>
-            <td>Widget embebible</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td>Pasarelas de pago</td>
-            <td class="ours">Stripe + PayPal + Redsys</td>
-            <td>Stripe + PayPal + Redsys</td>
-          </tr>
-          <tr>
-            <td>Gestión de pedidos</td>
-            <td class="ours"><span class="check">✓</span></td>
-            <td><span class="cross">✗</span></td>
-          </tr>
-          <tr>
-            <td>Precios</td>
-            <td class="ours"><span class="check">✓</span> Transparentes</td>
-            <td>Ocultos (pide demo)</td>
-          </tr>
-          <tr>
-            <td>Comisión por reserva</td>
-            <td class="ours">0%</td>
-            <td>No especificado</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA ── -->
-<section class="cta-section" id="contacto">
+<section class="cta-section">
   <div class="container">
     <h2 class="title">¿Listo para digitalizar tu escuela?</h2>
     <p class="lead">Empieza con 14 días gratis. Sin tarjeta de crédito. Sin compromiso.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <a href="#" class="btn dark lg">Empezar gratis</a>
-      <a href="#" class="btn outline lg">Solicitar demo</a>
+      <a href="/contacto.html" class="btn dark lg">Empezar gratis</a>
+      <a href="/demo.html" class="btn outline lg">Ver el panel</a>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; 2026 WavePanel. Software de gestión para escuelas de surf.</p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="/">wave<span>panel</span></a>
+        <p>El software de gestión completo para escuelas de surf, kite y deportes acuáticos. Por escuelas, para escuelas.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <ul>
+          <li><a href="/funcionalidades.html">Funcionalidades</a></li>
+          <li><a href="/modulos.html">Módulos</a></li>
+          <li><a href="/planes.html">Planes</a></li>
+          <li><a href="/comparativa.html">Comparativa</a></li>
+          <li><a href="/demo.html">Demo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="/como-funciona.html">Cómo funciona</a></li>
+          <li><a href="/comunidad.html">Comunidad</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/legal/aviso-legal.html">Aviso legal</a></li>
+          <li><a href="/legal/privacidad.html">Privacidad</a></li>
+          <li><a href="/legal/cookies.html">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 WavePanel. Software de gestión para escuelas de surf.</span>
+      <span>Hecho en Galicia 🌊</span>
+    </div>
   </div>
 </footer>
 
-<script>
-  document.getElementById('menuToggle').addEventListener('click', () => {
-    document.getElementById('navLinks').classList.toggle('open');
-  });
-</script>
-
+<script src="/assets/main.js"></script>
 </body>
 </html>

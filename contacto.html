@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contacto — WavePanel</title>
+  <meta name="description" content="Solicita una demo, pide presupuesto personalizado o resuelve dudas. Te respondemos en menos de 24h.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f2f39%22/><text y=%2272%22 x=%2250%22 text-anchor=%22middle%22 fill=%22%23FFCC01%22 font-family=%22sans-serif%22 font-weight=%22bold%22 font-size=%2264%22>W</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="container nav-row">
+    <a class="logo" href="/">wave<span>panel</span></a>
+    <button class="menu-toggle" id="menuToggle">Menu</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="/funcionalidades.html">Funcionalidades</a>
+      <a href="/modulos.html">Módulos</a>
+      <a href="/como-funciona.html">Cómo funciona</a>
+      <a href="/planes.html">Planes</a>
+      <a href="/comparativa.html">Comparativa</a>
+      <a href="/demo.html">Demo</a>
+      <a href="/contacto.html" class="btn yellow active">Solicitar demo</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero compact">
+  <div class="container">
+    <div class="hero-text">
+      <p class="kicker">Contacto</p>
+      <h1 class="hero-title">Hablemos de<br><em>tu escuela.</em></h1>
+      <p class="hero-lead">Cuéntanos tu caso y te respondemos en menos de 24h. Sin compromiso, sin tarjeta, sin sorpresas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="form-wrap">
+      <form id="contactForm" class="form-grid" action="mailto:hola@wavepanel.com" method="post" enctype="text/plain">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="nombre">Nombre *</label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+          <div class="form-field">
+            <label for="escuela">Nombre de tu escuela</label>
+            <input type="text" id="escuela" name="escuela">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-field">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="plan">¿Qué plan te interesa?</label>
+          <select id="plan" name="plan">
+            <option value="">No lo tengo claro todavía</option>
+            <option value="basico">Básico (29€/mes)</option>
+            <option value="profesional">Profesional (79€/mes)</option>
+            <option value="personalizado">Personalizado (desde 2.500€)</option>
+            <option value="demo">Solo quiero ver una demo</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="mensaje">Cuéntanos sobre tu escuela *</label>
+          <textarea id="mensaje" name="mensaje" placeholder="¿Qué actividades ofreces? ¿Cuántos clientes gestionas? ¿Tienes camps? ¿Qué necesitas resolver?" required></textarea>
+        </div>
+
+        <button type="submit" class="btn yellow lg full">Enviar mensaje</button>
+        <p class="form-note">Te respondemos en menos de 24h laborables. Sin spam. Sin compromiso.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="kicker">Otros canales</p>
+      <h2 class="title">Como te sea más cómodo</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">📧</div><h3>Email</h3><p><a href="mailto:hola@wavepanel.com" style="color:var(--color-navy);font-weight:600;">hola@wavepanel.com</a></p></div>
+      <div class="feature-card"><div class="feature-icon">💬</div><h3>WhatsApp</h3><p>Escríbenos directamente. Respuesta en menos de 4h en horario laboral.</p></div>
+      <div class="feature-card"><div class="feature-icon">📅</div><h3>Reserva una llamada</h3><p>30 minutos para entender tu escuela y mostrarte el panel en vivo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2 class="title">¿Prefieres verlo primero?</h2>
+    <p class="lead">Echa un vistazo a los planes o a la demo del panel mientras esperas.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <a href="/planes.html" class="btn dark lg">Ver planes</a>
+      <a href="/demo.html" class="btn outline lg">Ver demo</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="logo" href="/">wave<span>panel</span></a><p>El software de gestión completo para escuelas de surf, kite y deportes acuáticos.</p></div>
+      <div class="footer-col"><h4>Producto</h4><ul><li><a href="/funcionalidades.html">Funcionalidades</a></li><li><a href="/modulos.html">Módulos</a></li><li><a href="/planes.html">Planes</a></li><li><a href="/comparativa.html">Comparativa</a></li><li><a href="/demo.html">Demo</a></li></ul></div>
+      <div class="footer-col"><h4>Empresa</h4><ul><li><a href="/como-funciona.html">Cómo funciona</a></li><li><a href="/comunidad.html">Comunidad</a></li><li><a href="/contacto.html">Contacto</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a href="/legal/aviso-legal.html">Aviso legal</a></li><li><a href="/legal/privacidad.html">Privacidad</a></li><li><a href="/legal/cookies.html">Cookies</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 WavePanel</span><span>Hecho en Galicia 🌊</span></div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+</body>
+</html>
