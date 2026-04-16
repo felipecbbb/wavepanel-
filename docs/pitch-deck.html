@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WavePanel · Pitch Deck</title>
+  <meta name="description" content="Pitch deck de WavePanel — software de gestión para escuelas de surf. Mercado, competencia, modelo de negocio, economía unitaria.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fffdf7;
+      --sand: #f3ecdd;
+      --yellow: #FFCC01;
+      --paper: #ffffff;
+      --navy: #0f2f39;
+      --navy-soft: #214a57;
+      --text: #2d3d45;
+      --muted: #64757d;
+      --line: #d7d0c2;
+      --green: #166534;
+      --green-bg: #d4f5dd;
+      --red: #991b1b;
+      --red-bg: #fee2e2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .slide {
+      min-height: 100vh;
+      padding: 60px clamp(24px, 5vw, 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      scroll-snap-align: start;
+      border-bottom: 1px solid rgba(15,47,57,.06);
+      overflow: hidden;
+    }
+
+    .slide.dark { background: var(--navy); color: #fff; }
+    .slide.sand { background: var(--sand); }
+    .slide.yellow { background: var(--yellow); color: var(--navy); }
+
+    .container { width: min(1200px, 100%); margin: 0 auto; }
+
+    .slide-num {
+      position: absolute;
+      top: 24px;
+      right: clamp(24px, 5vw, 80px);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .slide.dark .slide-num { color: rgba(255,255,255,.4); }
+    .slide.yellow .slide-num { color: var(--navy-soft); }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: .04em;
+      color: inherit;
+    }
+    .logo span { color: var(--yellow); }
+    .slide.yellow .logo span { color: var(--navy); }
+
+    .kicker {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--yellow);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .slide.sand .kicker { color: var(--navy); }
+    .slide.yellow .kicker { color: var(--navy); }
+
+    h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: .02em; line-height: 1; color: var(--navy); }
+    .slide.dark h1, .slide.dark h2, .slide.dark h3 { color: #fff; }
+
+    h1 { font-size: clamp(3rem, 8vw, 6.5rem); margin-bottom: 28px; }
+    h2 { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: 20px; }
+    h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 14px; }
+
+    .lead {
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      color: var(--muted);
+      max-width: 780px;
+    }
+    .slide.dark .lead { color: rgba(255,255,255,.7); }
+
+    em { font-style: normal; color: var(--yellow); }
+    .slide.yellow em { color: var(--navy-soft); }
+
+    /* ── GRID CARDS ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .slide.dark .card { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.9); }
+    .slide.sand .card { background: var(--paper); }
+
+    .card h3 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .slide.dark .card h3 { color: #fff; }
+
+    .card p { font-size: .92rem; color: var(--muted); line-height: 1.6; }
+    .slide.dark .card p { color: rgba(255,255,255,.7); }
+
+    .card .icon {
+      width: 48px; height: 48px;
+      background: var(--sand);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+    .slide.dark .card .icon { background: rgba(255,204,1,.15); }
+
+    /* ── STATS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .stat .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--yellow);
+      line-height: 1;
+    }
+    .slide.yellow .stat .num { color: var(--navy); }
+    .stat .label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-top: 6px;
+    }
+    .slide.dark .stat .label { color: rgba(255,255,255,.6); }
+
+    /* ── TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+      background: var(--paper);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: .92rem;
+      box-shadow: 0 8px 24px rgba(15,47,57,.08);
+    }
+    .data-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 14px 18px;
+      text-align: left;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .data-table th.highlight { background: var(--yellow); color: var(--navy); }
+    .data-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+    .data-table td.highlight { background: rgba(255,204,1,.08); font-weight: 600; color: var(--navy); }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table .check { color: var(--green); font-weight: 700; }
+    .data-table .cross { color: var(--muted); opacity: .5; }
+    .data-table strong { color: var(--navy); }
+
+    /* ── PLANS ── */
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 32px; }
+    .plan {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 32px 26px;
+    }
+    .plan.featured { border: 2px solid var(--yellow); box-shadow: 0 16px 32px rgba(255,204,1,.15); position: relative; }
+    .plan.featured::before {
+      content: 'MÁS POPULAR';
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--yellow); color: var(--navy);
+      padding: 6px 16px; border-radius: 99px;
+      font-family: 'Space Grotesk'; font-weight: 700; font-size: .72rem;
+      letter-spacing: .08em;
+    }
+    .plan .name {
+      font-family: 'Space Grotesk';
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--navy);
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .plan .price {
+      font-family: 'Bebas Neue';
+      font-size: 3rem;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .plan .period { font-size: .85rem; color: var(--muted); margin-left: 4px; }
+    .plan ul { list-style: none; padding: 0; margin-top: 20px; display: grid; gap: 8px; }
+    .plan li { font-size: .88rem; display: flex; gap: 10px; align-items: flex-start; color: var(--text); }
+    .plan li::before { content: '✓'; color: var(--yellow); font-weight: 800; flex-shrink: 0; }
+
+    /* ── PERIODS TABLE ── */
+    .periods {
+      margin-top: 30px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── TRACTION BAR CHART ── */
+    .projection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+    .proj-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .proj-card h4 {
+      font-family: 'Space Grotesk';
+      font-weight: 700;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    .proj-card.y1 h4 { color: var(--muted); }
+    .proj-card.y2 h4 { color: var(--navy); }
+    .proj-card.y3 h4 { color: var(--yellow); }
+    .proj-card .proj-num {
+      font-family: 'Bebas Neue';
+      font-size: 3rem;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .proj-card.y3 { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .proj-card.y3 .proj-num { color: #fff; }
+    .proj-card ul { list-style: none; margin-top: 14px; display: grid; gap: 4px; font-size: .85rem; }
+    .proj-card li { color: var(--muted); }
+    .proj-card.y3 li { color: rgba(255,255,255,.7); }
+
+    /* ── TAGS ── */
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .tag {
+      background: rgba(15,47,57,.08);
+      color: var(--navy);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-family: 'Space Grotesk';
+      font-size: .78rem;
+      font-weight: 600;
+    }
+    .slide.dark .tag { background: rgba(255,255,255,.1); color: #fff; }
+
+    /* ── NAV ── */
+    .nav-dots {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+    .nav-dots a {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--line);
+      display: block;
+      transition: all .2s;
+    }
+    .nav-dots a:hover,
+    .nav-dots a.active { background: var(--navy); transform: scale(1.4); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .plans-grid, .projection-grid { grid-template-columns: 1fr; }
+      .nav-dots { display: none; }
+      .slide { min-height: auto; padding: 50px 20px; }
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.2rem; }
+      .data-table { font-size: .78rem; }
+      .data-table th, .data-table td { padding: 10px 12px; }
+    }
+
+    @media print {
+      .slide {
+        min-height: 0;
+        page-break-after: always;
+        padding: 60px 40px;
+      }
+      .nav-dots { display: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav-dots">
+  <a href="#s1" class="active"></a><a href="#s2"></a><a href="#s3"></a><a href="#s4"></a>
+  <a href="#s5"></a><a href="#s6"></a><a href="#s7"></a><a href="#s8"></a><a href="#s9"></a>
+  <a href="#s10"></a><a href="#s11"></a><a href="#s12"></a><a href="#s13"></a>
+</nav>
+
+<!-- S1 · COVER -->
+<section class="slide dark" id="s1">
+  <span class="slide-num">01 / 13</span>
+  <div class="container">
+    <div class="logo">wave<span>panel</span></div>
+    <h1 style="margin-top:80px;">Tu escuela.<br><em>Digitalizada.</em></h1>
+    <p class="lead" style="color:rgba(255,255,255,.8);font-size:1.35rem;max-width:700px;margin-top:20px;">
+      El software de gestión vertical para escuelas de surf, kite y deportes acuáticos.
+      Por escuelas, para escuelas.
+    </p>
+    <div class="tags">
+      <span class="tag">Pitch Deck · Abril 2026</span>
+      <span class="tag">wavepanel.com</span>
+    </div>
+  </div>
+</section>
+
+<!-- S2 · PROBLEMA -->
+<section class="slide" id="s2">
+  <span class="slide-num">02 / 13</span>
+  <div class="container">
+    <span class="kicker">Problema</span>
+    <h2>Las escuelas de surf<br><em>gestionan a mano.</em></h2>
+    <p class="lead">WhatsApp para reservas, Excel para clientes, Stripe Payment Links sueltos, carpetas de Google Drive para fotos. Se pierden reservas, se duplican sesiones, no saben ni cuánto facturan.</p>
+
+    <div class="grid-4">
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>WhatsApp saturado</h3>
+        <p>80% de las reservas entran por chat. Responder es trabajo a tiempo completo en temporada alta.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Sin datos reales</h3>
+        <p>Reservas en cabeza o post-it. Nadie sabe qué instructor es más rentable ni qué día es el más cargado.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💸</div>
+        <h3>No cobran online</h3>
+        <p>Si cobran en persona, el no-show cuesta dinero. Si mandan links de pago manual, el friction baja la conversión.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏕️</div>
+        <h3>Camps = caos</h3>
+        <p>Los camps con alojamiento mueven mucho dinero pero se gestionan con Excel, check-in en papel y depósitos por transferencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3 · SOLUCIÓN -->
+<section class="slide sand" id="s3">
+  <span class="slide-num">03 / 13</span>
+  <div class="container">
+    <span class="kicker">Solución</span>
+    <h2>Un ecosistema completo,<br><em>no un widget.</em></h2>
+    <p class="lead">WavePanel es la web pública + el panel de gestión + los pagos + los emails + los camps + la tienda. Todo en uno, diseñado para el día a día de una escuela.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Web pública incluida</h3>
+        <p>Dominio propio, SEO, reservas directas. La mayoría de competidores solo dan un widget de reservas.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📅</div>
+        <h3>Panel + calendario</h3>
+        <p>Reservas, instructores, clientes, actividades, alquiler material, estadísticas. Arrastrar y soltar.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💳</div>
+        <h3>Pagos online 0% comisión</h3>
+        <p>Stripe + PayPal + Redsys integrados. El dinero va directo al cliente, nosotros no tocamos nada.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛒</div>
+        <h3>Tienda integrada</h3>
+        <p>Productos físicos, bonos de clases, cupones. Vender merchandising o packs de clases online.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏕️</div>
+        <h3>Surf Camps reales</h3>
+        <p>Ediciones, alojamiento, depósitos, check-in digital con firma. Adiós al Excel.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📧</div>
+        <h3>Emails con marca</h3>
+        <p>10+ plantillas transaccionales. Confirmaciones, recordatorios, recibos — todo con su logo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4 · PRODUCTO -->
+<section class="slide dark" id="s4">
+  <span class="slide-num">04 / 13</span>
+  <div class="container">
+    <span class="kicker">Producto</span>
+    <h2>Funcionando en producción<br><em>desde 2026.</em></h2>
+    <p class="lead">Entre Olas Surf (Pantín, A Coruña) ya usa WavePanel como su único sistema desde enero 2026.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Web pública</h3>
+        <p>entreolasurf.com corre 100% sobre WavePanel. Reservas, tienda, camps, bonos — todo.</p>
+      </div>
+      <div class="card">
+        <h3>Panel admin</h3>
+        <p>Calendario semanal, ficha de cliente con historial completo, dashboard con revenue en tiempo real.</p>
+      </div>
+      <div class="card">
+        <h3>Vídeo demo</h3>
+        <p>90 segundos generados con Remotion. Mostramos el panel animado en wavepanel.com/demo.</p>
+      </div>
+    </div>
+
+    <div class="stats-row" style="margin-top:50px;">
+      <div class="stat">
+        <div class="num">14</div>
+        <div class="label">Páginas públicas</div>
+      </div>
+      <div class="stat">
+        <div class="num">10+</div>
+        <div class="label">Plantillas de email</div>
+      </div>
+      <div class="stat">
+        <div class="num">5</div>
+        <div class="label">Módulos del panel</div>
+      </div>
+      <div class="stat">
+        <div class="num">0%</div>
+        <div class="label">Comisión por reserva</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 · MERCADO -->
+<section class="slide" id="s5">
+  <span class="slide-num">05 / 13</span>
+  <div class="container">
+    <span class="kicker">Mercado</span>
+    <h2>Nicho pequeño,<br><em>pero direccionable.</em></h2>
+    <p class="lead">Mercado vertical con muy poca competencia profesional y mucho dolor real.</p>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="num">400</div>
+        <div class="label">Escuelas España<br>(surf + kite + paddle + SUP)</div>
+      </div>
+      <div class="stat">
+        <div class="num">3k-5k</div>
+        <div class="label">Escuelas en Europa</div>
+      </div>
+      <div class="stat">
+        <div class="num">20-40</div>
+        <div class="label">TAM real España<br>(pagaría 50€+/mes)</div>
+      </div>
+      <div class="stat">
+        <div class="num">150k€</div>
+        <div class="label">ARR potencial España<br>(20% penetración)</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:60px;font-family:'Space Grotesk';font-size:1.05rem;">Por qué este mercado es bueno</h3>
+    <ul style="list-style:none;margin-top:16px;display:grid;gap:10px;font-size:1rem;">
+      <li><strong style="color:var(--green);">✓</strong> <strong>Dolor real y frecuente:</strong> cada reserva perdida duele. La escuela reconoce el problema en 30 segundos.</li>
+      <li><strong style="color:var(--green);">✓</strong> <strong>Competencia débil:</strong> o son genéricos (Bookeo, FareHarbor) o cobran 6% por reserva. Nadie cubre web + camps + tienda.</li>
+      <li><strong style="color:var(--green);">✓</strong> <strong>Cliente identificable:</strong> directorios públicos, RRSS activas, ferias del sector. Outbound eficiente.</li>
+      <li><strong style="color:var(--green);">✓</strong> <strong>Comunidad tribal:</strong> las escuelas hablan entre sí. Un cliente feliz trae 2-3 más.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- S6 · MODELO DE NEGOCIO -->
+<section class="slide sand" id="s6">
+  <span class="slide-num">06 / 13</span>
+  <div class="container">
+    <span class="kicker">Modelo de negocio</span>
+    <h2>Simple:<br><em>3 planes, cuota fija, 0% comisión.</em></h2>
+
+    <div class="plans-grid">
+      <div class="plan">
+        <div class="name">Esencial</div>
+        <div><span class="price">39€</span><span class="period">/mes</span></div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">Escuelas pequeñas, solo reservas</p>
+        <ul>
+          <li>Core completo (reservas, calendario)</li>
+          <li>Hasta 100 reservas/mes</li>
+          <li>Web con subdominio</li>
+          <li>Gestión de clientes</li>
+          <li>Alquiler de material</li>
+          <li>Check-in digital con firma</li>
+        </ul>
+      </div>
+
+      <div class="plan featured">
+        <div class="name">Completo</div>
+        <div><span class="price">89€</span><span class="period">/mes</span></div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">El plan que necesita el 80% de las escuelas</p>
+        <ul>
+          <li>Todo lo de Esencial (sin límite)</li>
+          <li>Dominio propio</li>
+          <li>Tienda e-commerce</li>
+          <li>Surf Camps + alojamiento</li>
+          <li>Bonos y packs de clases</li>
+          <li>Cupones y descuentos</li>
+          <li>Pagos online (3 pasarelas)</li>
+          <li>Emails con marca propia</li>
+        </ul>
+      </div>
+
+      <div class="plan">
+        <div class="name">Personalizado</div>
+        <div><span class="price">2.900€</span><span class="period">pago único</span></div>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">Web 100% a medida, como Entre Olas</p>
+        <ul>
+          <li>Todo lo del plan Completo</li>
+          <li>Diseño web único</li>
+          <li>Desarrollo a medida</li>
+          <li>Integraciones custom</li>
+          <li>Migración de datos</li>
+          <li>Formación del equipo</li>
+          <li>Soporte dedicado</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:24px;">
+      <strong>Add-on único:</strong> WhatsApp Business +29€/mes (disponible en todos los planes).
+    </p>
+  </div>
+</section>
+
+<!-- S7 · DESCUENTOS POR PERIODO -->
+<section class="slide" id="s7">
+  <span class="slide-num">07 / 13</span>
+  <div class="container">
+    <span class="kicker">Periodos de facturación</span>
+    <h2>Paga más, <em>paga menos.</em></h2>
+    <p class="lead">Incentivamos el compromiso con descuentos crecientes. El anual captura cash upfront y reduce churn.</p>
+
+    <table class="data-table" style="margin-top:40px;">
+      <thead>
+        <tr>
+          <th>Periodo</th>
+          <th>Descuento</th>
+          <th>Esencial (39€/mes)</th>
+          <th class="highlight">Completo (89€/mes)</th>
+          <th>Ahorro anual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mensual</strong></td>
+          <td>0%</td>
+          <td>39€/mes</td>
+          <td class="highlight">89€/mes</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>Trimestral (3m)</strong></td>
+          <td>5%</td>
+          <td>37€/mes</td>
+          <td class="highlight">85€/mes</td>
+          <td>23€ / 54€</td>
+        </tr>
+        <tr>
+          <td><strong>Semestral (6m)</strong></td>
+          <td>10%</td>
+          <td>35€/mes</td>
+          <td class="highlight">80€/mes</td>
+          <td>47€ / 108€</td>
+        </tr>
+        <tr style="background:rgba(255,204,1,.12);">
+          <td><strong>Anual (12m)</strong> 🔥</td>
+          <td><strong>17%</strong></td>
+          <td><strong>32€/mes</strong></td>
+          <td class="highlight"><strong>74€/mes</strong></td>
+          <td><strong>78€ / 180€</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:.92rem;color:var(--muted);text-align:center;margin-top:24px;">
+      <strong>"2 meses gratis si pagas el año"</strong> es el mensaje que usamos en el checkout.
+    </p>
+  </div>
+</section>
+
+<!-- S8 · COMPETENCIA -->
+<section class="slide dark" id="s8">
+  <span class="slide-num">08 / 13</span>
+  <div class="container">
+    <span class="kicker">Competencia</span>
+    <h2>Nadie cubre el stack completo<br><em>para este nicho.</em></h2>
+    <p class="lead">O son genéricos que no entienden de surf, o son verticales pero sin web ni tienda.</p>
+
+    <div style="overflow-x:auto;margin-top:30px;">
+      <table class="data-table" style="font-size:.86rem;">
+        <thead>
+          <tr>
+            <th>Plataforma</th>
+            <th>Precio entry</th>
+            <th>Comisión</th>
+            <th>Web incluida</th>
+            <th>Camps + alojamiento</th>
+            <th>Tienda</th>
+            <th>Vertical surf</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:rgba(255,204,1,.15);">
+            <td><strong style="color:var(--yellow);">WavePanel</strong></td>
+            <td><strong>39€/mes</strong></td>
+            <td><strong>0%</strong></td>
+            <td><span class="check">✓</span> Completa</td>
+            <td><span class="check">✓</span> Completo</td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span> Exclusivo</td>
+          </tr>
+          <tr>
+            <td>BukyApp</td>
+            <td>Quote-only</td>
+            <td>?</td>
+            <td><span class="cross">—</span> Widget</td>
+            <td>Parcial</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Bookeo</td>
+            <td>14,95€/mes</td>
+            <td><span class="check">0%</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>Checkfront</td>
+            <td>99$/mes</td>
+            <td><span class="check">0%</span></td>
+            <td><span class="cross">—</span></td>
+            <td>Parcial</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>Rezdy</td>
+            <td>99$/mes</td>
+            <td><span class="check">0%</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>FareHarbor</td>
+            <td>Gratis</td>
+            <td style="color:#ff8080;"><strong>6%</strong></td>
+            <td><span class="cross">—</span></td>
+            <td>Parcial</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>Peek Pro</td>
+            <td>Gratis</td>
+            <td style="color:#ff8080;"><strong>6%</strong></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>Trekksoft</td>
+            <td>75$/mes</td>
+            <td>Variable</td>
+            <td><span class="cross">—</span></td>
+            <td>Parcial</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+          <tr>
+            <td>Bókun (TripAdvisor)</td>
+            <td>Gratis</td>
+            <td style="color:#ff8080;">2.9%</td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">—</span></td>
+            <td><span class="cross">Genérico</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:20px;text-align:center;">
+      Para una escuela con 30k€/año en reservas, una comisión del 6% = <strong style="color:#fff;">1.800€/año perdidos</strong>. Nuestra cuota anual: 888€. <strong style="color:var(--yellow);">Ahorro real: 912€/año.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- S9 · UNIT ECONOMICS -->
+<section class="slide" id="s9">
+  <span class="slide-num">09 / 13</span>
+  <div class="container">
+    <span class="kicker">Economía unitaria</span>
+    <h2>Márgenes de SaaS<br><em>puro.</em></h2>
+    <p class="lead">Infra barata, márgenes brutales. El coste crítico es tu tiempo de onboarding, no el hosting.</p>
+
+    <table class="data-table" style="margin-top:40px;">
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Esencial</th>
+          <th class="highlight">Completo</th>
+          <th>Personalizado (one-time)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Precio al cliente</strong></td>
+          <td>39€/mes</td>
+          <td class="highlight">89€/mes</td>
+          <td>2.900€</td>
+        </tr>
+        <tr>
+          <td>Supabase (Free tier cubre la mayoría)</td>
+          <td>0€</td>
+          <td class="highlight">0-23€</td>
+          <td>0-23€</td>
+        </tr>
+        <tr>
+          <td>Vercel (Hobby free tier)</td>
+          <td>0€</td>
+          <td class="highlight">0-18€</td>
+          <td>0-18€</td>
+        </tr>
+        <tr>
+          <td>Resend (3k emails gratis)</td>
+          <td>0€</td>
+          <td class="highlight">0-18€</td>
+          <td>0-18€</td>
+        </tr>
+        <tr>
+          <td>Dominio (cliente lo paga)</td>
+          <td>0€</td>
+          <td class="highlight">0€</td>
+          <td>0€</td>
+        </tr>
+        <tr style="background:rgba(15,47,57,.05);">
+          <td><strong>Coste infra total</strong></td>
+          <td><strong>0-5€</strong></td>
+          <td class="highlight"><strong>0-15€</strong></td>
+          <td><strong>0-60€ + 20h tiempo</strong></td>
+        </tr>
+        <tr style="background:rgba(22,101,52,.08);">
+          <td><strong>Margen bruto</strong></td>
+          <td><strong style="color:var(--green);">34-39€ (87-100%)</strong></td>
+          <td class="highlight"><strong style="color:var(--green);">74-89€ (83-100%)</strong></td>
+          <td><strong style="color:var(--green);">2.640-2.900€ (91-100%)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:.9rem;color:var(--muted);margin-top:20px;">
+      <strong>LTV típico:</strong> cliente promedio Completo × 2.5 años = 2.225€ - coste soporte 225€ = <strong style="color:var(--navy);">LTV neto 2.000€</strong>.
+      <strong>CAC objetivo:</strong> &lt; 400€ (IG ads + outbound + comisión referidos). <strong style="color:var(--green);">Ratio LTV:CAC = 5:1 ✓</strong>
+    </p>
+  </div>
+</section>
+
+<!-- S10 · TRACTION -->
+<section class="slide sand" id="s10">
+  <span class="slide-num">10 / 13</span>
+  <div class="container">
+    <span class="kicker">Tracción</span>
+    <h2>Primer cliente pagando,<br><em>producto validado.</em></h2>
+    <p class="lead">Entre Olas Surf compró el Plan Personalizado por 2.900€ en marzo 2026. Lleva 6+ semanas en producción.</p>
+
+    <div class="grid-3" style="margin-top:40px;">
+      <div class="card">
+        <h3>Cliente 1 — Entre Olas Surf</h3>
+        <p style="margin-bottom:14px;"><strong>Pantín, A Coruña · 2026</strong></p>
+        <p>Reemplazó: WhatsApp + Excel + Stripe Payment Links</p>
+        <p style="margin-top:10px;">Ahorra ~10h/semana. Reservas online activas desde día 1.</p>
+      </div>
+      <div class="card">
+        <h3>Producto en vivo</h3>
+        <p><strong>entreolasurf.com</strong> corre al 100% sobre WavePanel.</p>
+        <p style="margin-top:10px;">Sistema de reservas, bonos, camps de Sambatrips, tienda online, mi-cuenta, check-in digital. Todo integrado.</p>
+      </div>
+      <div class="card">
+        <h3>Siguiente paso</h3>
+        <p>Objetivo Q2 2026: <strong>3 clientes más del Plan Personalizado</strong> (8.700€ revenue).</p>
+        <p style="margin-top:10px;">Objetivo Q4 2026: <strong>multi-tenant funcional + 10 clientes Esencial/Completo</strong> activos.</p>
+      </div>
+    </div>
+
+    <div class="stats-row" style="margin-top:50px;">
+      <div class="stat">
+        <div class="num">2.900€</div>
+        <div class="label">Primer revenue</div>
+      </div>
+      <div class="stat">
+        <div class="num">1</div>
+        <div class="label">Cliente pagando</div>
+      </div>
+      <div class="stat">
+        <div class="num">0</div>
+        <div class="label">Churn</div>
+      </div>
+      <div class="stat">
+        <div class="num">5*</div>
+        <div class="label">NPS cliente actual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S11 · PROYECCIONES -->
+<section class="slide dark" id="s11">
+  <span class="slide-num">11 / 13</span>
+  <div class="container">
+    <span class="kicker">Proyecciones financieras</span>
+    <h2>Camino A 24 meses:<br><em>venta directa primero.</em></h2>
+    <p class="lead">No construimos multi-tenant hasta validar con 5+ clientes Personalizados. Los Esenciales/Completos llegan cuando exista la infra.</p>
+
+    <div class="projection-grid">
+
+      <div class="proj-card y1">
+        <h4>Año 1 · 2026</h4>
+        <div class="proj-num">19-29k€</div>
+        <ul style="margin-top:20px;">
+          <li>• 4-5 Personalizados (12-14k€)</li>
+          <li>• 0 Esencial/Completo (aún no hay multi-tenant)</li>
+          <li>• 4-5 Mantenimientos anuales (400-500€)</li>
+          <li>• Costes infra: ~500€/año</li>
+          <li>• <strong style="color:#fff;">Beneficio: ~18-28k€</strong></li>
+        </ul>
+      </div>
+
+      <div class="proj-card y2">
+        <h4>Año 2 · 2027</h4>
+        <div class="proj-num">70-100k€</div>
+        <ul style="margin-top:20px;">
+          <li>• 6-8 Personalizados nuevos (18-24k€)</li>
+          <li>• 15-25 Completos (14-27k€ ARR)</li>
+          <li>• 10-20 Esenciales (5-10k€ ARR)</li>
+          <li>• Add-on WhatsApp 30% attach (3-5k€ ARR)</li>
+          <li>• Mantenimientos recurrentes (2-3k€)</li>
+          <li>• <strong style="color:#fff;">Beneficio: ~65-95k€</strong></li>
+        </ul>
+      </div>
+
+      <div class="proj-card y3">
+        <h4>Año 3 · 2028</h4>
+        <div class="proj-num">150-220k€</div>
+        <ul style="margin-top:20px;">
+          <li>• 50+ clientes ARR mix</li>
+          <li>• Multi-tenant maduro</li>
+          <li>• Expansión Portugal + Francia</li>
+          <li>• Posible: contratar 1 persona soporte</li>
+          <li>• <strong>Beneficio: ~130-190k€</strong></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:30px;text-align:center;">
+      <strong>Esto NO es un unicornio.</strong> Es un negocio de nicho, con márgenes de SaaS, que permite una vida cómoda en 18-24 meses si se trabaja con consistencia.
+    </p>
+  </div>
+</section>
+
+<!-- S12 · GO TO MARKET -->
+<section class="slide" id="s12">
+  <span class="slide-num">12 / 13</span>
+  <div class="container">
+    <span class="kicker">Go to market</span>
+    <h2>Outbound vertical +<br><em>comunidad tribal.</em></h2>
+    <p class="lead">Este mercado no se vende con Facebook Ads. Se vende con llamadas 1:1 y boca a boca de otras escuelas.</p>
+
+    <div class="grid-3" style="margin-top:40px;">
+      <div class="card">
+        <div class="icon">📇</div>
+        <h3>Outbound 1:1</h3>
+        <p>Lista de 100 escuelas con IG activo. Mensaje personalizado por DM/email. Meta: 5 contactos/día × 20 días/mes = 100/mes.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">Conversión objetivo: 3-5%.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤝</div>
+        <h3>Referidos incentivados</h3>
+        <p>Cliente Completo que trae otro se lleva 2 meses gratis. El referido empieza con 1 mes gratis.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">Objetivo: 30% de nuevos clientes por referido.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📍</div>
+        <h3>Ferias y eventos</h3>
+        <p>Surf Summit, Internsurf, Europe Surf Awards. Presencia con stand pequeño + networking.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">2-3 eventos/año.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎬</div>
+        <h3>Contenido útil</h3>
+        <p>YouTube + IG Reels: "cómo duplicar las reservas de tu escuela", "gestión de camps sin papel". Vertical específico.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">2 piezas/semana.</p>
+      </div>
+      <div class="card">
+        <div class="icon">⭐</div>
+        <h3>Testimonios</h3>
+        <p>Cada cliente nuevo firma un testimonio a los 90 días. Van a wavepanel.com + se comparten en RRSS.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">Objetivo Y1: 5 testimonios.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💸</div>
+        <h3>Ads dirigidos (cuando escale)</h3>
+        <p>Meta Ads a audiencias de "dueños de escuelas de surf en España". Solo tras tener 5+ clientes y 3 testimonios.</p>
+        <p style="margin-top:10px;color:var(--navy);font-weight:600;">Budget inicial: 300€/mes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S13 · CIERRE -->
+<section class="slide yellow" id="s13">
+  <span class="slide-num">13 / 13</span>
+  <div class="container" style="text-align:center;">
+    <div class="logo" style="justify-content:center;display:flex;">wave<span>panel</span></div>
+    <h1 style="margin-top:60px;">El software que<br>las escuelas <em>necesitan.</em></h1>
+    <p class="lead" style="margin:30px auto 0;max-width:640px;color:var(--navy-soft);">
+      1 cliente pagando · Producto en producción · Mercado validado · Márgenes de SaaS · 0% comisión.
+    </p>
+
+    <div class="stats-row" style="margin-top:60px;max-width:900px;margin-left:auto;margin-right:auto;">
+      <div class="stat">
+        <div class="num">3</div>
+        <div class="label">Planes simples</div>
+      </div>
+      <div class="stat">
+        <div class="num">87%</div>
+        <div class="label">Margen bruto</div>
+      </div>
+      <div class="stat">
+        <div class="num">5:1</div>
+        <div class="label">LTV:CAC</div>
+      </div>
+      <div class="stat">
+        <div class="num">100k€+</div>
+        <div class="label">ARR potencial Y2</div>
+      </div>
+    </div>
+
+    <div style="margin-top:80px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;letter-spacing:.04em;">
+      <p style="font-weight:700;">Felipe Câmara Barroso</p>
+      <p style="opacity:.7;">hola@wavepanel.com · wavepanel.com</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Nav dots active state
+  const dots = document.querySelectorAll('.nav-dots a');
+  const slides = document.querySelectorAll('.slide');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        dots.forEach(d => d.classList.remove('active'));
+        const idx = [...slides].indexOf(e.target);
+        if (dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => io.observe(s));
+</script>
+
+</body>
+</html>
