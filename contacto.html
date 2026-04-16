@@ -32,9 +32,9 @@
 <section class="hero compact">
   <div class="container">
     <div class="hero-text">
-      <p class="kicker">Contacto</p>
-      <h1 class="hero-title">Hablemos de<br><em>tu escuela.</em></h1>
-      <p class="hero-lead">Cuéntanos tu caso y te respondemos en menos de 24h. Sin compromiso, sin tarjeta, sin sorpresas.</p>
+      <p class="kicker" id="contactKicker">Contacto</p>
+      <h1 class="hero-title" id="contactTitle">Hablemos de<br><em>tu escuela.</em></h1>
+      <p class="hero-lead" id="contactLead">Cuéntanos tu caso y te respondemos en menos de 24h. Sin compromiso, sin tarjeta, sin sorpresas.</p>
     </div>
   </div>
 </section>
@@ -42,7 +42,7 @@
 <section class="section">
   <div class="container">
     <div class="form-wrap">
-      <form id="contactForm" class="form-grid" action="mailto:hola@wavepanel.com" method="post" enctype="text/plain">
+      <form id="contactForm" class="form-grid" data-wp-form data-lead-type="contact">
         <div class="form-row">
           <div class="form-field">
             <label for="nombre">Nombre *</label>
@@ -69,9 +69,9 @@
           <label for="plan">¿Qué plan te interesa?</label>
           <select id="plan" name="plan">
             <option value="">No lo tengo claro todavía</option>
-            <option value="basico">Básico (29€/mes)</option>
-            <option value="profesional">Profesional (79€/mes)</option>
-            <option value="personalizado">Personalizado (desde 2.500€)</option>
+            <option value="basico">Básico (29€/mes) — lista de espera</option>
+            <option value="profesional">Profesional (79€/mes) — lista de espera</option>
+            <option value="personalizado">Personalizado (desde 2.500€) — disponible</option>
             <option value="demo">Solo quiero ver una demo</option>
           </select>
         </div>
@@ -126,5 +126,51 @@
 </footer>
 
 <script src="/assets/main.js"></script>
+<script>
+  // Adapta el formulario según ?plan= y ?waitlist= de la URL
+  (() => {
+    const p = new URLSearchParams(window.location.search);
+    const plan = p.get('plan');
+    const waitlist = p.get('waitlist') === '1';
+    if (!plan) return;
+
+    const form = document.getElementById('contactForm');
+    const planSelect = document.getElementById('plan');
+    const kicker = document.getElementById('contactKicker');
+    const title = document.getElementById('contactTitle');
+    const lead = document.getElementById('contactLead');
+    const btn = form && form.querySelector('[type="submit"]');
+
+    if (planSelect) planSelect.value = plan;
+
+    if (waitlist && plan === 'basico') {
+      form.dataset.leadType = 'waitlist_basic';
+      kicker.textContent = 'Lista de espera · Plan Básico';
+      title.innerHTML = 'Apúntate a la<br><em>lista de espera.</em>';
+      lead.textContent = 'Te avisamos en cuanto el plan Básico esté disponible (29€/mes). Mientras tanto, si necesitas algo ya, podemos ofrecerte el Personalizado.';
+      if (btn) btn.textContent = 'Apuntarme a la lista';
+    } else if (waitlist && plan === 'profesional') {
+      form.dataset.leadType = 'waitlist_pro';
+      kicker.textContent = 'Lista de espera · Plan Profesional';
+      title.innerHTML = 'Apúntate a la<br><em>lista de espera.</em>';
+      lead.textContent = 'Te avisamos en cuanto el plan Profesional esté disponible (79€/mes). Mientras tanto, si necesitas algo ya, podemos ofrecerte el Personalizado.';
+      if (btn) btn.textContent = 'Apuntarme a la lista';
+    } else if (plan === 'personalizado') {
+      form.dataset.leadType = 'custom_quote';
+      kicker.textContent = 'Plan Personalizado · disponible hoy';
+      title.innerHTML = 'Pide tu<br><em>presupuesto.</em>';
+      lead.textContent = 'Plan a medida desde 2.500€. Cuéntanos tu escuela y te enviamos propuesta concreta en 24-48h.';
+      if (btn) btn.textContent = 'Solicitar presupuesto';
+    } else if (plan === 'demo') {
+      form.dataset.leadType = 'demo_request';
+      kicker.textContent = 'Solicitar demo';
+      title.innerHTML = 'Demo en vivo<br><em>de 20 minutos.</em>';
+      lead.textContent = 'Te enseñamos el panel adaptado a tu escuela: actividades, precios, instructores reales tuyos.';
+      if (btn) btn.textContent = 'Reservar demo';
+    }
+  })();
+</script>
+<script src="/assets/supabase-config.js"></script>
+<script src="/assets/leads.js" defer></script>
 </body>
 </html>

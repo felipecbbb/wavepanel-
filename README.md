@@ -1,62 +1,94 @@
-# WavePanel — Landing SaaS
+# WavePanel
 
-Sitio web estático para vender el SaaS WavePanel: software de gestión para escuelas de surf, kite y deportes acuáticos.
+SaaS de gestión para escuelas de surf, kite y deportes acuáticos. Web pública + captación de leads + panel demo.
+
+> Producto independiente. Vive en `~/Desktop/wavepanel/`. NO mezclar con `~/Desktop/entreolasur/`, que ahora es el primer cliente del SaaS.
+
+## Stack
+
+- HTML estático + CSS custom + JS vanilla (sin build).
+- **Hosting:** Vercel (auto-deploy en cada push a `main`).
+- **Backend:** Supabase project `aloxbttkypvkcrethwex` (tabla `leads` + Edge Function `notify-lead`).
+- **Email transaccional:** Resend (free tier).
+- **Vídeo demo:** Remotion (`remotion/` → `assets/demo.mp4`).
+- **Tipografías:** Bebas Neue, Manrope, Space Grotesk (Google Fonts).
 
 ## Estructura
 
 ```
-saas-landing/
-├── index.html              Home
-├── funcionalidades.html    Todas las funcionalidades
-├── modulos.html            Overview de módulos
+wavepanel/
+├── index.html · funcionalidades.html · planes.html · ...   (14 páginas)
 ├── modulos/
 │   ├── core.html
 │   ├── tienda.html
 │   ├── surf-camps.html
 │   └── whatsapp.html
-├── como-funciona.html      Onboarding y proceso
-├── planes.html             Precios y planes
-├── comparativa.html        Tabla comparativa + vs otros
-├── demo.html               Capturas del panel
-├── comunidad.html          Sobre la comunidad
-├── contacto.html           Formulario de contacto
 ├── legal/
 │   ├── aviso-legal.html
 │   ├── privacidad.html
 │   └── cookies.html
 ├── assets/
-│   ├── styles.css          CSS compartido
-│   └── main.js             Nav toggle mobile
-├── vercel.json             Config deploy
-├── robots.txt
-├── sitemap.xml
+│   ├── styles.css            CSS principal
+│   ├── panel-mockups.css     Browser chrome, sidebar panel, testimonios, video frame
+│   ├── main.js               Nav mobile
+│   ├── leads.js              Bind form[data-wp-form] → Supabase REST
+│   ├── supabase-config.js    URL + publishable key
+│   ├── demo.mp4              Vídeo Remotion (3.2MB)
+│   └── demo-poster.svg
+├── remotion/                 Proyecto Remotion (npm install → npm run build)
+├── supabase/
+│   ├── config.toml           Linkado a aloxbttkypvkcrethwex
+│   ├── migrations/           Schema de leads + triggers
+│   └── functions/notify-lead/  Edge Function: lead → email vía Resend
+├── vercel.json · sitemap.xml · robots.txt
+├── CLAUDE.md                 Contexto para futuras sesiones de Claude
 └── README.md
 ```
 
-## Stack
+## Flujo de captación de leads
 
-- HTML estático puro (sin build)
-- CSS custom con variables
-- Fonts: Bebas Neue, Manrope, Space Grotesk (Google Fonts)
-- Vercel para hosting
-
-## Deploy
-
-```bash
-vercel --prod
+```
+form[data-wp-form] → Supabase REST (anon insert leads)
+                       ↓ trigger after-insert
+                   pg_net.http_post
+                       ↓
+              Edge Function notify-lead
+                       ↓
+                 Resend → email a felipecabarro@gmail.com
 ```
 
-O conectar el repo de GitHub a Vercel y desplegar en cada push a `main`.
+Tipos de lead: `contact`, `demo_request`, `waitlist_basic`, `waitlist_pro`, `custom_quote`.
+Los waitlist se generan desde URLs `?plan=basico&waitlist=1` que `contacto.html` interpreta.
 
-## Dominio
+## Comandos comunes
 
-Configurar en Vercel → Settings → Domains: `wavepanel.com` (pendiente).
+```bash
+# Push (en macOS, evitar prompt invisible de keychain)
+gh auth setup-git && git push origin main
 
-## TODO
+# Schema de Supabase
+supabase db push --linked
 
-- [ ] Screenshots reales del panel (reemplazar placeholders en `demo.html` y hero)
-- [ ] Formulario: conectar a Edge Function o Formspree/Basin para recibir emails
-- [ ] Favicon/OG image en PNG (ahora SVG inline)
-- [ ] Completar NIF y domicilio en aviso legal
-- [ ] Añadir Plausible o Google Analytics cuando haya cookie banner
-- [ ] Cookie banner con consentimiento
+# Edge Function deploy
+supabase functions deploy notify-lead
+
+# Render del vídeo demo (requiere Node + ffmpeg)
+cd remotion && npm install && npm run build
+```
+
+## Estrategia comercial — Camino A
+
+**No hay multi-tenant todavía.** Solo se vende el **Plan Personalizado** (2.500€-2.900€) clonando el repo de Entre Olas + Supabase nuevo por cliente. Los planes Básico (29€/mes) y Pro (79€/mes) están en lista de espera en la web — captamos leads pero no se pueden activar sin self-service.
+
+Plan: vender 5+ Personalizados → con esa validación construir multi-tenant.
+
+## Pendientes
+
+- [ ] Comprar dominio (`wavepanel.app` recomendado, ~14€/año) y conectar en Vercel
+- [ ] Verificar dominio en Resend → poder enviar emails desde `hola@wavepanel.app` a cualquier destinatario (ahora solo a `felipecabarro@gmail.com`)
+- [ ] Screenshots reales del panel para reemplazar placeholders del hero
+- [ ] OG image PNG (ahora SVG inline) para que se vea bien al compartir
+- [ ] Cookie banner con consentimiento + Plausible o GA
+- [ ] Completar NIF y domicilio en `legal/aviso-legal.html`
+- [ ] Kit de clonación del Plan Personalizado (script + checklist) → escalar Camino A
+- [ ] **🔒 Rotar secrets que se compartieron en chat:** Resend API key + Supabase service_role JWT
