@@ -1,0 +1,22 @@
+{
+  "name": "wavepanel-demo-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion project that renders the WavePanel demo video",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion render WavePanelDemo ../assets/demo.mp4 --codec=h264",
+    "build:preview": "remotion render WavePanelDemo out.mp4 --codec=h264"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.314",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.314"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "typescript": "5.6.3"
+  }
+}
