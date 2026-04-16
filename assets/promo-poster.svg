@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f2f39"/>
+      <stop offset="100%" stop-color="#1a3d47"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="60%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#FFCC01" stop-opacity=".25"/>
+      <stop offset="50%" stop-color="#FFCC01" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+
+  <text x="960" y="420" text-anchor="middle" fill="rgba(255,255,255,.7)"
+        font-family="Space Grotesk, sans-serif" font-size="24" letter-spacing="8">
+    WAVEPANEL
+  </text>
+  <text x="960" y="540" text-anchor="middle" fill="#fff"
+        font-family="Bebas Neue, sans-serif" font-size="120" letter-spacing="4">
+    TU ESCUELA.
+  </text>
+  <text x="960" y="660" text-anchor="middle" fill="#FFCC01"
+        font-family="Bebas Neue, sans-serif" font-size="120" letter-spacing="4">
+    DIGITALIZADA.
+  </text>
+
+  <circle cx="960" cy="820" r="56" fill="#FFCC01"/>
+  <polygon points="944,793 944,847 992,820" fill="#0f2f39"/>
+
+  <text x="960" y="940" text-anchor="middle" fill="rgba(255,255,255,.5)"
+        font-family="Space Grotesk, sans-serif" font-size="20" letter-spacing="6">
+    1 MIN · HORIZONTAL · 1080P
+  </text>
+</svg>

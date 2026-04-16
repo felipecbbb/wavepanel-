@@ -196,36 +196,50 @@
       <p class="lead">Sin comisiones por reserva. Sin contratos de permanencia. Cancela cuando quieras.</p>
     </div>
 
+    <!-- Toggle Mensual/Anual -->
+    <div class="billing-toggle" id="billingToggleHome" data-period="annual" style="display:flex;justify-content:center;margin-bottom:36px;">
+      <div style="background:var(--color-paper);border:1px solid var(--color-line);border-radius:99px;padding:4px;display:inline-flex;gap:4px;box-shadow:var(--shadow-sm);">
+        <button type="button" class="toggle-btn-home" data-period-btn="monthly" style="border:none;background:transparent;padding:10px 20px;border-radius:99px;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;color:var(--color-muted);cursor:pointer;transition:all .2s;letter-spacing:.02em;">Mensual</button>
+        <button type="button" class="toggle-btn-home active" data-period-btn="annual" style="border:none;background:var(--color-navy);color:#fff;padding:10px 20px;border-radius:99px;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;display:inline-flex;align-items:center;gap:8px;">Anual <span style="background:var(--color-yellow);color:var(--color-navy);padding:2px 8px;border-radius:99px;font-size:.68rem;font-weight:700;">−17%</span></button>
+      </div>
+    </div>
+
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-badge" style="background:#214a57;color:#fff;">Lista de espera</div>
-        <div class="plan-header"><p class="plan-name">Básico</p><p class="plan-desc">Para escuelas que empiezan o con pocos clientes</p></div>
-        <div class="plan-price"><span class="amount">29€</span><span class="period">/mes</span></div>
+        <div class="plan-header"><p class="plan-name">Esencial</p><p class="plan-desc">Escuelas pequeñas, operativa básica</p></div>
+        <div class="plan-price">
+          <span class="amount" data-price-monthly="35€" data-price-annual="29€">29€</span>
+          <span class="period">/mes</span>
+        </div>
         <ul class="plan-features">
           <li>Web con subdominio</li>
           <li>Panel admin + calendario</li>
-          <li>Hasta 50 reservas/mes</li>
+          <li>Hasta 100 reservas/mes</li>
           <li>Alquiler de material</li>
           <li>Check-in digital con firma</li>
-          <li>Comunidad WavePanel</li>
+          <li>Soporte asistido por IA</li>
         </ul>
-        <a href="/contacto.html?plan=basico&waitlist=1" class="btn outline full">Apuntarme a la lista</a>
+        <a href="/contacto.html?plan=esencial&waitlist=1" class="btn outline full">Apuntarme a la lista</a>
       </div>
 
       <div class="plan-card featured">
         <div class="plan-badge">Lista de espera · más popular</div>
-        <div class="plan-header"><p class="plan-name">Profesional</p><p class="plan-desc">Todas las herramientas para escuelas consolidadas</p></div>
-        <div class="plan-price"><span class="amount">79€</span><span class="period">/mes</span></div>
+        <div class="plan-header"><p class="plan-name">Completo</p><p class="plan-desc">El plan que necesita el 80% de las escuelas</p></div>
+        <div class="plan-price">
+          <span class="amount" data-price-monthly="89€" data-price-annual="74€">74€</span>
+          <span class="period">/mes</span>
+        </div>
         <ul class="plan-features">
-          <li>Todo lo del Básico</li>
-          <li>Clientes ilimitados</li>
+          <li>Todo lo del Esencial (sin límites)</li>
           <li>Dominio propio</li>
-          <li>Tienda + Surf Camps incluidos</li>
+          <li>Tienda + Surf Camps + alojamiento</li>
+          <li>Bonos, packs y cupones</li>
           <li>Pagos online (3 pasarelas)</li>
           <li>Emails con tu marca</li>
-          <li>Voto prioritario en comunidad</li>
+          <li>Soporte humano 1:1</li>
         </ul>
-        <a href="/contacto.html?plan=profesional&waitlist=1" class="btn yellow full">Apuntarme a la lista</a>
+        <a href="/contacto.html?plan=completo&waitlist=1" class="btn yellow full">Apuntarme a la lista</a>
       </div>
 
       <div class="plan-card">
@@ -233,7 +247,7 @@
         <div class="plan-header"><p class="plan-name">Personalizado</p><p class="plan-desc">Web y sistema 100% a medida, como Entre Olas</p></div>
         <div class="plan-price"><span class="amount">2.900€</span><span class="period">pago único</span></div>
         <ul class="plan-features">
-          <li>Todo lo del Profesional</li>
+          <li>Todo lo del Completo</li>
           <li>Diseño 100% personalizado</li>
           <li>Desarrollo a medida</li>
           <li>Integraciones custom</li>
@@ -244,6 +258,27 @@
         <a href="/contacto.html?plan=personalizado" class="btn dark full">Solicitar presupuesto</a>
       </div>
     </div>
+
+    <script>
+      (() => {
+        const toggle = document.getElementById('billingToggleHome');
+        if (!toggle) return;
+        const btns = toggle.querySelectorAll('.toggle-btn-home');
+        const setPeriod = (period) => {
+          toggle.dataset.period = period;
+          btns.forEach(b => {
+            const isActive = b.dataset.periodBtn === period;
+            b.classList.toggle('active', isActive);
+            b.style.background = isActive ? 'var(--color-navy)' : 'transparent';
+            b.style.color = isActive ? '#fff' : 'var(--color-muted)';
+          });
+          document.querySelectorAll('.plans-grid [data-price-monthly]').forEach(el => {
+            el.textContent = period === 'annual' ? el.dataset.priceAnnual : el.dataset.priceMonthly;
+          });
+        };
+        btns.forEach(b => b.addEventListener('click', () => setPeriod(b.dataset.periodBtn)));
+      })();
+    </script>
 
     <div style="text-align:center;margin-top:40px;">
       <a href="/planes.html" class="btn outline">Ver comparativa detallada</a>

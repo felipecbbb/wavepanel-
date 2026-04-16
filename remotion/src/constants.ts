@@ -23,3 +23,20 @@ export const SCENES = {
 
 export const TOTAL_DURATION =
   SCENES.outro.start + SCENES.outro.duration;
+
+// ── Promo composition timings (75s · 2250 frames) ──────────
+// Apple-style cinematic pacing.
+export const PROMO = {
+  logoReveal:     { start: 0,    duration: 90  }, // 3s
+  titleCard:      { start: 90,   duration: 150 }, // 5s
+  problem:        { start: 240,  duration: 270 }, // 9s
+  solution:       { start: 510,  duration: 150 }, // 5s
+  calendar:       { start: 660,  duration: 270 }, // 9s
+  newReservation: { start: 930,  duration: 270 }, // 9s
+  dashboard:      { start: 1200, duration: 270 }, // 9s
+  benefits:       { start: 1470, duration: 360 }, // 12s
+  pricing:        { start: 1830, duration: 240 }, // 8s
+  cta:            { start: 2070, duration: 180 }, // 6s
+} as const;
+
+export const PROMO_TOTAL = PROMO.cta.start + PROMO.cta.duration; // 2250 = 75s

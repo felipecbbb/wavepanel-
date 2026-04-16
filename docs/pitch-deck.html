@@ -326,12 +326,12 @@
 <nav class="nav-dots">
   <a href="#s1" class="active"></a><a href="#s2"></a><a href="#s3"></a><a href="#s4"></a>
   <a href="#s5"></a><a href="#s6"></a><a href="#s7"></a><a href="#s8"></a><a href="#s9"></a>
-  <a href="#s10"></a><a href="#s11"></a><a href="#s12"></a><a href="#s13"></a>
+  <a href="#s10"></a><a href="#s11"></a><a href="#s12"></a><a href="#s13"></a><a href="#s14"></a>
 </nav>
 
 <!-- S1 · COVER -->
 <section class="slide dark" id="s1">
-  <span class="slide-num">01 / 13</span>
+  <span class="slide-num">01 / 14</span>
   <div class="container">
     <div class="logo">wave<span>panel</span></div>
     <h1 style="margin-top:80px;">Tu escuela.<br><em>Digitalizada.</em></h1>
@@ -349,7 +349,7 @@
 
 <!-- S2 · PROBLEMA -->
 <section class="slide" id="s2">
-  <span class="slide-num">02 / 13</span>
+  <span class="slide-num">02 / 14</span>
   <div class="container">
     <span class="kicker">Problema</span>
     <h2>Las escuelas de surf<br><em>gestionan a mano.</em></h2>
@@ -382,7 +382,7 @@
 
 <!-- S3 · SOLUCIÓN -->
 <section class="slide sand" id="s3">
-  <span class="slide-num">03 / 13</span>
+  <span class="slide-num">03 / 14</span>
   <div class="container">
     <span class="kicker">Solución</span>
     <h2>Un ecosistema completo,<br><em>no un widget.</em></h2>
@@ -423,9 +423,38 @@
   </div>
 </section>
 
-<!-- S4 · PRODUCTO / CASO REAL -->
-<section class="slide dark" id="s4">
-  <span class="slide-num">04 / 13</span>
+<!-- S4 · VÍDEO PROMO (Apple-style) -->
+<section class="slide dark" id="s4" style="padding:40px clamp(24px, 5vw, 80px);">
+  <span class="slide-num">04 / 14</span>
+  <div class="container" style="text-align:center;">
+    <span class="kicker">Vídeo explicativo</span>
+    <h2 style="margin-bottom:16px;">90 segundos<br><em>por dentro del producto.</em></h2>
+    <p class="lead" style="margin:0 auto 32px;max-width:600px;">El mismo panel que usa Entre Olas Surf. Real, no maqueta.</p>
+
+    <div style="max-width:1040px;margin:0 auto;aspect-ratio:16/9;background:#000;border-radius:20px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);position:relative;">
+      <video
+        id="pitchPromoVideo"
+        controls
+        playsinline
+        preload="metadata"
+        poster="/assets/promo-poster.svg"
+        style="width:100%;height:100%;object-fit:cover;display:block;">
+        <source src="/assets/promo.mp4" type="video/mp4">
+        Tu navegador no soporta vídeo HTML5. <a href="/assets/promo.mp4" style="color:var(--yellow);">Descarga el vídeo</a>.
+      </video>
+    </div>
+
+    <div class="tags" style="justify-content:center;margin-top:28px;">
+      <span class="tag">Apple-style</span>
+      <span class="tag">16:9 · 1920×1080</span>
+      <span class="tag">Generado con Remotion</span>
+    </div>
+  </div>
+</section>
+
+<!-- S5 · PRODUCTO / CASO REAL -->
+<section class="slide dark" id="s5">
+  <span class="slide-num">05 / 14</span>
   <div class="container">
     <span class="kicker">Producto — caso real</span>
     <h2>Entre Olas Surf<br><em>en producción desde 2026.</em></h2>
@@ -476,8 +505,8 @@
 </section>
 
 <!-- S5 · MERCADO -->
-<section class="slide" id="s5">
-  <span class="slide-num">05 / 13</span>
+<section class="slide" id="s6">
+  <span class="slide-num">06 / 14</span>
   <div class="container">
     <span class="kicker">Mercado</span>
     <h2>Nicho pequeño,<br><em>pero en crecimiento.</em></h2>
@@ -515,8 +544,8 @@
 </section>
 
 <!-- S6 · MODELO DE NEGOCIO -->
-<section class="slide sand" id="s6">
-  <span class="slide-num">06 / 13</span>
+<section class="slide sand" id="s7">
+  <span class="slide-num">07 / 14</span>
   <div class="container">
     <span class="kicker">Modelo de negocio</span>
     <h2>Simple:<br><em>3 planes, cuota fija, 0% comisión.</em></h2>
@@ -524,21 +553,28 @@
     <div class="plans-grid">
       <div class="plan">
         <div class="name">Esencial</div>
-        <div><span class="price">39€</span><span class="period">/mes</span></div>
-        <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">Escuelas pequeñas, solo reservas</p>
+        <div>
+          <span class="price">29€</span><span class="period">/mes anual</span>
+        </div>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px;">o 35€/mes si pagas mensual</p>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">Escuelas pequeñas · self-service + IA</p>
         <ul>
           <li>Core completo (reservas + calendario)</li>
           <li>Hasta 100 reservas/mes</li>
           <li>Web con subdominio</li>
-          <li>Gestión de clientes</li>
+          <li>Gestión de clientes e instructores</li>
           <li>Alquiler de material</li>
           <li>Check-in digital con firma</li>
+          <li>Soporte asistido por IA</li>
         </ul>
       </div>
 
       <div class="plan featured">
         <div class="name">Completo</div>
-        <div><span class="price">89€</span><span class="period">/mes</span></div>
+        <div>
+          <span class="price">74€</span><span class="period">/mes anual</span>
+        </div>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px;">o 89€/mes si pagas mensual</p>
         <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">El plan que necesita el 80% de escuelas</p>
         <ul>
           <li>Todo lo de Esencial (sin límite)</li>
@@ -549,12 +585,14 @@
           <li>Cupones y descuentos</li>
           <li>Pagos online (3 pasarelas)</li>
           <li>Emails con marca propia</li>
+          <li>Soporte humano 1:1</li>
         </ul>
       </div>
 
       <div class="plan">
         <div class="name">Personalizado</div>
         <div><span class="price">2.900€</span><span class="period">pago único</span></div>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px;">Sin mensualidades</p>
         <p style="font-size:.85rem;color:var(--muted);margin-top:8px;">Web 100% a medida (caso Entre Olas)</p>
         <ul>
           <li>Todo lo del plan Completo</li>
@@ -575,8 +613,8 @@
 </section>
 
 <!-- S7 · DESCUENTOS POR PERIODO -->
-<section class="slide" id="s7">
-  <span class="slide-num">07 / 13</span>
+<section class="slide" id="s8">
+  <span class="slide-num">08 / 14</span>
   <div class="container">
     <span class="kicker">Periodos de facturación</span>
     <h2>Compromiso = <em>descuento real.</em></h2>
@@ -587,8 +625,8 @@
         <tr>
           <th>Periodo</th>
           <th>Descuento</th>
-          <th>Esencial (39€/mes)</th>
-          <th class="highlight">Completo (89€/mes)</th>
+          <th>Esencial</th>
+          <th class="highlight">Completo</th>
           <th>Ahorro anual</th>
         </tr>
       </thead>
@@ -596,30 +634,30 @@
         <tr>
           <td><strong>Mensual</strong></td>
           <td>0%</td>
-          <td>39€/mes</td>
+          <td>35€/mes</td>
           <td class="highlight">89€/mes</td>
           <td>—</td>
         </tr>
         <tr>
           <td><strong>Trimestral</strong></td>
           <td>5%</td>
-          <td>37€/mes</td>
+          <td>33€/mes</td>
           <td class="highlight">85€/mes</td>
-          <td>23€ / 54€</td>
+          <td>24€ / 48€</td>
         </tr>
         <tr>
           <td><strong>Semestral</strong></td>
           <td>10%</td>
-          <td>35€/mes</td>
+          <td>31€/mes</td>
           <td class="highlight">80€/mes</td>
-          <td>47€ / 108€</td>
+          <td>48€ / 108€</td>
         </tr>
         <tr style="background:rgba(255,204,1,.12);">
           <td><strong>Anual</strong> 🔥</td>
           <td><strong>17%</strong></td>
-          <td><strong>32€/mes</strong></td>
+          <td><strong>29€/mes</strong></td>
           <td class="highlight"><strong>74€/mes</strong></td>
-          <td><strong>78€ / 180€</strong></td>
+          <td><strong>72€ / 180€</strong></td>
         </tr>
       </tbody>
     </table>
@@ -631,8 +669,8 @@
 </section>
 
 <!-- S8 · COMPETENCIA (datos reales verificados) -->
-<section class="slide dark" id="s8">
-  <span class="slide-num">08 / 13</span>
+<section class="slide dark" id="s9">
+  <span class="slide-num">09 / 14</span>
   <div class="container">
     <span class="kicker">Competencia · datos verificados Q2 2026</span>
     <h2>Ninguno cubre<br><em>el stack completo.</em></h2>
@@ -654,7 +692,7 @@
         <tbody>
           <tr style="background:rgba(255,204,1,.15);">
             <td><strong style="color:var(--yellow);">WavePanel</strong></td>
-            <td><strong>39-89€/mes</strong></td>
+            <td><strong>29-89€/mes</strong></td>
             <td><strong>0%</strong></td>
             <td><span class="check">✓</span> Completa</td>
             <td><span class="check">✓</span> Completo</td>
@@ -771,8 +809,8 @@
 </section>
 
 <!-- S9 · COSTE TOTAL COMPARADO (escenario real) -->
-<section class="slide" id="s9">
-  <span class="slide-num">09 / 13</span>
+<section class="slide" id="s10">
+  <span class="slide-num">10 / 14</span>
   <div class="container">
     <span class="kicker">Coste total comparado</span>
     <h2>Escuela típica con<br><em>30.000€/año en reservas online.</em></h2>
@@ -864,8 +902,8 @@
 </section>
 
 <!-- S10 · UNIT ECONOMICS -->
-<section class="slide sand" id="s10">
-  <span class="slide-num">10 / 13</span>
+<section class="slide sand" id="s11">
+  <span class="slide-num">11 / 14</span>
   <div class="container">
     <span class="kicker">Economía unitaria</span>
     <h2>Márgenes de SaaS<br><em>puro (87-100%).</em></h2>
@@ -928,8 +966,8 @@
 </section>
 
 <!-- S11 · PROYECCIONES -->
-<section class="slide dark" id="s11">
-  <span class="slide-num">11 / 13</span>
+<section class="slide dark" id="s12">
+  <span class="slide-num">12 / 14</span>
   <div class="container">
     <span class="kicker">Proyecciones 24 meses</span>
     <h2>Camino A:<br><em>venta directa antes del SaaS.</em></h2>
@@ -983,8 +1021,8 @@
 </section>
 
 <!-- S12 · GO TO MARKET -->
-<section class="slide" id="s12">
-  <span class="slide-num">12 / 13</span>
+<section class="slide" id="s13">
+  <span class="slide-num">13 / 14</span>
   <div class="container">
     <span class="kicker">Go to market</span>
     <h2>Outbound 1:1 +<br><em>comunidad tribal.</em></h2>
@@ -1032,8 +1070,8 @@
 </section>
 
 <!-- S13 · CIERRE -->
-<section class="slide yellow" id="s13">
-  <span class="slide-num">13 / 13</span>
+<section class="slide yellow" id="s14">
+  <span class="slide-num">14 / 14</span>
   <div class="container" style="text-align:center;">
     <div class="logo" style="justify-content:center;display:flex;">wave<span>panel</span></div>
     <h1 style="margin-top:60px;">El software que<br>las escuelas <em>necesitan.</em></h1>

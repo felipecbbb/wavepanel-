@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion render WavePanelDemo ../assets/demo.mp4 --codec=h264",
+    "build:promo": "remotion render WavePanelPromo ../assets/promo.mp4 --codec=h264",
+    "build:all": "npm run build && npm run build:promo",
     "build:preview": "remotion render WavePanelDemo out.mp4 --codec=h264"
   },
   "dependencies": {

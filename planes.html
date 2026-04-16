@@ -35,81 +35,84 @@
       <p class="kicker">Planes y precios</p>
       <h1 class="hero-title">Precios transparentes,<br><em>sin sorpresas.</em></h1>
       <p class="hero-lead">Sin comisiones por reserva. Sin contratos de permanencia. Cancela cuando quieras.</p>
-      <p style="margin-top:16px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;color:rgba(255,255,255,.65);max-width:620px;">Los planes <strong style="color:var(--color-yellow);">Básico y Pro</strong> están en lista de espera mientras terminamos el alta self-service. El plan <strong style="color:var(--color-yellow);">Personalizado</strong> está disponible hoy mismo y ya hay 1 escuela en producción.</p>
+      <p style="margin-top:16px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;color:rgba(255,255,255,.65);max-width:620px;">Los planes <strong style="color:var(--color-yellow);">Esencial y Completo</strong> están en lista de espera mientras terminamos el alta self-service. El plan <strong style="color:var(--color-yellow);">Personalizado</strong> está disponible hoy mismo y ya hay 1 escuela en producción.</p>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
+
+    <!-- Toggle Mensual/Anual -->
+    <div class="billing-toggle" id="billingToggle" data-period="annual" style="display:flex;justify-content:center;margin-bottom:40px;">
+      <div style="background:var(--color-paper);border:1px solid var(--color-line);border-radius:99px;padding:4px;display:inline-flex;gap:4px;box-shadow:var(--shadow-sm);">
+        <button type="button" class="toggle-btn" data-period-btn="monthly" style="border:none;background:transparent;padding:10px 20px;border-radius:99px;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;color:var(--color-muted);cursor:pointer;transition:all .2s;letter-spacing:.02em;">Mensual</button>
+        <button type="button" class="toggle-btn active" data-period-btn="annual" style="border:none;background:var(--color-navy);color:#fff;padding:10px 20px;border-radius:99px;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;display:inline-flex;align-items:center;gap:8px;">Anual <span style="background:var(--color-yellow);color:var(--color-navy);padding:2px 8px;border-radius:99px;font-size:.68rem;font-weight:700;">−17%</span></button>
+      </div>
+    </div>
+
     <div class="plans-grid">
 
       <div class="plan-card">
         <div class="plan-badge" style="background:#214a57;color:#fff;">Lista de espera</div>
-        <div class="plan-header"><p class="plan-name">Básico</p><p class="plan-desc">Para escuelas que empiezan o con pocos clientes</p></div>
-        <div class="plan-price"><span class="amount">29€</span><span class="period">/mes</span></div>
+        <div class="plan-header"><p class="plan-name">Esencial</p><p class="plan-desc">Escuelas pequeñas, operativa básica autónoma</p></div>
+        <div class="plan-price">
+          <span class="amount" data-price-monthly="35€" data-price-annual="29€">29€</span>
+          <span class="period">/mes</span>
+        </div>
+        <p class="plan-price-note" style="font-size:.8rem;color:var(--color-muted);margin-top:-18px;margin-bottom:6px;"><span data-period-label data-label-monthly="Facturado mes a mes" data-label-annual="Facturado anualmente · 348€/año">Facturado anualmente · 348€/año</span></p>
         <ul class="plan-features">
+          <li>Core completo (reservas + calendario)</li>
+          <li>Hasta 100 reservas/mes</li>
           <li>Web con subdominio (tuescuela.wavepanel.com)</li>
-          <li>Panel de administración</li>
-          <li>Reservas y calendario</li>
-          <li>Hasta 50 reservas/mes</li>
-          <li>Gestión de actividades</li>
+          <li>Gestión de clientes e instructores</li>
           <li>Alquiler de material</li>
           <li>Check-in digital con firma</li>
-          <li>Acceso a la comunidad WavePanel</li>
-          <li>Soporte por email</li>
-          <li class="disabled">Personalización visual (marca WavePanel visible)</li>
-          <li class="disabled">Estadísticas y dashboard</li>
+          <li>Base de conocimiento + comunidad</li>
+          <li>Soporte asistido por IA</li>
           <li class="disabled">Tienda e-commerce</li>
-          <li class="disabled">Pagos online (Stripe/PayPal/Redsys)</li>
-          <li class="disabled">Bonos y packs de clases</li>
-          <li class="disabled">Cupones y descuentos</li>
-          <li class="disabled">Dominio propio</li>
           <li class="disabled">Surf camps con alojamiento</li>
-          <li class="disabled">Emails transaccionales</li>
+          <li class="disabled">Pagos online</li>
+          <li class="disabled">Dominio propio</li>
+          <li class="disabled">Emails con marca</li>
+          <li class="disabled">Soporte 1:1</li>
         </ul>
-        <a href="/contacto.html?plan=basico&waitlist=1" class="btn outline full">Apuntarme a la lista</a>
+        <a href="/contacto.html?plan=esencial&waitlist=1" class="btn outline full">Apuntarme a la lista</a>
       </div>
 
       <div class="plan-card featured">
         <div class="plan-badge">Lista de espera · más popular</div>
-        <div class="plan-header"><p class="plan-name">Profesional</p><p class="plan-desc">Todas las herramientas para escuelas consolidadas</p></div>
-        <div class="plan-price"><span class="amount">79€</span><span class="period">/mes</span></div>
+        <div class="plan-header"><p class="plan-name">Completo</p><p class="plan-desc">El plan que necesita el 80% de las escuelas</p></div>
+        <div class="plan-price">
+          <span class="amount" data-price-monthly="89€" data-price-annual="74€">74€</span>
+          <span class="period">/mes</span>
+        </div>
+        <p class="plan-price-note" style="font-size:.8rem;color:var(--color-muted);margin-top:-18px;margin-bottom:6px;"><span data-period-label data-label-monthly="Facturado mes a mes" data-label-annual="Facturado anualmente · 888€/año">Facturado anualmente · 888€/año</span></p>
         <ul class="plan-features">
-          <li>Todo lo del plan Básico</li>
-          <li>Clientes ilimitados</li>
+          <li>Todo lo de Esencial (sin límite de reservas)</li>
           <li>Dominio propio</li>
-          <li>Pagos online (Stripe, PayPal, Redsys)</li>
           <li>Tienda e-commerce completa</li>
+          <li>Surf Camps + alojamiento</li>
           <li>Bonos y packs de clases</li>
-          <li>Surf camps con alojamiento</li>
           <li>Cupones y descuentos</li>
+          <li>Pagos online (Stripe, PayPal, Redsys)</li>
           <li>Emails con tu marca</li>
           <li>Estadísticas avanzadas</li>
           <li>Widget embebible</li>
           <li>Páginas legales (RGPD)</li>
           <li>Voto prioritario en comunidad</li>
-          <li>Soporte prioritario</li>
+          <li>Soporte humano 1:1</li>
         </ul>
-        <a href="/contacto.html?plan=profesional&waitlist=1" class="btn yellow full">Apuntarme a la lista</a>
+        <a href="/contacto.html?plan=completo&waitlist=1" class="btn yellow full">Apuntarme a la lista</a>
       </div>
 
       <div class="plan-card">
         <div class="plan-badge" style="background:#FFCC01;color:#0f2f39;">Disponible hoy</div>
         <div class="plan-header"><p class="plan-name">Personalizado</p><p class="plan-desc">Web y sistema 100% a medida, como Entre Olas Surf</p></div>
-        <div style="display:grid;gap:16px;">
-          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
-            <div class="plan-price" style="margin-bottom:6px;"><span class="amount">2.900€</span><span class="period">pago único</span></div>
-            <p style="font-size:.84rem;color:var(--color-muted);">Hosting incluido para siempre. Sin cuotas mensuales ni anuales.</p>
-          </div>
-          <div style="text-align:center;font-family:'Space Grotesk',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);font-weight:600;">o bien</div>
-          <div style="background:var(--color-sand);border-radius:14px;padding:20px;">
-            <div class="plan-price" style="margin-bottom:6px;"><span class="amount">2.500€</span><span class="period">+ 100€/año hosting</span></div>
-            <p style="font-size:.84rem;color:var(--color-muted);">Menor inversión inicial. Hosting y mantenimiento por solo 100€ al año.</p>
-          </div>
-        </div>
+        <div class="plan-price"><span class="amount">2.900€</span><span class="period">pago único</span></div>
+        <p class="plan-price-note" style="font-size:.8rem;color:var(--color-muted);margin-top:-18px;margin-bottom:6px;">Hosting incluido para siempre · Sin cuotas</p>
         <ul class="plan-features">
-          <li>Todo lo del plan Profesional</li>
+          <li>Todo lo del plan Completo</li>
           <li>Diseño web 100% personalizado</li>
           <li>Desarrollo a medida</li>
           <li>Funcionalidades exclusivas</li>
@@ -124,34 +127,66 @@
       </div>
 
     </div>
+
+    <p style="text-align:center;margin-top:28px;font-size:.85rem;color:var(--color-muted);">
+      Puedes cambiar de plan en cualquier momento · Sin permanencia · 0% comisión por reserva
+    </p>
   </div>
 </section>
+
+<script>
+  (() => {
+    const toggle = document.getElementById('billingToggle');
+    if (!toggle) return;
+    const btns = toggle.querySelectorAll('.toggle-btn');
+    const setPeriod = (period) => {
+      toggle.dataset.period = period;
+      btns.forEach(b => {
+        const isActive = b.dataset.periodBtn === period;
+        b.classList.toggle('active', isActive);
+        b.style.background = isActive ? 'var(--color-navy)' : 'transparent';
+        b.style.color = isActive ? '#fff' : 'var(--color-muted)';
+      });
+      document.querySelectorAll('[data-price-monthly]').forEach(el => {
+        el.textContent = period === 'annual' ? el.dataset.priceAnnual : el.dataset.priceMonthly;
+      });
+      document.querySelectorAll('[data-period-label]').forEach(el => {
+        el.textContent = period === 'annual' ? el.dataset.labelAnnual : el.dataset.labelMonthly;
+      });
+    };
+    btns.forEach(b => b.addEventListener('click', () => setPeriod(b.dataset.periodBtn)));
+  })();
+</script>
 
 <section class="section alt">
   <div class="container">
     <div class="section-header">
-      <p class="kicker">Add-ons</p>
-      <h2 class="title">Añade solo lo que necesites</h2>
-      <p class="lead">Si vas a empezar con el Básico pero necesitas un módulo concreto, puedes añadirlo como add-on mensual.</p>
+      <p class="kicker">Add-on único</p>
+      <h2 class="title">WhatsApp Business</h2>
+      <p class="lead">El único add-on con coste variable justificable (Meta cobra por conversación). Disponible en cualquier plan.</p>
     </div>
 
-    <div class="module-pricing-table" style="margin-top:0;">
-      <h3>Precio de add-ons por plan</h3>
+    <div class="module-pricing-table" style="margin-top:0;max-width:720px;margin-left:auto;margin-right:auto;">
+      <h3>Precio del add-on por plan</h3>
       <table class="pricing-matrix">
         <thead>
           <tr>
-            <th style="width:35%;">Módulo</th>
-            <th>Básico</th>
-            <th class="highlight">Profesional</th>
-            <th>Custom</th>
+            <th style="width:50%;">Módulo</th>
+            <th>Esencial</th>
+            <th class="highlight">Completo</th>
+            <th>Personalizado</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Tienda e-commerce</td><td><span class="addon-price">+19€/mes</span></td><td class="highlight"><span class="included-label">Incluido</span></td><td><span class="included-label">Incluido</span></td></tr>
-          <tr><td>Surf Camps & Alojamiento</td><td><span class="addon-price">+19€/mes</span></td><td class="highlight"><span class="included-label">Incluido</span></td><td><span class="included-label">Incluido</span></td></tr>
-          <tr><td>WhatsApp Business</td><td><span class="addon-price">+29€/mes</span></td><td class="highlight"><span class="addon-price">+29€/mes</span></td><td><span class="included-label">Incluido</span></td></tr>
+          <tr>
+            <td>WhatsApp Business (bot reservas, confirmaciones, recordatorios automáticos)</td>
+            <td><span class="addon-price">+29€/mes</span></td>
+            <td class="highlight"><span class="addon-price">+29€/mes</span></td>
+            <td><span class="included-label">Incluido</span></td>
+          </tr>
         </tbody>
       </table>
+      <p style="text-align:center;margin-top:20px;font-size:.88rem;color:var(--color-muted);">Tienda e-commerce y Surf Camps + Alojamiento están <strong style="color:var(--color-navy);">incluidos en el plan Completo</strong>, no son add-ons.</p>
     </div>
   </div>
 </section>
