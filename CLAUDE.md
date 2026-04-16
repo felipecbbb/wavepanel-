@@ -5,7 +5,7 @@ SaaS vertical para escuelas de surf, kite y deportes acuáticos. Repo y carpeta 
 ## Datos clave
 
 - **Repo:** `github.com/felipecbbb/wavepanel-`
-- **Carpeta:** `~/Desktop/wavepanel/` (NO `~/Desktop/entreolasur/saas-landing/` — eso ya no existe)
+- **Carpeta:** `~/Code/wavepanel/` (NO usar `~/Desktop/...` — el Desktop tiene problemas de mmap que cuelgan git/rsync/mv)
 - **Stack:** HTML estático + CSS + JS vanilla, sin build. Vercel para hosting.
 - **Supabase del SaaS:** `aloxbttkypvkcrethwex` (separado del de Entre Olas)
 - **Email transaccional:** Resend (free tier, key configurada como secret)
