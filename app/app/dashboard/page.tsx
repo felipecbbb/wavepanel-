@@ -22,7 +22,17 @@ export default async function DashboardPage({
 
   const h = await headers();
   const sp = await searchParams;
-  const slug = h.get('x-tenant-slug') ?? sp.tenant ?? null;
+  const host = (h.get('host') ?? '').toLowerCase();
+  const rootDomain = (process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? '').toLowerCase();
+
+  let slug: string | null = null;
+  // Si el ROOT_DOMAIN es un dominio propio y el host es un subdominio válido,
+  // lo extraemos. En vercel.app o localhost caemos al query param ?tenant=.
+  if (host && rootDomain && host.endsWith(`.${rootDomain}`) && !rootDomain.endsWith('.vercel.app')) {
+    const sub = host.slice(0, host.length - rootDomain.length - 1);
+    if (/^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/.test(sub)) slug = sub;
+  }
+  slug = slug ?? sp.tenant ?? null;
 
   if (!slug) {
     return (
