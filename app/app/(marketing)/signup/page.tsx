@@ -11,27 +11,18 @@ export default function SignupPage() {
   );
 
   if (state?.ok) {
-    if (state.needsEmailConfirm) {
-      return (
-        <div className="mx-auto w-[min(560px,92vw)] py-20">
-          <p className="kicker mb-3">Casi listo</p>
-          <h1 className="font-display text-4xl text-navy">Revisa tu email.</h1>
-          <p className="mt-4 text-muted">
-            Te hemos enviado un enlace para confirmar la cuenta. Cuando lo abras,
-            terminaremos de crear <strong className="text-navy">{state.slug}.wavepanel.app</strong>.
-          </p>
-        </div>
-      );
-    }
-
-    const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3001';
-    const pathOnVercelOrLocal = /(localhost|vercel\.app)$/i.test(rootDomain);
-    const href = pathOnVercelOrLocal
-      ? `/dashboard?tenant=${state.slug}`
-      : `https://${state.slug}.${rootDomain}/dashboard`;
-
-    if (typeof window !== 'undefined') window.location.href = href;
-    return null;
+    // state.ok sólo llega con needsEmailConfirm=true; el caso "ya tiene sesión"
+    // redirige directamente desde el Server Action con redirect().
+    return (
+      <div className="mx-auto w-[min(560px,92vw)] py-20">
+        <p className="kicker mb-3">Casi listo</p>
+        <h1 className="font-display text-4xl text-navy">Revisa tu email.</h1>
+        <p className="mt-4 text-muted">
+          Te hemos enviado un enlace para confirmar la cuenta. Cuando lo abras,
+          entrarás en <strong className="text-navy">{state.slug}</strong>.
+        </p>
+      </div>
+    );
   }
 
   return (
