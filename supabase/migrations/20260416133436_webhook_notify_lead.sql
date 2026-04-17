@@ -4,16 +4,20 @@
 -- Asegurar pg_net
 create extension if not exists pg_net with schema extensions;
 
--- Guardar el service_role JWT en Vault para no exponerlo en SQL
--- (Usamos el JWT legacy porque pg_net necesita un Bearer token completo, no las nuevas keys)
+-- El service_role JWT se guarda manualmente en Vault ANTES de aplicar esta migration.
+-- NO se hardcodea aquí: este archivo es público. Crear el secret en SQL Editor con:
+--
+--   select vault.create_secret(
+--     '<SERVICE_ROLE_JWT_LEGACY>',      -- Settings → API → JWT Secrets → legacy JWT
+--     'edge_function_token',
+--     'Service role JWT used by triggers to invoke Edge Functions'
+--   );
+--
+-- Validación: falla explícitamente si el secret no existe.
 do $$
 begin
   if not exists (select 1 from vault.secrets where name = 'edge_function_token') then
-    perform vault.create_secret(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsb3hidHRreXB2a2NyZXRod2V4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjMyODg4OCwiZXhwIjoyMDkxOTA0ODg4fQ.m6Vgr4kNO_13hARZ6Seya4psQbUOAflh-jVgVs9AcG0',
-      'edge_function_token',
-      'Service role JWT used by triggers to invoke Edge Functions'
-    );
+    raise exception 'Missing Vault secret "edge_function_token". Create it before applying this migration — see comment at top of file.';
   end if;
 end $$;
 

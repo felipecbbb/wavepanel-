@@ -41,9 +41,19 @@ NO hay multi-tenant ni self-service todavía. Solo se vende el **Plan Personaliz
 
 ## Tres carpetas distintas (no mezclar)
 
-- `~/Code/wavepanel/` — landing comercial del SaaS + kit de clonación. Este repo.
-- `~/Code/wavepanel-template/` — **código base** que se clona para cada cliente. Snapshot inicial = copia de Entre Olas; se irá generalizando (quitar branding, datos concretos). Propio repo git, propio ciclo de releases.
-- `~/Desktop/entreolasur/` — **primer cliente en producción**. NO se toca al iterar el SaaS. Recibe features del template por cherry-pick explícito cuando se decida, nunca automáticamente.
+- `~/Code/wavepanel/` — este repo. Monorepo con dos piezas:
+  - **Landing comercial** (raíz: `index.html`, `planes.html`, etc.) — HTML estático.
+  - **SaaS multi-tenant** (`app/`) — Next.js 16 + Supabase SSR + Stripe. Signup/login/dashboard funcionales desde 2026-04-17. Sirve los planes Básico y Pro (los que hoy están en lista de espera).
+- `~/Code/wavepanel-template/` — **código base** que se clona para cada cliente del Plan Personalizado. Snapshot inicial = copia de Entre Olas; se irá generalizando.
+- `~/Desktop/entreolasur/` — **primer cliente en producción**. NO se toca al iterar el SaaS. Recibe features del template por cherry-pick explícito.
+
+## Multi-tenant SaaS (app/)
+
+- **URL producción:** `{slug}.wavepanel.app` (subdominio por tenant) + `wavepanel.app` (landing).
+- **Dev:** `localhost:3001?tenant={slug}` (fallback sin /etc/hosts).
+- **Schema:** tabla `schools` (slug, plan, trial_ends_at, stripe_*) + `school_members` (school_id, user_id, role). RLS filtra por school del user autenticado.
+- **Signup:** client-side `auth.signUp` + RPC `create_school_with_owner` (SECURITY DEFINER). Crea trial de 14 días.
+- **Stripe:** aún no integrado (Fase 2). Hoy las cuentas trial creadas no pueden convertirse a pagadas.
 
 ## Flujo de leads (probado E2E)
 
@@ -62,11 +72,13 @@ Los waitlist se generan desde URLs `?plan=basico&waitlist=1` que `contacto.html`
 
 ## Pendientes conocidos
 
-- Verificar dominio en Resend cuando se compre `wavepanel.app` (o el TLD que se decida) → poder enviar a cualquier destinatario.
-- Comprar dominio y conectarlo a Vercel (HEAD del repo en `wavepanel-.vercel.app` mientras tanto).
+- **🔒 Rotar service_role JWT de Supabase** — el JWT legacy fue hardcodeado en migration `20260416133436_webhook_notify_lead.sql` y está en el git history del repo público. Settings → API → Reset legacy JWT secret. El archivo ya está saneado (requiere que el secret exista en Vault antes de aplicar).
+- **Fase 2 del SaaS:** integrar Stripe Subscriptions (prices para Básico/Pro mensual+anual) + webhook que actualice `stripe_status` en `schools`.
+- **Fase 3 del SaaS:** features del panel — reservas, clientes, actividades, calendario.
+- Verificar dominio en Resend cuando se compre `wavepanel.app` → poder enviar a cualquier destinatario.
+- Comprar dominio `wavepanel.app` y configurar en Vercel dos proyectos apuntando al mismo repo: landing (root) + app (`app/`, wildcard `*.wavepanel.app`).
 - Generalizar `wavepanel-template/`: quitar branding Entre Olas, datos Supabase concretos, imágenes, copy específico → placeholders.
 - Publicar `wavepanel-template` como repo en GitHub (privado al principio) y apuntar el kit allí en lugar de a una carpeta local.
-- Construir multi-tenant cuando haya 5+ clientes vendidos.
 
 ## Comandos comunes
 
