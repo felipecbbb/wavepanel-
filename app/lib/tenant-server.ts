@@ -52,17 +52,33 @@ export async function resolveActiveSchool(searchTenant?: string | null): Promise
     if (data) return data;
   }
 
-  // Fallback: primera school del user
-  const { data: firstMembership } = await supabase
+  // Fallback: primera school del user. Dos queries separadas (mas robusto
+  // que embedded select con alias de tabla, que a veces no resuelve bien).
+  const { data: membership, error: memberErr } = await supabase
     .from('school_members')
-    .select('schools(id, slug, name, plan, trial_ends_at, stripe_status)')
+    .select('school_id')
     .eq('user_id', user.id)
     .limit(1)
-    .maybeSingle();
+    .maybeSingle<{ school_id: string }>();
 
-  const school = (firstMembership?.schools as unknown) as ActiveSchool | null;
-  if (!school) redirect('/signup');
-  return school;
+  if (memberErr) {
+    console.error('[resolveActiveSchool] member lookup error:', memberErr);
+    redirect('/signup');
+  }
+  if (!membership) redirect('/signup');
+
+  const { data: activeSchool, error: schoolErr } = await supabase
+    .from('schools')
+    .select('id, slug, name, plan, trial_ends_at, stripe_status')
+    .eq('id', membership.school_id)
+    .maybeSingle<ActiveSchool>();
+
+  if (schoolErr) {
+    console.error('[resolveActiveSchool] school lookup error:', schoolErr);
+    redirect('/signup');
+  }
+  if (!activeSchool) redirect('/signup');
+  return activeSchool;
 }
 
 export function daysUntil(date: string): number {
