@@ -34,6 +34,9 @@ export default async function CalendarioPublicPage({
     .maybeSingle<Tenant>();
   if (!tenant) notFound();
 
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+
   const from = new Date();
   const to = new Date();
   to.setDate(to.getDate() + 30);
@@ -115,13 +118,22 @@ export default async function CalendarioPublicPage({
                               {c.level && <> · {c.level}</>}
                             </p>
                           </div>
-                          <div className="text-right shrink-0">
+                          <div className="text-right shrink-0 flex items-center gap-3">
                             {full ? (
                               <span className="font-label text-[0.66rem] bg-red-50 text-red-700 px-2 py-0.5 rounded-sm">
                                 COMPLETA
                               </span>
                             ) : (
-                              <p className="font-label text-[0.66rem] text-muted">{remaining} plazas</p>
+                              <>
+                                <p className="font-label text-[0.66rem] text-muted">{remaining} plazas</p>
+                                <Link
+                                  href={isLoggedIn ? `/${tenant.slug}/mi-cuenta/reservar?class=${c.id}` : `/${tenant.slug}/auth/signup?class=${c.id}`}
+                                  className="rounded-pill px-4 py-1.5 font-label text-[0.66rem] text-navy"
+                                  style={{ background: tenant.primary_color }}
+                                >
+                                  Reservar
+                                </Link>
+                              </>
                             )}
                           </div>
                         </div>

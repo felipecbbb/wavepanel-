@@ -7,7 +7,9 @@ type Tenant = {
   primary_color: string;
 };
 
-export function TenantHeader({ tenant }: { tenant: Tenant }) {
+export function TenantHeader({ tenant, isLoggedIn = false }: { tenant: Tenant; isLoggedIn?: boolean }) {
+  const ctaHref = isLoggedIn ? `/${tenant.slug}/mi-cuenta` : `/${tenant.slug}/auth/signup`;
+  const ctaLabel = isLoggedIn ? 'Mi cuenta' : 'Reservar';
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-navy/90 backdrop-blur-md border-b border-white/10">
       <div className="mx-auto w-[min(1220px,92vw)]">
@@ -31,20 +33,20 @@ export function TenantHeader({ tenant }: { tenant: Tenant }) {
             <Link href={`/${tenant.slug}/camps`} className="hover:text-white">Surf Camps</Link>
             <Link href={`/${tenant.slug}/calendario`} className="hover:text-white">Calendario</Link>
             <Link
-              href={`/${tenant.slug}/auth/signup`}
+              href={ctaHref}
               className="rounded-pill px-4 py-2 text-navy"
               style={{ background: tenant.primary_color }}
             >
-              Reservar
+              {ctaLabel}
             </Link>
           </nav>
 
           <Link
-            href={`/${tenant.slug}/auth/signup`}
+            href={ctaHref}
             className="md:hidden rounded-pill px-3 py-1.5 text-[0.72rem] font-label text-navy"
             style={{ background: tenant.primary_color }}
           >
-            Reservar
+            {ctaLabel}
           </Link>
         </div>
       </div>

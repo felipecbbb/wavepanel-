@@ -34,14 +34,14 @@ export default async function TenantLayout({
 
   if (!tenant) notFound();
 
-  // Inyecta el color de marca como CSS var local para que los bloques
-  // brandeados (botones, acentos) puedan usarlo.
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div
       className="min-h-screen flex flex-col bg-bg"
       style={{ ['--tenant-color' as string]: tenant.primary_color }}
     >
-      <TenantHeader tenant={tenant} />
+      <TenantHeader tenant={tenant} isLoggedIn={!!user} />
       <main className="flex-1">{children}</main>
       <TenantFooter tenant={tenant} />
     </div>
