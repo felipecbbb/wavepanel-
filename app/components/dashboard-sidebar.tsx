@@ -11,6 +11,7 @@ const sections = [
   { href: '/dashboard/calendario', label: 'Calendario' },
   { href: '/dashboard/camps', label: 'Surf Camps' },
   { href: '/dashboard/bonos', label: 'Bonos' },
+  { href: '/dashboard/pagos', label: 'Pagos' },
   { href: '/dashboard/instructores', label: 'Instructores' },
 ];
 
