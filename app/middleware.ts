@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
-import { getTenantSlug } from '@/lib/tenant';
+import { getTenantSlug } from './lib/tenant';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
