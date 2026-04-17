@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useMemo, useState } from 'react';
+import { useActionState, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/button';
 import { enrollClientAction, type EnrollFormState } from './actions';
 
@@ -38,7 +38,9 @@ export default function EnrollForm({
     [bonos, clientId, activityId],
   );
 
-  if (state?.ok && open) setTimeout(() => setOpen(false), 50);
+  useEffect(() => {
+    if (state?.ok && open) setOpen(false);
+  }, [state, open]);
 
   return (
     <>

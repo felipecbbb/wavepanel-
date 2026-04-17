@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { Button } from '@/components/button';
 import { createClassAction, type ClassFormState } from './actions';
 
@@ -22,7 +22,9 @@ export default function NewClassForm({
 
   const selectedActivity = activities.find((a) => a.id === selectedActivityId);
 
-  if (state?.ok && open) setTimeout(() => setOpen(false), 50);
+  useEffect(() => {
+    if (state?.ok && open) setOpen(false);
+  }, [state, open]);
 
   return (
     <>

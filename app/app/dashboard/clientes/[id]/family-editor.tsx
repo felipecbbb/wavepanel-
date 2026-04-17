@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { Button } from '@/components/button';
 import {
   upsertFamilyMemberAction,
@@ -124,7 +124,9 @@ function MemberForm({
   const [state, formAction, pending] = useActionState<FamilyFormState, FormData>(action, null);
   const [hasInjury, setHasInjury] = useState(member?.has_injury ?? false);
 
-  if (state?.ok) setTimeout(onDone, 50);
+  useEffect(() => {
+    if (state?.ok) onDone();
+  }, [state, onDone]);
 
   return (
     <form action={formAction} className="space-y-4">

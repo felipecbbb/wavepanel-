@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { Button } from '@/components/button';
 import { upsertPackAction, deletePackAction, type PackFormState } from '../actions';
 import { centsToEuros } from '@/lib/slug';
@@ -87,7 +87,9 @@ function PackForm({
   const action = upsertPackAction.bind(null, activityId, pack?.id ?? null);
   const [state, formAction, pending] = useActionState<PackFormState, FormData>(action, null);
 
-  if (state?.ok) setTimeout(onDone, 50);
+  useEffect(() => {
+    if (state?.ok) onDone();
+  }, [state, onDone]);
 
   return (
     <form action={formAction} className="flex flex-wrap items-end gap-3">
