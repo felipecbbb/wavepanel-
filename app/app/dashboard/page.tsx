@@ -1,4 +1,28 @@
+import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool, daysUntil } from '@/lib/tenant-server';
+import { centsToEuros } from '@/lib/slug';
+import { formatSpanishTime } from '@/lib/dates';
+
+function startOfMonth(): string {
+  const d = new Date();
+  d.setDate(1);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+}
+
+function startOfWeek(): string {
+  const d = new Date();
+  const day = d.getDay() || 7; // lunes=1, domingo=7
+  d.setDate(d.getDate() - (day - 1));
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString();
+}
+
+function endOfWeek(): string {
+  const d = new Date(startOfWeek());
+  d.setDate(d.getDate() + 7);
+  return d.toISOString();
+}
 
 export default async function DashboardPage({
   searchParams,
@@ -7,11 +31,55 @@ export default async function DashboardPage({
 }) {
   const sp = await searchParams;
   const school = await resolveActiveSchool(sp.tenant);
+  const supabase = await createClient();
+
+  const monthStart = startOfMonth();
+  const weekStart = startOfWeek();
+  const weekEnd = endOfWeek();
+  const today = new Date().toISOString().slice(0, 10);
+  const nowIso = new Date().toISOString();
+
+  const [
+    { data: payments },
+    { count: clientsCount },
+    { data: weekClasses },
+    { count: openCampsCount },
+    { count: activeBonosCount },
+    { data: recentEnrollments },
+    { data: activitiesForJoin },
+    { data: clientsForJoin },
+    { data: classesForJoin },
+  ] = await Promise.all([
+    supabase.from('payments').select('amount_cents, method, paid_at').gte('paid_at', monthStart),
+    supabase.from('clients').select('*', { count: 'exact', head: true }),
+    supabase.from('surf_classes').select('id, starts_at, enrolled_count, max_students, activity_id').gte('starts_at', weekStart).lt('starts_at', weekEnd).order('starts_at', { ascending: true }),
+    supabase.from('surf_camps').select('*', { count: 'exact', head: true }).eq('status', 'open').gte('starts_on', today),
+    supabase.from('bonos').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+    supabase.from('class_enrollments').select('id, class_id, client_id, status, created_at').order('created_at', { ascending: false }).limit(5),
+    supabase.from('activities').select('id, name, color'),
+    supabase.from('clients').select('id, name'),
+    supabase.from('surf_classes').select('id, starts_at, activity_id'),
+  ]);
+
+  type PaymentRow = { amount_cents: number; method: string; paid_at: string };
+  const monthRevenue = ((payments ?? []) as PaymentRow[]).reduce((s, p) => s + p.amount_cents, 0);
+  const cashRevenue = ((payments ?? []) as PaymentRow[]).filter((p) => p.method === 'cash').reduce((s, p) => s + p.amount_cents, 0);
+  const cardRevenue = ((payments ?? []) as PaymentRow[]).filter((p) => p.method === 'card').reduce((s, p) => s + p.amount_cents, 0);
+
+  type WeekClass = { id: string; starts_at: string; enrolled_count: number; max_students: number; activity_id: string };
+  const weekClassList = (weekClasses ?? []) as WeekClass[];
+
+  const activityById = new Map(((activitiesForJoin ?? []) as { id: string; name: string; color: string }[]).map((a) => [a.id, a]));
+  const clientById = new Map(((clientsForJoin ?? []) as { id: string; name: string }[]).map((c) => [c.id, c]));
+  const classById = new Map(((classesForJoin ?? []) as { id: string; starts_at: string; activity_id: string }[]).map((c) => [c.id, c]));
+
   const daysLeft = daysUntil(school.trial_ends_at);
   const expired = daysLeft === 0 && (!school.stripe_status || school.stripe_status === 'trialing');
 
+  const upcomingToday = weekClassList.filter((c) => c.starts_at > nowIso).slice(0, 5);
+
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 py-10">
+    <div className="mx-auto w-full max-w-6xl px-6 py-10">
       <header className="mb-10">
         <p className="kicker mb-2">Panel</p>
         <h1 className="font-display text-5xl text-navy">
@@ -29,33 +97,139 @@ export default async function DashboardPage({
         </section>
       )}
 
+      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-10">
+        <Kpi
+          kicker="Ingresos este mes"
+          value={centsToEuros(monthRevenue)}
+          sub={`${(payments ?? []).length} cobros registrados`}
+        />
+        <Kpi
+          kicker="Clientes"
+          value={String(clientsCount ?? 0)}
+          sub="Fichero total"
+        />
+        <Kpi
+          kicker="Clases esta semana"
+          value={String(weekClassList.length)}
+          sub={`${weekClassList.reduce((s, c) => s + c.enrolled_count, 0)} inscripciones totales`}
+        />
+        <Kpi
+          kicker="Camps abiertos"
+          value={String(openCampsCount ?? 0)}
+          sub={`${activeBonosCount ?? 0} bonos activos`}
+        />
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-[2fr_1fr] mb-10">
+        <div className="rounded-md border border-line bg-paper p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-label text-[0.72rem] text-muted">Próximas clases</h2>
+            <a href="/dashboard/calendario" className="text-xs text-navy underline">Ver calendario →</a>
+          </div>
+          {upcomingToday.length === 0 ? (
+            <p className="text-sm text-muted">No hay clases próximas en los próximos días.</p>
+          ) : (
+            <ul className="space-y-2">
+              {upcomingToday.map((c) => {
+                const act = activityById.get(c.activity_id);
+                return (
+                  <li key={c.id} className="flex items-center gap-3">
+                    <span className="h-8 w-8 rounded-sm shrink-0" style={{ background: act?.color ?? '#214a57' }} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-navy">{act?.name ?? 'Actividad'}</p>
+                      <p className="text-xs text-muted">
+                        {new Date(c.starts_at).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })} · {formatSpanishTime(c.starts_at)}
+                      </p>
+                    </div>
+                    <span className="text-xs text-muted">{c.enrolled_count}/{c.max_students}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+
+        <div className="rounded-md border border-line bg-paper p-6">
+          <h2 className="font-label text-[0.72rem] text-muted mb-4">Ingresos por método (mes)</h2>
+          <ul className="space-y-3 text-sm">
+            <li className="flex justify-between"><span>Efectivo</span><span className="font-semibold">{centsToEuros(cashRevenue)}</span></li>
+            <li className="flex justify-between"><span>Tarjeta</span><span className="font-semibold">{centsToEuros(cardRevenue)}</span></li>
+            <li className="flex justify-between border-t border-line pt-2 mt-2 text-navy">
+              <span className="font-label text-[0.72rem]">Otros</span>
+              <span className="font-semibold">{centsToEuros(monthRevenue - cashRevenue - cardRevenue)}</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="rounded-md border border-line bg-paper p-6 mb-10">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-label text-[0.72rem] text-muted">Últimas inscripciones</h2>
+          <a href="/dashboard/calendario" className="text-xs text-navy underline">Al calendario →</a>
+        </div>
+        {(recentEnrollments ?? []).length === 0 ? (
+          <p className="text-sm text-muted">Aún sin inscripciones registradas.</p>
+        ) : (
+          <ul className="divide-y divide-line">
+            {((recentEnrollments ?? []) as { id: string; class_id: string; client_id: string; status: string; created_at: string }[]).map((e) => {
+              const client = clientById.get(e.client_id);
+              const cls = classById.get(e.class_id);
+              const act = cls ? activityById.get(cls.activity_id) : null;
+              return (
+                <li key={e.id} className="py-2.5 flex items-center gap-3">
+                  <span className="h-3 w-3 rounded-sm shrink-0" style={{ background: act?.color ?? '#214a57' }} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">
+                      <a href={`/dashboard/clientes/${client?.id}`} className="font-semibold text-navy hover:underline">
+                        {client?.name ?? 'Cliente'}
+                      </a>{' '}
+                      <span className="text-muted">en {act?.name ?? 'clase'}</span>
+                    </p>
+                    <p className="text-xs text-muted">
+                      {cls && `${new Date(cls.starts_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })} ${formatSpanishTime(cls.starts_at)} · `}
+                      inscrita {new Date(e.created_at).toLocaleDateString('es-ES')}
+                    </p>
+                  </div>
+                  <span className="font-label text-[0.6rem] text-muted bg-sand px-2 py-0.5 rounded-sm">{e.status}</span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
       <section>
         <h2 className="font-label text-[0.72rem] text-muted mb-3">Accesos rápidos</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <QuickLink href="/dashboard/clientes" title="Clientes" desc="Fichero con familia, bonos activos y notas." />
-          <QuickLink href="/dashboard/actividades" title="Actividades" desc="Tipos, capacidad, color y packs de sesiones." soon />
-          <QuickLink href="/dashboard/calendario" title="Calendario" desc="Clases programadas con drag-drop y check-in." soon />
-          <QuickLink href="/dashboard/camps" title="Surf Camps" desc="Ediciones con plazas, early bird y depósitos." soon />
-          <QuickLink href="/dashboard/bonos" title="Bonos" desc="Packs de créditos vendidos, caducidad, consumo." soon />
-          <QuickLink href="/dashboard/instructores" title="Instructores" desc="Fichas, colores y disponibilidad." soon />
+        <div className="grid gap-4 md:grid-cols-3">
+          <QuickLink href="/dashboard/clientes" title="Clientes" desc="Fichas con familia, salud, bonos, historial." />
+          <QuickLink href="/dashboard/actividades" title="Actividades" desc="Tipos y packs de precios escalonados." />
+          <QuickLink href="/dashboard/calendario" title="Calendario" desc="Clases programadas + inscripciones." />
+          <QuickLink href="/dashboard/camps" title="Surf Camps" desc="Ediciones con plazas y depósitos." />
+          <QuickLink href="/dashboard/bonos" title="Bonos" desc="Packs vendidos, consumo, caducidad." />
+          <QuickLink href="/dashboard/pagos" title="Pagos" desc="Auditoría de todos los cobros." />
         </div>
       </section>
     </div>
   );
 }
 
-function QuickLink({ href, title, desc, soon }: { href: string; title: string; desc: string; soon?: boolean }) {
+function Kpi({ kicker, value, sub }: { kicker: string; value: string; sub?: string }) {
+  return (
+    <div className="rounded-md border border-line bg-paper p-5">
+      <p className="font-label text-[0.66rem] text-muted mb-2">{kicker}</p>
+      <p className="font-display text-3xl text-navy">{value}</p>
+      {sub && <p className="text-xs text-muted mt-1">{sub}</p>}
+    </div>
+  );
+}
+
+function QuickLink({ href, title, desc }: { href: string; title: string; desc: string }) {
   return (
     <a
       href={href}
       className="block rounded-md border border-line bg-paper p-5 hover:shadow-card hover:border-navy transition"
     >
-      <div className="flex items-start justify-between mb-2">
-        <h3 className="font-display text-2xl text-navy">{title}</h3>
-        {soon && (
-          <span className="font-label text-[0.6rem] text-muted bg-sand px-2 py-1 rounded-sm">Próximamente</span>
-        )}
-      </div>
+      <h3 className="font-display text-xl text-navy mb-1">{title}</h3>
       <p className="text-sm text-muted">{desc}</p>
     </a>
   );
