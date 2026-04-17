@@ -55,8 +55,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Excluye assets estáticos y favicon. Match todo lo demás.
+     * Excluye assets estáticos, HTML estático de la landing (public/*.html)
+     * y favicons. El middleware SÍ corre en rutas dinámicas de Next.js
+     * (signup, login, dashboard, api).
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|assets/|.*\\.(?:html|css|js|mjs|svg|png|jpg|jpeg|gif|webp|ico|mp4|woff|woff2|xml|txt|json)$).*)',
   ],
 };

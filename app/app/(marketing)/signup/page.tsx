@@ -24,11 +24,11 @@ export default function SignupPage() {
       );
     }
 
-    const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3000';
-    const href =
-      rootDomain === 'localhost:3000'
-        ? `/dashboard?tenant=${state.slug}`
-        : `https://${state.slug}.${rootDomain}/dashboard`;
+    const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3001';
+    const pathOnVercelOrLocal = /(localhost|vercel\.app)$/i.test(rootDomain);
+    const href = pathOnVercelOrLocal
+      ? `/dashboard?tenant=${state.slug}`
+      : `https://${state.slug}.${rootDomain}/dashboard`;
 
     if (typeof window !== 'undefined') window.location.href = href;
     return null;

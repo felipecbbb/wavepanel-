@@ -15,6 +15,28 @@ import type { NextRequest } from 'next/server';
 
 const RESERVED_SUBDOMAINS = new Set(['www', 'app', 'api', 'admin', 'auth']);
 
+/**
+ * Host-based tenancy vs path/query-based tenancy.
+ *
+ * Subdominios solo activables cuando el ROOT_DOMAIN sea un dominio propio
+ * (ej. wavepanel.app). En *.vercel.app no hay wildcard gratis, así que
+ * caemos a path-based con ?tenant= (o cookie futura).
+ */
+export function usesSubdomainTenancy(rootDomain: string): boolean {
+  const root = rootDomain.toLowerCase();
+  if (root.startsWith('localhost')) return false;
+  if (root.endsWith('.vercel.app')) return false;
+  return true;
+}
+
+export function buildTenantUrl(rootDomain: string, slug: string, path = '/dashboard'): string {
+  if (usesSubdomainTenancy(rootDomain)) {
+    return `https://${slug}.${rootDomain}${path}`;
+  }
+  const separator = path.includes('?') ? '&' : '?';
+  return `${path}${separator}tenant=${encodeURIComponent(slug)}`;
+}
+
 export function getTenantSlug(req: NextRequest): string | null {
   const host = req.headers.get('host') ?? '';
   const rootDomain = (process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'localhost:3000').toLowerCase();
