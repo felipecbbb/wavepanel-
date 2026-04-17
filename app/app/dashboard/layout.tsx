@@ -1,20 +1,21 @@
-import { WaveLogo } from '@/components/wave-logo';
-import { logoutAction } from '@/lib/auth-actions';
+import { DashboardSidebar } from '@/components/dashboard-sidebar';
+import { DashboardTopbar } from '@/components/dashboard-topbar';
+import { resolveActiveSchool, daysUntil } from '@/lib/tenant-server';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const school = await resolveActiveSchool();
+  const daysLeft = daysUntil(school.trial_ends_at);
+
   return (
-    <div className="min-h-screen flex flex-col bg-bg">
-      <header className="border-b border-line bg-paper">
-        <div className="mx-auto w-[min(1220px,92vw)] flex items-center justify-between h-16">
-          <WaveLogo variant="dark" />
-          <form action={logoutAction}>
-            <button className="font-label text-[0.72rem] text-muted hover:text-navy transition-colors">
-              Cerrar sesión
-            </button>
-          </form>
-        </div>
-      </header>
-      <div className="flex-1">{children}</div>
+    <div className="flex min-h-screen bg-bg">
+      <DashboardSidebar schoolName={school.name} schoolSlug={school.slug} />
+      <div className="flex-1 flex flex-col min-w-0">
+        <DashboardTopbar
+          schoolName={school.name}
+          trial={{ daysLeft, stripeStatus: school.stripe_status }}
+        />
+        <main className="flex-1">{children}</main>
+      </div>
     </div>
   );
 }
