@@ -19,8 +19,3 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
   redirect(next);
 }
 
-export async function logoutAction() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect('/login');
-}
