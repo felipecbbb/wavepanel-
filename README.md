@@ -2,7 +2,9 @@
 
 SaaS de gestión para escuelas de surf, kite y deportes acuáticos. Web pública + captación de leads + panel demo.
 
-> Producto independiente. Vive en `~/Desktop/wavepanel/`. NO mezclar con `~/Desktop/entreolasur/`, que ahora es el primer cliente del SaaS.
+> Producto independiente. Vive en `~/Code/wavepanel/`. NO mezclar con:
+> - `~/Code/wavepanel-template/` → código base que se clona para cada cliente del Plan Personalizado.
+> - `~/Desktop/entreolasur/` → primer cliente en producción, evoluciona por su cuenta.
 
 ## Stack
 

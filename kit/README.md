@@ -62,5 +62,5 @@ kit/
 - `gh` autenticado (GitHub CLI)
 - `supabase` CLI autenticado
 - `vercel` CLI (opcional, también se puede hacer en web)
-- Acceso al repo de Entre Olas como template (`~/Desktop/entreolasur/` o donde lo tengas)
+- Template WavePanel clonado en `~/Code/wavepanel-template/` (override con `WAVEPANEL_TEMPLATE=/ruta`)
 - Acceso a una cuenta de Stripe del cliente

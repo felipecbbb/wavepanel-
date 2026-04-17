@@ -1,18 +1,23 @@
 #!/bin/bash
 # 1-clone-and-rebrand.sh
-# Clona el repo template (Entre Olas) a una nueva carpeta, lo renombra
+# Clona el template de WavePanel a una nueva carpeta, lo renombra
 # y aplica el rebrand a partir de un school.config.js
 #
 # Uso:
 #   ./1-clone-and-rebrand.sh <school-slug> <ruta/a/school.config.js>
 # Ejemplo:
 #   ./1-clone-and-rebrand.sh somo-natural ./somo.config.js
+#
+# El template vive en ~/Code/wavepanel-template/ (repo independiente,
+# NO es el repo de Entre Olas). Para actualizar el template, haz commits
+# allí; Entre Olas y demás clientes reciben features por cherry-pick
+# explícito cuando se decida, nunca automáticamente.
 
 set -euo pipefail
 
 SCHOOL_SLUG="${1:-}"
 CONFIG_FILE="${2:-}"
-TEMPLATE_REPO="${WAVEPANEL_TEMPLATE:-$HOME/Desktop/entreolasur}"
+TEMPLATE_REPO="${WAVEPANEL_TEMPLATE:-$HOME/Code/wavepanel-template}"
 DEST_BASE="${WAVEPANEL_CLIENTS:-$HOME/Code/clientes}"
 
 if [ -z "$SCHOOL_SLUG" ] || [ -z "$CONFIG_FILE" ]; then
@@ -23,7 +28,7 @@ fi
 
 if [ ! -d "$TEMPLATE_REPO" ]; then
   echo "❌ No encuentro el template en $TEMPLATE_REPO"
-  echo "   Define WAVEPANEL_TEMPLATE=ruta/al/repo o asegúrate de tener entreolasur en ~/Desktop/"
+  echo "   Define WAVEPANEL_TEMPLATE=ruta/al/repo o clona wavepanel-template en ~/Code/"
   exit 1
 fi
 

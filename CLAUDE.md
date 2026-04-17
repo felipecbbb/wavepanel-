@@ -37,9 +37,13 @@ wavepanel/
 
 ## Camino A — estrategia actual
 
-NO hay multi-tenant ni self-service todavía. Solo se vende el **Plan Personalizado (2.500€-2.900€)** copiando el repo de Entre Olas a un nuevo Supabase por cliente. Los planes Básico (29€) y Pro (79€) están en lista de espera en la web.
+NO hay multi-tenant ni self-service todavía. Solo se vende el **Plan Personalizado (2.500€-2.900€)** clonando el **template de WavePanel** a un repo+Supabase nuevo por cliente. Los planes Básico (29€) y Pro (79€) están en lista de espera en la web.
 
-**Entre Olas es el primer cliente** — el repo de Entre Olas (en `~/Desktop/entreolasur/`) NO debe modificarse cuando iteramos sobre WavePanel.
+## Tres carpetas distintas (no mezclar)
+
+- `~/Code/wavepanel/` — landing comercial del SaaS + kit de clonación. Este repo.
+- `~/Code/wavepanel-template/` — **código base** que se clona para cada cliente. Snapshot inicial = copia de Entre Olas; se irá generalizando (quitar branding, datos concretos). Propio repo git, propio ciclo de releases.
+- `~/Desktop/entreolasur/` — **primer cliente en producción**. NO se toca al iterar el SaaS. Recibe features del template por cherry-pick explícito cuando se decida, nunca automáticamente.
 
 ## Flujo de leads (probado E2E)
 
@@ -60,7 +64,8 @@ Los waitlist se generan desde URLs `?plan=basico&waitlist=1` que `contacto.html`
 
 - Verificar dominio en Resend cuando se compre `wavepanel.app` (o el TLD que se decida) → poder enviar a cualquier destinatario.
 - Comprar dominio y conectarlo a Vercel (HEAD del repo en `wavepanel-.vercel.app` mientras tanto).
-- Construir el "kit de clonación" del Plan Personalizado para escalar Camino A.
+- Generalizar `wavepanel-template/`: quitar branding Entre Olas, datos Supabase concretos, imágenes, copy específico → placeholders.
+- Publicar `wavepanel-template` como repo en GitHub (privado al principio) y apuntar el kit allí en lugar de a una carpeta local.
 - Construir multi-tenant cuando haya 5+ clientes vendidos.
 
 ## Comandos comunes
