@@ -137,6 +137,7 @@ export async function enrollClientAction(
       class_full: 'La clase está llena.',
       client_mismatch: 'El cliente no pertenece a esta escuela.',
       family_member_mismatch: 'Ese miembro no es de la familia del cliente.',
+      already_enrolled: 'Ese cliente ya está inscrito en esta clase.',
       bono_not_found: 'El bono no existe.',
       bono_client_mismatch: 'El bono no es de este cliente.',
       bono_activity_mismatch: 'El bono es de otra actividad.',

@@ -48,6 +48,7 @@ export async function reserveClassAction(
       class_not_published: 'La clase no está publicada.',
       class_in_past: 'La clase ya ha empezado.',
       class_full: 'La clase está completa.',
+      already_enrolled: 'Ya estás inscrito en esta clase.',
       bono_not_found: 'Ese bono no existe.',
       bono_client_mismatch: 'Ese bono no es tuyo.',
       bono_activity_mismatch: 'El bono no sirve para esta actividad.',
