@@ -32,12 +32,12 @@ export default async function DashboardPage({
       <section>
         <h2 className="font-label text-[0.72rem] text-muted mb-3">Accesos rápidos</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <QuickLink href="/dashboard/clientes" title="Clientes" desc="Fichero con historial, notas y etiquetas." />
-          <QuickLink href="/dashboard/actividades" title="Actividades" desc="Tipos con precio, duración y capacidad." soon />
-          <QuickLink href="/dashboard/calendario" title="Calendario" desc="Semana con drag-drop para reprogramar." soon />
-          <QuickLink href="/dashboard/reservas" title="Reservas" desc="Confirmación, check-in y pagos." soon />
+          <QuickLink href="/dashboard/clientes" title="Clientes" desc="Fichero con familia, bonos activos y notas." />
+          <QuickLink href="/dashboard/actividades" title="Actividades" desc="Tipos, capacidad, color y packs de sesiones." soon />
+          <QuickLink href="/dashboard/calendario" title="Calendario" desc="Clases programadas con drag-drop y check-in." soon />
+          <QuickLink href="/dashboard/camps" title="Surf Camps" desc="Ediciones con plazas, early bird y depósitos." soon />
+          <QuickLink href="/dashboard/bonos" title="Bonos" desc="Packs de créditos vendidos, caducidad, consumo." soon />
           <QuickLink href="/dashboard/instructores" title="Instructores" desc="Fichas, colores y disponibilidad." soon />
-          <QuickLink href="/dashboard/ajustes" title="Ajustes" desc="Datos de la escuela, facturación, equipo." soon />
         </div>
       </section>
     </div>
