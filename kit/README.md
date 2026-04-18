@@ -14,7 +14,8 @@ Proceso reproducible para entregar el Plan Personalizado (2.500€-2.900€) a u
 4. Conectas Vercel + dominio (3-vercel-deploy.md) → URL en vivo
 5. Configuras Stripe del cliente (4-stripe-setup.md) → cobros
 6. Configuras Resend para transaccionales (5-email-resend.md) → emails con marca
-7. Entrega + formación (6-handoff.md) → cobras 50% restante
+7. Personalización manual: logos, fotos, legal (CUSTOMIZATION.md)
+8. Entrega + formación (6-handoff.md) → cobras 50% restante
 ```
 
 Cada paso tiene su markdown. Síguelos en orden.
@@ -29,7 +30,8 @@ Cada paso tiene su markdown. Síguelos en orden.
 | 3. Vercel + dominio | 15 min (esperando DNS hasta 24h) |
 | 4. Stripe (cliente conecta su cuenta) | 10 min tuyo + asíncrono cliente |
 | 5. Resend + verificación dominio | 15 min |
-| 6. Formación al equipo (videollamada) | 1-2h |
+| 6. Personalización manual (logos, legal, fotos) | 45-90 min |
+| 7. Formación al equipo (videollamada) | 1-2h |
 | **Total tuyo** | **~3-5h activas + esperas** |
 
 ## Archivos
@@ -43,6 +45,7 @@ kit/
 ├── 4-stripe-setup.md           Checklist Stripe
 ├── 5-email-resend.md           Checklist Resend (transaccionales)
 ├── 6-handoff.md                Qué entregar y cómo formar al cliente
+├── CUSTOMIZATION.md            Checklist de personalización manual post-rebrand
 ├── templates/
 │   ├── school.config.example.js   Config base con todos los placeholders
 │   └── env.example                Plantilla .env del cliente

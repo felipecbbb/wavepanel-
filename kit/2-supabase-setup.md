@@ -36,38 +36,45 @@ supabase link --project-ref xxxxxxxxx
 
 ## D. Aplicar el schema base de Entre Olas
 
-Tienes 2 opciones:
+El template (`wavepanel-template/supabase/`) tiene el schema en archivos planos:
+- `schema.sql` → tablas base (profiles, products, orders, etc.)
+- `migration-*.sql` → incrementales (activities, payments, coupons, bonos, reservation-system, etc.)
 
-### Opción 1 — Migración limpia (recomendado)
-
-Si tienes las migraciones SQL del template:
-
-```bash
-supabase db push --linked
-```
-
-### Opción 2 — Dump del template + restore
-
-Si no tienes migraciones formales:
+**NO usar `supabase db push`**: estos archivos no siguen el formato timestamp de
+`supabase/migrations/` que espera la CLI. Aplicarlos manualmente en orden:
 
 ```bash
-# 1. En el proyecto de Entre Olas, dump del schema (sin datos sensibles del cliente real)
-supabase db dump --linked --schema public --data-only=false > schema.sql
+# URL de conexión: Settings → Database → Connection string → URI
+export DB_URL="postgresql://postgres:[PASSWORD]@db.xxxxxxxxx.supabase.co:5432/postgres"
 
-# 2. Aplicar al proyecto del nuevo cliente
-psql "postgresql://postgres:[PASSWORD]@db.xxxxxxxxx.supabase.co:5432/postgres" -f schema.sql
+cd ~/Code/wavepanel-template/supabase
+
+# 1. Schema base
+psql "$DB_URL" -f schema.sql
+
+# 2. Migraciones en orden alfabético (para en el primer fallo)
+for f in migration-*.sql; do
+  echo "→ $f"
+  psql "$DB_URL" -f "$f" || { echo "FAIL en $f"; break; }
+done
 ```
+
+> **TODO (pendiente):** convertir estos archivos a migraciones CLI-compatibles
+> (prefijo timestamp en `supabase/migrations/`) para que `supabase db push`
+> funcione directo. Mientras tanto, aplicar con `psql` en orden es la ruta probada.
 
 ## E. Seed de datos básicos del cliente
 
-Desde el cuestionario, crear las actividades, instructores y precios.
+Poblar actividades base, packs y (opcional) productos:
 
 ```bash
-# Ejecutar el seed manual
-psql "postgresql://postgres:[PASSWORD]@db.xxxxxxxxx.supabase.co:5432/postgres" -f kit/tools/seed-activities.sql
+psql "$DB_URL" -f ~/Code/wavepanel/kit/tools/seed-activities.sql
 ```
 
-O por panel admin del cliente (si ya está accesible).
+Ajusta precios/nombres en `seed-activities.sql` **antes de ejecutar** si el
+cliente tiene tarifas distintas a los defaults. El equipo humano (staff) NO
+se seedea: aparece como contenido estático en las páginas del template
+(no hay tabla `instructores` en el schema).
 
 ## F. Configurar Storage
 
@@ -90,23 +97,40 @@ Authentication → URL Configuration:
 
 ## H. RLS (Row Level Security)
 
-Ya viene del schema, pero verificar:
-- `clientes`: usuario solo ve su propia row
-- `reservas`: usuario solo ve sus reservas
-- `productos`: lectura pública, escritura solo admin
-- `bonos`: usuario solo ve los suyos
+Las policies vienen aplicadas por el schema; verificar que están activas:
 
-## I. Edge Functions (si el cliente las usa)
+- `profiles`: usuario solo lee/edita su propia row (role='client' por defecto)
+- `orders` / `bookings` / `class_enrollments`: usuario solo ve las suyas
+- `products`: lectura pública, escritura solo role='admin'
+- `bonos`: usuario solo ve los suyos (créditos pre-pagados)
+- `activities` / `activity_packs`: lectura pública, escritura solo admin
+- `surf_camps`: lectura pública, escritura solo admin
+
+Si una tabla aparece sin RLS habilitado: `alter table X enable row level security;`
+
+## I. Edge Functions
+
+El template trae 3 Edge Functions en `supabase/functions/`:
+- `create-checkout` — genera sesiones de Stripe Checkout
+- `stripe-webhook` — procesa eventos de Stripe (pago OK, reembolso, etc.)
+- `send-email` — envía transaccionales vía Resend
 
 ```bash
-# Deploy todas
-supabase functions deploy --project-ref xxxxxxxxx
+cd ~/Code/wavepanel-template
 
-# Configurar secrets del cliente
+# Deploy de las 3 functions al proyecto del cliente
+supabase functions deploy create-checkout --project-ref xxxxxxxxx
+supabase functions deploy stripe-webhook  --project-ref xxxxxxxxx
+supabase functions deploy send-email      --project-ref xxxxxxxxx
+
+# Secrets que las functions necesitan (sustituye por los del cliente)
 supabase secrets set --project-ref xxxxxxxxx \
   STRIPE_SECRET_KEY=sk_live_... \
+  STRIPE_WEBHOOK_SECRET=whsec_... \
   RESEND_API_KEY=re_... \
-  EMAIL_FROM=reservas@cliente.com
+  EMAIL_FROM=reservas@cliente.com \
+  EMAIL_FROM_NAME="Nombre Cliente" \
+  EMAIL_NOTIFY_ADMIN=admin@cliente.com
 ```
 
 ## J. Verificar
@@ -124,6 +148,6 @@ npm run dev
 - [ ] Schema aplicado sin errores
 - [ ] Buckets de Storage creados
 - [ ] Auth configurada con dominio del cliente
-- [ ] Datos básicos (actividades, instructores) seeded
+- [ ] Datos básicos (actividades + packs) seeded
 - [ ] Edge Functions deployadas
 - [ ] Test desde frontend cargando datos OK
