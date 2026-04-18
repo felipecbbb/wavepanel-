@@ -5,6 +5,10 @@ import { ButtonLink } from '@/components/button';
 import NewClassForm from './new-class-form';
 import EnrollForm from './enroll-form';
 import EnrollmentActions from './enrollment-actions';
+import EditClassButton from './edit-class-button';
+import DeleteButton from '@/components/delete-button';
+import DragLayer from './drag-layer';
+import { deleteClassAction } from './actions';
 
 type Activity = { id: string; name: string; duration_minutes: number; capacity: number; color: string };
 type Instructor = { id: string; name: string; color: string; active: boolean };
@@ -115,6 +119,7 @@ export default async function CalendarioPage({
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-10">
+      <DragLayer />
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
           <p className="kicker mb-2">Calendario</p>
@@ -162,10 +167,37 @@ export default async function CalendarioPage({
                       {c.notes && <> · {c.notes}</>}
                     </p>
                   </div>
-                  <div className="text-right shrink-0">
+                  <div className="text-right shrink-0 flex flex-col items-end gap-1">
                     <p className={`font-label text-[0.72rem] ${full ? 'text-red-600' : 'text-navy'}`}>
                       {c.enrolled_count}/{c.max_students} {full ? 'COMPLETA' : 'plazas'}
                     </p>
+                    <div className="flex items-center gap-3">
+                      <EditClassButton
+                        cls={{
+                          id: c.id,
+                          activity_id: c.activity_id,
+                          instructor_id: c.instructor_id,
+                          starts_at: c.starts_at,
+                          ends_at: c.ends_at,
+                          max_students: c.max_students,
+                          level: c.level,
+                          notes: c.notes,
+                          published: c.published,
+                        }}
+                        activities={activities}
+                        instructors={instructors}
+                      />
+                      <DeleteButton
+                        action={deleteClassAction.bind(null, c.id)}
+                        confirmMessage={
+                          c.enrolled_count > 0
+                            ? `Esta clase tiene ${c.enrolled_count} inscripciones. ¿Borrar clase e inscripciones?`
+                            : '¿Borrar esta clase?'
+                        }
+                        label="Borrar"
+                        className="text-[0.72rem] font-label text-red-700 hover:text-red-900 underline"
+                      />
+                    </div>
                     {activity && (
                       <EnrollForm
                         classId={c.id}
@@ -178,35 +210,57 @@ export default async function CalendarioPage({
                   </div>
                 </div>
 
-                {enrollments.length > 0 && (
-                  <ul className="divide-y divide-line">
-                    {enrollments.map((e) => {
-                      const client = clientById.get(e.client_id);
-                      const fam = e.family_member_id ? familyById.get(e.family_member_id) : null;
-                      const who = fam?.full_name ?? client?.name ?? 'Sin cliente';
-                      return (
-                        <li key={e.id} className="px-5 py-2.5 flex items-center justify-between gap-3">
-                          <div className="min-w-0 flex items-center gap-2 flex-wrap">
-                            <span className="text-[0.92rem] text-navy">{who}</span>
-                            {fam && client && (
-                              <span className="text-xs text-muted">({client.name})</span>
-                            )}
-                            {e.bono_id && (
-                              <span className="font-label text-[0.6rem] bg-yellow/20 text-navy px-2 py-0.5 rounded-sm">Bono</span>
-                            )}
-                            {!e.bono_id && e.price_cents > 0 && (
-                              <span className="font-label text-[0.6rem] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-sm">
-                                {(e.price_cents / 100).toFixed(0)}€
-                              </span>
-                            )}
-                            <EnrollmentStatusBadge status={e.status} />
-                          </div>
-                          <EnrollmentActions enrollmentId={e.id} status={e.status} />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
+                <ul
+                  className="divide-y divide-line min-h-[2.5rem] transition-all rounded-sm"
+                  data-drop-class-id={c.id}
+                  data-drop-activity-id={c.activity_id}
+                  data-drop-full={full ? 'true' : 'false'}
+                >
+                  {enrollments.length === 0 && (
+                    <li className="px-5 py-2 text-xs text-muted italic">
+                      Arrastra un alumno aquí o usa Inscribir.
+                    </li>
+                  )}
+                  {enrollments.map((e) => {
+                    const client = clientById.get(e.client_id);
+                    const fam = e.family_member_id ? familyById.get(e.family_member_id) : null;
+                    const who = fam?.full_name ?? client?.name ?? 'Sin cliente';
+                    const draggable = e.status === 'confirmed' || e.status === 'paid' || e.status === 'partial';
+                    return (
+                      <li
+                        key={e.id}
+                        className={`px-5 py-2.5 flex items-center justify-between gap-3 ${
+                          draggable ? 'cursor-grab active:cursor-grabbing hover:bg-sand/50' : ''
+                        }`}
+                        draggable={draggable}
+                        data-enrollment-id={e.id}
+                        data-source-class-id={c.id}
+                        data-activity-id={c.activity_id}
+                        data-client-name={who}
+                      >
+                        <div className="min-w-0 flex items-center gap-2 flex-wrap">
+                          {draggable && (
+                            <span className="text-muted select-none" aria-hidden title="Arrastrar a otra clase">⋮⋮</span>
+                          )}
+                          <span className="text-[0.92rem] text-navy">{who}</span>
+                          {fam && client && (
+                            <span className="text-xs text-muted">({client.name})</span>
+                          )}
+                          {e.bono_id && (
+                            <span className="font-label text-[0.6rem] bg-yellow/20 text-navy px-2 py-0.5 rounded-sm">Bono</span>
+                          )}
+                          {!e.bono_id && e.price_cents > 0 && (
+                            <span className="font-label text-[0.6rem] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-sm">
+                              {(e.price_cents / 100).toFixed(0)}€
+                            </span>
+                          )}
+                          <EnrollmentStatusBadge status={e.status} />
+                        </div>
+                        <EnrollmentActions enrollmentId={e.id} status={e.status} />
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             );
           })}

@@ -166,3 +166,28 @@ export async function setEnrollmentStatusAction(enrollmentId: string, status: 'c
   if (error) throw new Error(error.message);
   revalidatePath('/dashboard/calendario');
 }
+
+export async function moveEnrollmentAction(
+  enrollmentId: string,
+  targetClassId: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc('move_enrollment', {
+    p_enrollment_id: enrollmentId,
+    p_target_class_id: targetClassId,
+  });
+  if (error) {
+    const friendly: Record<string, string> = {
+      not_authorized: 'No tienes acceso a esta escuela.',
+      enrollment_not_found: 'La inscripción ya no existe.',
+      target_class_not_found: 'La clase destino no existe.',
+      activity_mismatch: 'No se puede mover: la clase destino es de otra actividad.',
+      target_class_in_past: 'La clase destino ya ha pasado.',
+      target_class_full: 'La clase destino está llena.',
+      already_enrolled_in_target: 'El alumno ya estaba en la clase destino.',
+    };
+    return { ok: false, error: friendly[error.message] ?? error.message };
+  }
+  revalidatePath('/dashboard/calendario');
+  return { ok: true };
+}
