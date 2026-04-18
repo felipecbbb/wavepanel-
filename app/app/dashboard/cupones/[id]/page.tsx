@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import CouponForm from '../coupon-form';
 import { updateCouponAction, deleteCouponAction } from '../actions';
+import DeleteButton from '@/components/delete-button';
 
 type Coupon = {
   id: string;
@@ -54,17 +55,11 @@ export default async function EditarCuponPage({ params }: { params: Promise<{ id
           <p className="kicker mb-1">Editar cupón</p>
           <h1 className="font-display text-4xl text-navy font-mono">{coupon.code}</h1>
         </div>
-        <form action={boundDelete}>
-          <button
-            type="submit"
-            className="rounded-sm border border-red-200 text-red-700 px-3 py-1.5 text-[0.76rem] font-label hover:bg-red-50 shrink-0"
-            onClick={(e) => {
-              if (!confirm(`¿Borrar cupón "${coupon.code}"?`)) e.preventDefault();
-            }}
-          >
-            Borrar
-          </button>
-        </form>
+        <DeleteButton
+          action={boundDelete}
+          confirmMessage={`¿Borrar cupón "${coupon.code}"?`}
+          label="Borrar"
+        />
       </div>
 
       <CouponForm

@@ -4,6 +4,7 @@ import { resolveActiveSchool } from '@/lib/tenant-server';
 import ActivityForm from '../activity-form';
 import PacksEditor from './packs-editor';
 import { updateActivityAction, deleteActivityAction } from '../actions';
+import DeleteButton from '@/components/delete-button';
 
 type Activity = {
   id: string;
@@ -71,17 +72,11 @@ export default async function EditarActividadPage({
           </div>
           <h1 className="font-display text-4xl text-navy truncate">{activity.name}</h1>
         </div>
-        <form action={boundDelete}>
-          <button
-            type="submit"
-            className="rounded-sm border border-red-200 text-red-700 px-3 py-1.5 text-[0.76rem] font-label hover:bg-red-50 shrink-0"
-            onClick={(e) => {
-              if (!confirm(`¿Borrar "${activity.name}"? Esto también borra sus packs.`)) e.preventDefault();
-            }}
-          >
-            Borrar actividad
-          </button>
-        </form>
+        <DeleteButton
+          action={boundDelete}
+          confirmMessage={`¿Borrar "${activity.name}"? Esto también borra sus packs.`}
+          label="Borrar actividad"
+        />
       </div>
 
       <div className="mb-10">

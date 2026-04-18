@@ -17,6 +17,7 @@ import {
   type PaymentHistory,
 } from './history-lists';
 import { updateClientAction, deleteClientAction } from '../actions';
+import DeleteButton from '@/components/delete-button';
 
 type Client = {
   id: string;
@@ -218,17 +219,11 @@ export default async function EditarClientePage({
             </p>
           </div>
         </div>
-        <form action={boundDelete}>
-          <button
-            type="submit"
-            className="rounded-sm border border-red-200 text-red-700 px-3 py-1.5 text-[0.76rem] font-label hover:bg-red-50 shrink-0"
-            onClick={(e) => {
-              if (!confirm(`¿Borrar a "${client.name}" y toda su familia/historial?`)) e.preventDefault();
-            }}
-          >
-            Borrar cliente
-          </button>
-        </form>
+        <DeleteButton
+          action={boundDelete}
+          confirmMessage={`¿Borrar a "${client.name}" y toda su familia/historial?`}
+          label="Borrar cliente"
+        />
       </div>
 
       <ClientTabs

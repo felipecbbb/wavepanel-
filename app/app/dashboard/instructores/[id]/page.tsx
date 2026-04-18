@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import InstructorForm from '../instructor-form';
 import { updateInstructorAction, deleteInstructorAction } from '../actions';
+import DeleteButton from '@/components/delete-button';
 
 type Instructor = {
   id: string;
@@ -54,17 +55,11 @@ export default async function EditarInstructorPage({
             <h1 className="font-display text-4xl text-navy">{instructor.name}</h1>
           </div>
         </div>
-        <form action={boundDelete}>
-          <button
-            type="submit"
-            className="rounded-sm border border-red-200 text-red-700 px-3 py-1.5 text-[0.76rem] font-label hover:bg-red-50 shrink-0"
-            onClick={(e) => {
-              if (!confirm(`¿Borrar a "${instructor.name}"? Sus clases asignadas pasarán a sin instructor.`)) e.preventDefault();
-            }}
-          >
-            Borrar instructor
-          </button>
-        </form>
+        <DeleteButton
+          action={boundDelete}
+          confirmMessage={`¿Borrar a "${instructor.name}"? Sus clases asignadas pasarán a sin instructor.`}
+          label="Borrar instructor"
+        />
       </div>
 
       <InstructorForm

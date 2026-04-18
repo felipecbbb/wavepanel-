@@ -6,6 +6,7 @@ import CampForm from '../camp-form';
 import NewBookingForm from './new-booking-form';
 import { BookingStatusMenu, RecordPaymentButton } from './booking-actions';
 import { updateCampAction, deleteCampAction } from '../actions';
+import DeleteButton from '@/components/delete-button';
 
 type Camp = {
   id: string;
@@ -86,17 +87,11 @@ export default async function EditarCampPage({
             {new Date(camp.ends_on).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })} · {camp.spots_taken}/{camp.max_spots} plazas
           </p>
         </div>
-        <form action={boundDelete}>
-          <button
-            type="submit"
-            className="rounded-sm border border-red-200 text-red-700 px-3 py-1.5 text-[0.76rem] font-label hover:bg-red-50 shrink-0"
-            onClick={(e) => {
-              if (!confirm(`¿Borrar camp "${camp.name}" y todas sus reservas?`)) e.preventDefault();
-            }}
-          >
-            Borrar camp
-          </button>
-        </form>
+        <DeleteButton
+          action={boundDelete}
+          confirmMessage={`¿Borrar camp "${camp.name}" y todas sus reservas?`}
+          label="Borrar camp"
+        />
       </div>
 
       <section className="mb-10">
