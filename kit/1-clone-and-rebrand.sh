@@ -91,6 +91,7 @@ if command -v node &>/dev/null; then
         FB_URL: c.social.facebook,
         ADDRESS: c.location.address,
         CITY: c.location.city,
+        PROVINCE: c.location.province,
         COLOR_PRIMARY: c.brandColors.primary,
         COLOR_NAVY: c.brandColors.navy,
         COLOR_BG: c.brandColors.bg,
