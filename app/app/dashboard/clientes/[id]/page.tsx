@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
@@ -199,7 +200,7 @@ export default async function EditarClientePage({
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-10">
       <nav className="mb-6 text-sm text-muted">
-        <a href="/dashboard/clientes" className="hover:text-navy">Clientes</a>
+        <Link href="/dashboard/clientes" className="hover:text-navy">Clientes</Link>
         <span className="mx-2">/</span>
         <span className="text-navy">{client.name}</span>
       </nav>

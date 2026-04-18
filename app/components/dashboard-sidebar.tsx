@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { WaveLogo } from './wave-logo';
@@ -66,8 +67,9 @@ function SidebarLinks({
           : pathname === item.href || pathname.startsWith(`${item.href}/`);
         return (
           <li key={item.href}>
-            <a
+            <Link
               href={item.href + suffix}
+              prefetch
               className={`block rounded-md px-3 py-2 text-[0.88rem] transition-colors ${
                 active
                   ? 'bg-yellow text-navy font-semibold'
@@ -75,7 +77,7 @@ function SidebarLinks({
               }`}
             >
               {item.label}
-            </a>
+            </Link>
           </li>
         );
       })}

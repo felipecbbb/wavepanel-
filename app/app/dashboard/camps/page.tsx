@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { ButtonLink } from '@/components/button';
@@ -61,7 +62,7 @@ function CampCard({ camp }: { camp: Camp }) {
   const pct = camp.max_spots > 0 ? (camp.spots_taken / camp.max_spots) * 100 : 0;
   const barColor = pct >= 90 ? 'bg-red-500' : pct >= 60 ? 'bg-amber-500' : 'bg-emerald-500';
   return (
-    <a
+    <Link
       href={`/dashboard/camps/${camp.id}`}
       className="rounded-md border border-line bg-paper hover:shadow-card hover:border-navy transition block overflow-hidden"
     >
@@ -105,7 +106,7 @@ function CampCard({ camp }: { camp: Camp }) {
           <span className="text-xs text-muted">· depósito {centsToEuros(camp.deposit_cents)}</span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 

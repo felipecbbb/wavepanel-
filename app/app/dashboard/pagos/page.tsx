@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { centsToEuros } from '@/lib/slug';
@@ -90,7 +91,7 @@ export default async function PagosPage() {
                     </td>
                     <td className="px-4 py-3">
                       {c ? (
-                        <a href={`/dashboard/clientes/${c.id}`} className="text-navy hover:underline">{c.name}</a>
+                        <Link href={`/dashboard/clientes/${c.id}`} className="text-navy hover:underline">{c.name}</Link>
                       ) : (
                         <span className="text-muted">—</span>
                       )}

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { centsToEuros } from '@/lib/slug';
@@ -70,9 +71,9 @@ export default async function BonosPage() {
                   <tr key={b.id} className={i !== 0 ? 'border-t border-line' : ''}>
                     <td className="px-4 py-3">
                       {client ? (
-                        <a href={`/dashboard/clientes/${client.id}`} className="text-navy font-semibold hover:underline">
+                        <Link href={`/dashboard/clientes/${client.id}`} className="text-navy font-semibold hover:underline">
                           {client.name}
-                        </a>
+                        </Link>
                       ) : (
                         <span className="text-muted">—</span>
                       )}

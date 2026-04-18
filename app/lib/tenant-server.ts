@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from './supabase/server';
@@ -21,7 +22,9 @@ export type ActiveSchool = {
  *
  * Redirige a /login si no hay sesión.
  */
-export async function resolveActiveSchool(searchTenant?: string | null): Promise<ActiveSchool> {
+export const resolveActiveSchool = cache(async function resolveActiveSchool(
+  searchTenant?: string | null,
+): Promise<ActiveSchool> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
@@ -79,7 +82,7 @@ export async function resolveActiveSchool(searchTenant?: string | null): Promise
   }
   if (!activeSchool) redirect('/signup');
   return activeSchool;
-}
+});
 
 export function daysUntil(date: string): number {
   return Math.max(0, Math.ceil((new Date(date).getTime() - Date.now()) / 86_400_000));

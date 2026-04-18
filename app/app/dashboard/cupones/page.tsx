@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { ButtonLink } from '@/components/button';
@@ -72,9 +73,9 @@ export default async function CuponesPage() {
               {coupons.map((c, i) => (
                 <tr key={c.id} className={i !== 0 ? 'border-t border-line' : ''}>
                   <td className="px-4 py-3">
-                    <a href={`/dashboard/cupones/${c.id}`} className="font-mono font-bold text-navy hover:underline">
+                    <Link href={`/dashboard/cupones/${c.id}`} className="font-mono font-bold text-navy hover:underline">
                       {c.code}
-                    </a>
+                    </Link>
                     {c.name && <div className="text-xs text-muted">{c.name}</div>}
                   </td>
                   <td className="px-4 py-3 font-semibold">

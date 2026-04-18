@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
@@ -45,7 +46,7 @@ export default async function EditarCuponPage({ params }: { params: Promise<{ id
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10">
       <nav className="mb-6 text-sm text-muted">
-        <a href="/dashboard/cupones" className="hover:text-navy">Cupones</a>
+        <Link href="/dashboard/cupones" className="hover:text-navy">Cupones</Link>
         <span className="mx-2">/</span>
         <span className="text-navy font-mono">{coupon.code}</span>
       </nav>

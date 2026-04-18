@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import CampForm from '../camp-form';
 import { createCampAction } from '../actions';
@@ -7,7 +8,7 @@ export default async function NuevoCampPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10">
       <nav className="mb-6 text-sm text-muted">
-        <a href="/dashboard/camps" className="hover:text-navy">Surf Camps</a>
+        <Link href="/dashboard/camps" className="hover:text-navy">Surf Camps</Link>
         <span className="mx-2">/</span>
         <span className="text-navy">Nuevo</span>
       </nav>

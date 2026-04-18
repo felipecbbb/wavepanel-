@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import { useMemo, useState } from 'react';
 
@@ -54,9 +55,9 @@ export default function ClientesSearch({ rows }: { rows: Row[] }) {
             {filtered.map((r, i) => (
               <tr key={r.id} className={i !== 0 ? 'border-t border-line' : ''}>
                 <Td>
-                  <a href={`/dashboard/clientes/${r.id}`} className="font-semibold text-navy hover:underline">
+                  <Link href={`/dashboard/clientes/${r.id}`} className="font-semibold text-navy hover:underline">
                     {r.name}
-                  </a>
+                  </Link>
                 </Td>
                 <Td>
                   <div className="text-sm">
@@ -75,9 +76,9 @@ export default function ClientesSearch({ rows }: { rows: Row[] }) {
                   </div>
                 </Td>
                 <Td>
-                  <a href={`/dashboard/clientes/${r.id}`} className="text-xs text-muted hover:text-navy underline">
+                  <Link href={`/dashboard/clientes/${r.id}`} className="text-xs text-muted hover:text-navy underline">
                     Editar
-                  </a>
+                  </Link>
                 </Td>
               </tr>
             ))}

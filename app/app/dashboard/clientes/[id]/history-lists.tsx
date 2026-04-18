@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { centsToEuros } from '@/lib/slug';
 
 export type EnrollmentHistory = {
@@ -165,9 +166,9 @@ export function CampBookingsList({ rows }: { rows: CampBookingHistory[] }) {
           <li key={c.id} className="rounded-md border border-line bg-paper px-4 py-3 flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-sm">
-                <a href={`/dashboard/camps/${c.camp_id}`} className="font-semibold text-navy hover:underline">
+                <Link href={`/dashboard/camps/${c.camp_id}`} className="font-semibold text-navy hover:underline">
                   {c.camp_name ?? '—'}
-                </a>
+                </Link>
                 {c.camp_starts_on && (
                   <span className="text-muted"> · {new Date(c.camp_starts_on).toLocaleDateString('es-ES')}</span>
                 )}

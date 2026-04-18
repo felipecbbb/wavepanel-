@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { ButtonLink } from '@/components/button';
@@ -73,7 +74,7 @@ function Empty() {
 function ActivityCard({ a }: { a: Row }) {
   const packs = [...(a.activity_packs ?? [])].sort((x, y) => x.sessions - y.sessions);
   return (
-    <a
+    <Link
       href={`/dashboard/actividades/${a.id}`}
       className="rounded-md border border-line bg-paper p-5 hover:shadow-card hover:border-navy transition block"
     >
@@ -110,6 +111,6 @@ function ActivityCard({ a }: { a: Row }) {
       ) : (
         <p className="text-xs text-muted italic">Sin packs configurados todavía</p>
       )}
-    </a>
+    </Link>
   );
 }

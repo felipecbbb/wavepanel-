@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool, daysUntil } from '@/lib/tenant-server';
 import { centsToEuros } from '@/lib/slug';
@@ -124,7 +125,7 @@ export default async function DashboardPage({
         <div className="rounded-md border border-line bg-paper p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-label text-[0.72rem] text-muted">Próximas clases</h2>
-            <a href="/dashboard/calendario" className="text-xs text-navy underline">Ver calendario →</a>
+            <Link href="/dashboard/calendario" className="text-xs text-navy underline">Ver calendario →</Link>
           </div>
           {upcomingToday.length === 0 ? (
             <p className="text-sm text-muted">No hay clases próximas en los próximos días.</p>
@@ -165,7 +166,7 @@ export default async function DashboardPage({
       <section className="rounded-md border border-line bg-paper p-6 mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-label text-[0.72rem] text-muted">Últimas inscripciones</h2>
-          <a href="/dashboard/calendario" className="text-xs text-navy underline">Al calendario →</a>
+          <Link href="/dashboard/calendario" className="text-xs text-navy underline">Al calendario →</Link>
         </div>
         {(recentEnrollments ?? []).length === 0 ? (
           <p className="text-sm text-muted">Aún sin inscripciones registradas.</p>
@@ -180,9 +181,9 @@ export default async function DashboardPage({
                   <span className="h-3 w-3 rounded-sm shrink-0" style={{ background: act?.color ?? '#214a57' }} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm">
-                      <a href={`/dashboard/clientes/${client?.id}`} className="font-semibold text-navy hover:underline">
+                      <Link href={`/dashboard/clientes/${client?.id}`} className="font-semibold text-navy hover:underline">
                         {client?.name ?? 'Cliente'}
-                      </a>{' '}
+                      </Link>{' '}
                       <span className="text-muted">en {act?.name ?? 'clase'}</span>
                     </p>
                     <p className="text-xs text-muted">
@@ -225,12 +226,12 @@ function Kpi({ kicker, value, sub }: { kicker: string; value: string; sub?: stri
 
 function QuickLink({ href, title, desc }: { href: string; title: string; desc: string }) {
   return (
-    <a
+    <Link
       href={href}
       className="block rounded-md border border-line bg-paper p-5 hover:shadow-card hover:border-navy transition"
     >
       <h3 className="font-display text-xl text-navy mb-1">{title}</h3>
       <p className="text-sm text-muted">{desc}</p>
-    </a>
+    </Link>
   );
 }

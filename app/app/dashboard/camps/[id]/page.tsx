@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
@@ -73,7 +74,7 @@ export default async function EditarCampPage({
   return (
     <div className="mx-auto w-full max-w-4xl px-6 py-10">
       <nav className="mb-6 text-sm text-muted">
-        <a href="/dashboard/camps" className="hover:text-navy">Surf Camps</a>
+        <Link href="/dashboard/camps" className="hover:text-navy">Surf Camps</Link>
         <span className="mx-2">/</span>
         <span className="text-navy">{camp.name}</span>
       </nav>
@@ -119,7 +120,7 @@ export default async function EditarCampPage({
                   <div className="flex-1 min-w-[200px]">
                     <p className="font-display text-lg text-navy">
                       {c ? (
-                        <a href={`/dashboard/clientes/${c.id}`} className="hover:underline">{c.name}</a>
+                        <Link href={`/dashboard/clientes/${c.id}`} className="hover:underline">{c.name}</Link>
                       ) : 'Cliente desconocido'}
                       {b.participants_count > 1 && <span className="text-sm text-muted"> · {b.participants_count} personas</span>}
                     </p>

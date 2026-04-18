@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import { ButtonLink } from '@/components/button';
@@ -53,7 +54,7 @@ export default async function InstructoresPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {instructors.map((i) => (
-            <a
+            <Link
               key={i.id}
               href={`/dashboard/instructores/${i.id}`}
               className="rounded-md border border-line bg-paper p-5 hover:shadow-card hover:border-navy transition block"
@@ -73,7 +74,7 @@ export default async function InstructoresPage() {
                 {i.email && <div className="truncate">{i.email}</div>}
                 {i.phone && <div>{i.phone}</div>}
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       )}

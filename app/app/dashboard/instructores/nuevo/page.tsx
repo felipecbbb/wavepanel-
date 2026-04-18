@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { resolveActiveSchool } from '@/lib/tenant-server';
 import InstructorForm from '../instructor-form';
 import { createInstructorAction } from '../actions';
@@ -7,7 +8,7 @@ export default async function NuevoInstructorPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10">
       <nav className="mb-6 text-sm text-muted">
-        <a href="/dashboard/instructores" className="hover:text-navy">Instructores</a>
+        <Link href="/dashboard/instructores" className="hover:text-navy">Instructores</Link>
         <span className="mx-2">/</span>
         <span className="text-navy">Nuevo</span>
       </nav>
