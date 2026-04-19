@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Auto-synced by 'npm run sync-public-docs' from repo-root docs/
+/public/docs/pitch-deck.html

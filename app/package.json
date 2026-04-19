@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "sync-public-docs": "mkdir -p public/docs && cp ../docs/pitch-deck.html public/docs/pitch-deck.html",
+    "dev": "npm run sync-public-docs && next dev",
+    "prebuild": "npm run sync-public-docs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
