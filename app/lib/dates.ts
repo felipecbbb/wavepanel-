@@ -44,3 +44,22 @@ export function combineDateAndTime(date: string, time: string): string {
   // Produces a local-ISO string the server will accept for timestamptz
   return `${date}T${time}:00`;
 }
+
+// Lunes de la semana que contiene `date` (formato YYYY-MM-DD).
+export function startOfWeekIso(date: string): string {
+  const d = startOfDay(date);
+  const day = d.getDay() || 7; // domingo=0 → 7; lunes=1
+  d.setDate(d.getDate() - (day - 1));
+  return toLocalIsoDate(d);
+}
+
+// 7 días YYYY-MM-DD empezando desde `startDate`.
+export function weekDays(startDate: string): string[] {
+  return Array.from({ length: 7 }, (_, i) => addDays(startDate, i));
+}
+
+// Etiqueta corta de día, ej: "lun 14 abr".
+export function formatShortDayLabel(date: string): string {
+  const d = startOfDay(date);
+  return d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
+}

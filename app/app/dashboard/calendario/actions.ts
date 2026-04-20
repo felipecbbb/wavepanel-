@@ -101,6 +101,46 @@ export async function deleteClassAction(classId: string): Promise<void> {
   revalidatePath('/dashboard/calendario');
 }
 
+// Duplicar clase: crea una copia idéntica desplazada N días (default +7 para
+// hacer clases semanales). No copia las inscripciones. Devuelve la nueva fecha
+// para que el caller pueda redirigir al día correspondiente.
+export async function duplicateClassAction(
+  classId: string,
+  daysOffset: number = 7,
+): Promise<{ ok: true; date: string } | { ok: false; error: string }> {
+  const school = await resolveActiveSchool();
+  const supabase = await createClient();
+
+  const { data: original, error: readErr } = await supabase
+    .from('surf_classes')
+    .select('activity_id, instructor_id, starts_at, ends_at, max_students, level, notes, published')
+    .eq('id', classId)
+    .eq('school_id', school.id)
+    .maybeSingle();
+  if (readErr) return { ok: false, error: readErr.message };
+  if (!original) return { ok: false, error: 'Clase no encontrada.' };
+
+  const shift = daysOffset * 86_400_000;
+  const newStartsAt = new Date(new Date(original.starts_at).getTime() + shift).toISOString();
+  const newEndsAt = new Date(new Date(original.ends_at).getTime() + shift).toISOString();
+
+  const { error } = await supabase.from('surf_classes').insert({
+    school_id: school.id,
+    activity_id: original.activity_id,
+    instructor_id: original.instructor_id,
+    starts_at: newStartsAt,
+    ends_at: newEndsAt,
+    max_students: original.max_students,
+    level: original.level,
+    notes: original.notes,
+    published: original.published,
+  });
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath('/dashboard/calendario');
+  return { ok: true, date: newStartsAt.slice(0, 10) };
+}
+
 // ==========================================
 // Inscripciones (class_enrollments)
 // ==========================================

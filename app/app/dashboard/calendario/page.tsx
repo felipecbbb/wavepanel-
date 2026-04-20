@@ -1,11 +1,22 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { resolveActiveSchool } from '@/lib/tenant-server';
-import { toLocalIsoDate, startOfDay, endOfDay, addDays, formatSpanishDate, formatSpanishTime } from '@/lib/dates';
+import {
+  toLocalIsoDate,
+  startOfDay,
+  addDays,
+  formatSpanishDate,
+  formatSpanishTime,
+  startOfWeekIso,
+  weekDays,
+  formatShortDayLabel,
+} from '@/lib/dates';
 import { ButtonLink } from '@/components/button';
 import NewClassForm from './new-class-form';
 import EnrollForm from './enroll-form';
 import EnrollmentActions from './enrollment-actions';
 import EditClassButton from './edit-class-button';
+import DuplicateClassButton from './duplicate-class-button';
 import DeleteButton from '@/components/delete-button';
 import DragLayer from './drag-layer';
 import { deleteClassAction } from './actions';
@@ -42,15 +53,18 @@ type Enrollment = {
 export default async function CalendarioPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string }>;
+  searchParams: Promise<{ date?: string; view?: string }>;
 }) {
   await resolveActiveSchool();
   const supabase = await createClient();
   const sp = await searchParams;
   const date = sp.date ?? toLocalIsoDate(new Date());
+  const view: 'day' | 'week' = sp.view === 'week' ? 'week' : 'day';
 
-  const dayStart = startOfDay(date).toISOString();
-  const dayEnd = endOfDay(date).toISOString();
+  const rangeStart = view === 'week' ? startOfWeekIso(date) : date;
+  const rangeEndExclusive = view === 'week' ? addDays(rangeStart, 7) : addDays(date, 1);
+  const dayStart = startOfDay(rangeStart).toISOString();
+  const dayEnd = startOfDay(rangeEndExclusive).toISOString();
 
   // Queries flat (sin embeds) — evitamos issues de alias de relación en runtime.
   const [
@@ -112,29 +126,56 @@ export default async function CalendarioPage({
   }
 
   const today = toLocalIsoDate(new Date());
-  const prev = addDays(date, -1);
-  const next = addDays(date, 1);
+  const viewQS = view === 'week' ? '&view=week' : '';
+  const prev = view === 'week' ? addDays(rangeStart, -7) : addDays(date, -1);
+  const next = view === 'week' ? addDays(rangeStart, 7) : addDays(date, 1);
 
   const activeInstructorsForForm = instructors.filter((i) => i.active).map((i) => ({ id: i.id, name: i.name }));
 
+  const headerTitle =
+    view === 'week'
+      ? `Semana del ${formatShortDayLabel(rangeStart)}`
+      : formatSpanishDate(date);
+
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 py-10">
-      <DragLayer />
+    <div className="mx-auto w-full max-w-6xl px-6 py-10">
+      {view === 'day' && <DragLayer />}
       <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
           <p className="kicker mb-2">Calendario</p>
-          <h1 className="font-display text-4xl text-navy capitalize">{formatSpanishDate(date)}</h1>
+          <h1 className="font-display text-4xl text-navy capitalize">{headerTitle}</h1>
         </div>
         <NewClassForm activities={activities} instructors={activeInstructorsForForm} date={date} />
       </div>
 
-      <div className="flex items-center gap-2 mb-6">
-        <ButtonLink href={`/dashboard/calendario?date=${prev}`} variant="outline" size="md">← Anterior</ButtonLink>
-        <ButtonLink href={`/dashboard/calendario?date=${today}`} variant="ghost" size="md">Hoy</ButtonLink>
-        <ButtonLink href={`/dashboard/calendario?date=${next}`} variant="outline" size="md">Siguiente →</ButtonLink>
+      <div className="flex items-center gap-2 mb-6 flex-wrap">
+        <ButtonLink href={`/dashboard/calendario?date=${prev}${viewQS}`} variant="outline" size="md">← Anterior</ButtonLink>
+        <ButtonLink href={`/dashboard/calendario?date=${today}${viewQS}`} variant="ghost" size="md">Hoy</ButtonLink>
+        <ButtonLink href={`/dashboard/calendario?date=${next}${viewQS}`} variant="outline" size="md">Siguiente →</ButtonLink>
+        <div className="ml-auto inline-flex rounded-sm border border-line overflow-hidden text-[0.76rem] font-label">
+          <Link
+            href={`/dashboard/calendario?date=${date}`}
+            className={`px-3 py-1.5 ${view === 'day' ? 'bg-navy text-white' : 'bg-paper text-navy hover:bg-sand'}`}
+          >
+            Día
+          </Link>
+          <Link
+            href={`/dashboard/calendario?date=${date}&view=week`}
+            className={`px-3 py-1.5 ${view === 'week' ? 'bg-navy text-white' : 'bg-paper text-navy hover:bg-sand'}`}
+          >
+            Semana
+          </Link>
+        </div>
       </div>
 
-      {classes.length === 0 ? (
+      {view === 'week' ? (
+        <WeekGrid
+          weekStart={rangeStart}
+          classes={classes}
+          activityById={activityById}
+          today={today}
+        />
+      ) : classes.length === 0 ? (
         <div className="rounded-md border border-dashed border-line bg-paper p-10 text-center">
           <p className="text-sm text-muted">No hay clases programadas para este día.</p>
         </div>
@@ -187,6 +228,7 @@ export default async function CalendarioPage({
                         activities={activities}
                         instructors={instructors}
                       />
+                      <DuplicateClassButton classId={c.id} />
                       <DeleteButton
                         action={deleteClassAction.bind(null, c.id)}
                         confirmMessage={
@@ -266,6 +308,77 @@ export default async function CalendarioPage({
           })}
         </ul>
       )}
+    </div>
+  );
+}
+
+function WeekGrid({
+  weekStart,
+  classes,
+  activityById,
+  today,
+}: {
+  weekStart: string;
+  classes: SurfClass[];
+  activityById: Map<string, Activity>;
+  today: string;
+}) {
+  const days = weekDays(weekStart);
+  const classesByDay: Record<string, SurfClass[]> = {};
+  for (const c of classes) {
+    const key = toLocalIsoDate(new Date(c.starts_at));
+    (classesByDay[key] ||= []).push(c);
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
+      {days.map((d) => {
+        const dayClasses = classesByDay[d] ?? [];
+        const isToday = d === today;
+        return (
+          <div
+            key={d}
+            className={`rounded-md border bg-paper p-2 flex flex-col gap-1.5 min-h-[180px] ${
+              isToday ? 'border-navy' : 'border-line'
+            }`}
+          >
+            <Link
+              href={`/dashboard/calendario?date=${d}`}
+              className="font-label text-[0.68rem] text-navy capitalize px-1 py-0.5 rounded-sm hover:bg-sand transition-colors"
+            >
+              {formatShortDayLabel(d)}
+              {isToday && <span className="ml-1 text-yellow">·</span>}
+            </Link>
+            {dayClasses.length === 0 ? (
+              <p className="text-[0.72rem] text-muted/70 italic px-1 pt-1">Sin clases</p>
+            ) : (
+              dayClasses.map((c) => {
+                const activity = activityById.get(c.activity_id);
+                const full = c.enrolled_count >= c.max_students;
+                return (
+                  <Link
+                    key={c.id}
+                    href={`/dashboard/calendario?date=${toLocalIsoDate(new Date(c.starts_at))}`}
+                    className="block rounded-sm border-l-[4px] bg-sand/60 hover:bg-sand px-2 py-1.5 transition-colors"
+                    style={{ borderLeftColor: activity?.color ?? '#214a57' }}
+                  >
+                    <div className="font-label text-[0.66rem] text-navy">
+                      {formatSpanishTime(c.starts_at)}
+                    </div>
+                    <div className="text-[0.78rem] text-navy font-semibold truncate">
+                      {activity?.name ?? '—'}
+                    </div>
+                    <div className={`text-[0.66rem] ${full ? 'text-red-600' : 'text-muted'}`}>
+                      {c.enrolled_count}/{c.max_students}
+                      {!c.published && <span className="ml-1">· oculta</span>}
+                    </div>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
