@@ -9,6 +9,7 @@ const sections = [
   { href: '/dashboard', label: 'Panel', exact: true },
   { href: '/dashboard/clientes', label: 'Clientes' },
   { href: '/dashboard/actividades', label: 'Actividades' },
+  { href: '/dashboard/tarifas', label: 'Tarifas' },
   { href: '/dashboard/calendario', label: 'Calendario' },
   { href: '/dashboard/camps', label: 'Surf Camps' },
   { href: '/dashboard/bonos', label: 'Bonos' },

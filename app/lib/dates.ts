@@ -63,3 +63,37 @@ export function formatShortDayLabel(date: string): string {
   const d = startOfDay(date);
   return d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
 }
+
+// Primer día del mes que contiene `date`, como YYYY-MM-DD.
+export function startOfMonthIso(date: string): string {
+  const d = startOfDay(date);
+  d.setDate(1);
+  return toLocalIsoDate(d);
+}
+
+// YYYY-MM del `date`.
+export function yearMonth(date: string): { year: number; month: number } {
+  const d = startOfDay(date);
+  return { year: d.getFullYear(), month: d.getMonth() }; // month 0-indexed
+}
+
+// Lunes que inicia la grid mensual (puede ser del mes anterior).
+export function startOfMonthGrid(date: string): string {
+  const first = startOfDay(startOfMonthIso(date));
+  const day = first.getDay() || 7; // domingo=0 → 7; lunes=1
+  first.setDate(first.getDate() - (day - 1));
+  return toLocalIsoDate(first);
+}
+
+// Formato "abril 2026" capitalizado por la UI.
+export function formatSpanishMonth(date: string): string {
+  const d = startOfDay(date);
+  return d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+}
+
+// Suma N meses y devuelve el primer día del mes resultante.
+export function addMonths(date: string, months: number): string {
+  const d = startOfDay(startOfMonthIso(date));
+  d.setMonth(d.getMonth() + months);
+  return toLocalIsoDate(d);
+}

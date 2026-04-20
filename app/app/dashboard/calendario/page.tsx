@@ -10,6 +10,10 @@ import {
   startOfWeekIso,
   weekDays,
   formatShortDayLabel,
+  startOfMonthIso,
+  startOfMonthGrid,
+  formatSpanishMonth,
+  addMonths,
 } from '@/lib/dates';
 import { ButtonLink } from '@/components/button';
 import NewClassForm from './new-class-form';
@@ -53,20 +57,42 @@ type Enrollment = {
 export default async function CalendarioPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string; view?: string }>;
+  searchParams: Promise<{ date?: string; view?: string; activity?: string; instructor?: string }>;
 }) {
   await resolveActiveSchool();
   const supabase = await createClient();
   const sp = await searchParams;
   const date = sp.date ?? toLocalIsoDate(new Date());
-  const view: 'day' | 'week' = sp.view === 'week' ? 'week' : 'day';
+  const view: 'day' | 'week' | 'month' =
+    sp.view === 'week' ? 'week' : sp.view === 'month' ? 'month' : 'day';
+  const activityFilter = sp.activity ?? '';
+  const instructorFilter = sp.instructor ?? '';
 
-  const rangeStart = view === 'week' ? startOfWeekIso(date) : date;
-  const rangeEndExclusive = view === 'week' ? addDays(rangeStart, 7) : addDays(date, 1);
+  let rangeStart: string;
+  let rangeEndExclusive: string;
+  if (view === 'week') {
+    rangeStart = startOfWeekIso(date);
+    rangeEndExclusive = addDays(rangeStart, 7);
+  } else if (view === 'month') {
+    rangeStart = startOfMonthGrid(date);
+    rangeEndExclusive = addDays(rangeStart, 42); // 6 semanas de grid
+  } else {
+    rangeStart = date;
+    rangeEndExclusive = addDays(date, 1);
+  }
   const dayStart = startOfDay(rangeStart).toISOString();
   const dayEnd = startOfDay(rangeEndExclusive).toISOString();
 
   // Queries flat (sin embeds) — evitamos issues de alias de relación en runtime.
+  let classesQuery = supabase
+    .from('surf_classes')
+    .select('id, starts_at, ends_at, activity_id, instructor_id, max_students, enrolled_count, level, notes, published')
+    .gte('starts_at', dayStart)
+    .lt('starts_at', dayEnd)
+    .order('starts_at', { ascending: true });
+  if (activityFilter) classesQuery = classesQuery.eq('activity_id', activityFilter);
+  if (instructorFilter) classesQuery = classesQuery.eq('instructor_id', instructorFilter);
+
   const [
     { data: classesData },
     { data: activitiesData },
@@ -75,12 +101,7 @@ export default async function CalendarioPage({
     { data: familyData },
     { data: bonosData },
   ] = await Promise.all([
-    supabase
-      .from('surf_classes')
-      .select('id, starts_at, ends_at, activity_id, instructor_id, max_students, enrolled_count, level, notes, published')
-      .gte('starts_at', dayStart)
-      .lt('starts_at', dayEnd)
-      .order('starts_at', { ascending: true }),
+    classesQuery,
     supabase
       .from('activities')
       .select('id, name, duration_minutes, capacity, color')
@@ -126,15 +147,30 @@ export default async function CalendarioPage({
   }
 
   const today = toLocalIsoDate(new Date());
-  const viewQS = view === 'week' ? '&view=week' : '';
-  const prev = view === 'week' ? addDays(rangeStart, -7) : addDays(date, -1);
-  const next = view === 'week' ? addDays(rangeStart, 7) : addDays(date, 1);
+  const filterQS =
+    (view === 'week' ? '&view=week' : view === 'month' ? '&view=month' : '') +
+    (activityFilter ? `&activity=${activityFilter}` : '') +
+    (instructorFilter ? `&instructor=${instructorFilter}` : '');
+  let prev: string;
+  let next: string;
+  if (view === 'week') {
+    prev = addDays(rangeStart, -7);
+    next = addDays(rangeStart, 7);
+  } else if (view === 'month') {
+    prev = addMonths(startOfMonthIso(date), -1);
+    next = addMonths(startOfMonthIso(date), 1);
+  } else {
+    prev = addDays(date, -1);
+    next = addDays(date, 1);
+  }
 
   const activeInstructorsForForm = instructors.filter((i) => i.active).map((i) => ({ id: i.id, name: i.name }));
 
   const headerTitle =
     view === 'week'
       ? `Semana del ${formatShortDayLabel(rangeStart)}`
+      : view === 'month'
+      ? formatSpanishMonth(date)
       : formatSpanishDate(date);
 
   return (
@@ -148,29 +184,77 @@ export default async function CalendarioPage({
         <NewClassForm activities={activities} instructors={activeInstructorsForForm} date={date} />
       </div>
 
-      <div className="flex items-center gap-2 mb-6 flex-wrap">
-        <ButtonLink href={`/dashboard/calendario?date=${prev}${viewQS}`} variant="outline" size="md">← Anterior</ButtonLink>
-        <ButtonLink href={`/dashboard/calendario?date=${today}${viewQS}`} variant="ghost" size="md">Hoy</ButtonLink>
-        <ButtonLink href={`/dashboard/calendario?date=${next}${viewQS}`} variant="outline" size="md">Siguiente →</ButtonLink>
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        <ButtonLink href={`/dashboard/calendario?date=${prev}${filterQS}`} variant="outline" size="md">← Anterior</ButtonLink>
+        <ButtonLink href={`/dashboard/calendario?date=${today}${filterQS}`} variant="ghost" size="md">Hoy</ButtonLink>
+        <ButtonLink href={`/dashboard/calendario?date=${next}${filterQS}`} variant="outline" size="md">Siguiente →</ButtonLink>
         <div className="ml-auto inline-flex rounded-sm border border-line overflow-hidden text-[0.76rem] font-label">
-          <Link
-            href={`/dashboard/calendario?date=${date}`}
-            className={`px-3 py-1.5 ${view === 'day' ? 'bg-navy text-white' : 'bg-paper text-navy hover:bg-sand'}`}
-          >
-            Día
-          </Link>
-          <Link
-            href={`/dashboard/calendario?date=${date}&view=week`}
-            className={`px-3 py-1.5 ${view === 'week' ? 'bg-navy text-white' : 'bg-paper text-navy hover:bg-sand'}`}
-          >
-            Semana
-          </Link>
+          {(['day', 'week', 'month'] as const).map((v) => {
+            const qs =
+              (v === 'week' ? '&view=week' : v === 'month' ? '&view=month' : '') +
+              (activityFilter ? `&activity=${activityFilter}` : '') +
+              (instructorFilter ? `&instructor=${instructorFilter}` : '');
+            return (
+              <Link
+                key={v}
+                href={`/dashboard/calendario?date=${date}${qs}`}
+                className={`px-3 py-1.5 ${view === v ? 'bg-navy text-white' : 'bg-paper text-navy hover:bg-sand'}`}
+              >
+                {v === 'day' ? 'Día' : v === 'week' ? 'Semana' : 'Mes'}
+              </Link>
+            );
+          })}
         </div>
       </div>
+
+      <form className="flex items-center gap-2 mb-6 flex-wrap text-sm">
+        <span className="font-label text-[0.68rem] text-muted mr-1">Filtrar:</span>
+        <input type="hidden" name="date" value={date} />
+        {view !== 'day' && <input type="hidden" name="view" value={view} />}
+        <select
+          name="activity"
+          defaultValue={activityFilter}
+          className="rounded-sm border border-line bg-paper px-2 py-1 text-[0.82rem]"
+        >
+          <option value="">Todas las actividades</option>
+          {activities.map((a) => (
+            <option key={a.id} value={a.id}>{a.name}</option>
+          ))}
+        </select>
+        <select
+          name="instructor"
+          defaultValue={instructorFilter}
+          className="rounded-sm border border-line bg-paper px-2 py-1 text-[0.82rem]"
+        >
+          <option value="">Cualquier instructor</option>
+          {instructors.map((i) => (
+            <option key={i.id} value={i.id}>{i.name}</option>
+          ))}
+        </select>
+        <button type="submit" className="rounded-sm bg-navy text-white px-3 py-1 font-label text-[0.72rem] hover:bg-navy-soft">
+          Aplicar
+        </button>
+        {(activityFilter || instructorFilter) && (
+          <Link
+            href={`/dashboard/calendario?date=${date}${view === 'week' ? '&view=week' : view === 'month' ? '&view=month' : ''}`}
+            className="font-label text-[0.72rem] text-muted hover:text-navy underline"
+          >
+            Limpiar
+          </Link>
+        )}
+      </form>
 
       {view === 'week' ? (
         <WeekGrid
           weekStart={rangeStart}
+          classes={classes}
+          activityById={activityById}
+          today={today}
+        />
+      ) : view === 'month' ? (
+        <MonthGrid
+          gridStart={rangeStart}
+          monthAnchor={date}
           classes={classes}
           activityById={activityById}
           today={today}
@@ -308,6 +392,84 @@ export default async function CalendarioPage({
           })}
         </ul>
       )}
+    </div>
+  );
+}
+
+function MonthGrid({
+  gridStart,
+  monthAnchor,
+  classes,
+  activityById,
+  today,
+}: {
+  gridStart: string;
+  monthAnchor: string;
+  classes: SurfClass[];
+  activityById: Map<string, Activity>;
+  today: string;
+}) {
+  const anchorMonth = new Date(monthAnchor).getMonth();
+  const days: string[] = Array.from({ length: 42 }, (_, i) => addDays(gridStart, i));
+  const classesByDay: Record<string, SurfClass[]> = {};
+  for (const c of classes) {
+    const key = toLocalIsoDate(new Date(c.starts_at));
+    (classesByDay[key] ||= []).push(c);
+  }
+  const weekdayLabels = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'];
+
+  return (
+    <div>
+      <div className="grid grid-cols-7 gap-1 mb-1 font-label text-[0.6rem] text-muted">
+        {weekdayLabels.map((w) => (
+          <div key={w} className="px-1">{w}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((d) => {
+          const dayClasses = classesByDay[d] ?? [];
+          const outOfMonth = new Date(d).getMonth() !== anchorMonth;
+          const isToday = d === today;
+          return (
+            <Link
+              key={d}
+              href={`/dashboard/calendario?date=${d}`}
+              className={`rounded-sm border p-1.5 min-h-[90px] flex flex-col gap-0.5 hover:border-navy transition-colors ${
+                outOfMonth ? 'bg-sand/30 text-muted/60' : 'bg-paper text-navy'
+              } ${isToday ? 'border-navy' : 'border-line'}`}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`text-[0.72rem] font-label ${isToday ? 'text-yellow' : ''}`}>
+                  {new Date(d).getDate()}
+                </span>
+                {dayClasses.length > 0 && (
+                  <span className="text-[0.6rem] font-label bg-navy/10 text-navy px-1 rounded-sm">
+                    {dayClasses.length}
+                  </span>
+                )}
+              </div>
+              {dayClasses.slice(0, 3).map((c) => {
+                const activity = activityById.get(c.activity_id);
+                return (
+                  <div
+                    key={c.id}
+                    className="text-[0.66rem] truncate rounded-sm px-1 py-0.5 border-l-[3px]"
+                    style={{
+                      borderLeftColor: activity?.color ?? '#214a57',
+                      background: 'rgba(14,47,57,0.04)',
+                    }}
+                  >
+                    {formatSpanishTime(c.starts_at)} · {activity?.name ?? '—'}
+                  </div>
+                );
+              })}
+              {dayClasses.length > 3 && (
+                <div className="text-[0.6rem] text-muted italic">+ {dayClasses.length - 3} más</div>
+              )}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }
